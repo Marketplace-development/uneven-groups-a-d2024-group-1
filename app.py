@@ -4,8 +4,8 @@ from config import Config
 from datetime import datetime
 
 app = Flask(__name__)
-#app.config.from_object(Config)  # Load the config settings
-db = SQLAlchemy(app)  # Initialize SQLAlchemy with your app
+app.config.from_object(Config)  # Load the config settings
+#db = SQLAlchemy(app)  # Initialize SQLAlchemy with your app
 
 @app.route('/')
 def home():

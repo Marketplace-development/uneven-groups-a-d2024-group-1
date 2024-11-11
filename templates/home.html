@@ -1,9 +1,29 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Chairing</title>
+<title>Chairing: Your Seats</title>
 {% endblock %}
 
 {% block body %}
+<!--Chairing-->
+<h1 style="text-align: center; font-size: 3em; font-weight: bold;">Chairing</h1>
 
+<!--your seats-->
+<p style="text-align: center; color: grey; font-size: 1.5em; margin-top: -20px; margin-bottom: 40px;">Your Seats</p>
+
+<!--Sign Up and Log In buttons-->
+<div style="text-align: center; margin-top: 20px;">
+    <button class="btn btn-transparent">Sign Up</button>
+    <button class="btn btn-black">Log In</button>
+</div>
+
+<!--Introductory text above image-->
+<div class="image-container" style="margin-top: 3%;">
+    <div class="overlay-text">
+        <p>Looking for the perfect place to study?</p>
+        <p>Chairing has you covered!</p>
+        <p>Pick a study location for the day and get to work!</p>
+    </div>
+    <img src="{{ url_for('static', filename='images/studylibrary.jpg') }}" alt="Chairing Image" class="image">
+</div>
 {% endblock %}
