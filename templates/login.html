@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Chairing: Login</title>
+<title>Login</title>
 {% endblock %}
 
 {% block body %}
@@ -11,17 +11,23 @@
     <form>
         <!--Username-->
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="Enter you username">
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
         <!--Password-->
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter you password">
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
         <!--Login button-->
         <button type="submit" class="btn btn-black">Login</button>
     </form>
 
     <!--No Account / Sign Up-->
-    <p class="no-account">No account: <a href="{{ url_for('signup') }}" class="btn btn-transparant" style="padding: 10px 10px; margin-top: 20px;">Sign Up</a></p>
+    <div style="text-align: right; margin-top: 20px;">
+        <span class="no-account">No account</span>
+        <form action="{{ url_for('signup') }}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-transparant">Sign Up</button>
+        </form>
+    </div>
+    <!--<p class="no-account">No account: <a href="{{ url_for('signup') }}" class="btn btn-transparant" style="padding: 10px 10px; margin-top: 20px;">Sign Up</a></p>-->
 </div>
 {% endblock %}

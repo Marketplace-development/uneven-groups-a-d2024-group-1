@@ -1,39 +1,44 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Chairing: Sign Up</title>
+<title>Sign Up</title>
 {% endblock %}
 
 {% block body %}
 <div class="login-signup-container" style="height: 650px">
     <h1 style="text-align: left;">Create your account: </h1>
 
-    <form>
+    <form action="{{ url_for('signup') }}" method="post">
         <!--Username-->
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="Enter you username">
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
         <!--Email-->
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Enter you email">
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
 
         <!--Student ID-->
         <label for="studentID">Student ID</label>
-        <input type="text" id="studentID" name="studentID" placeholder="Enter you Student ID">
+        <input type="text" id="studentID" name="studentID" placeholder="Enter your Student ID" required>
 
         <!--Password-->
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter you password">
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
 
         <!--Confirm password-->
         <label for="confirm_password">Confirm Password</label>
-        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm you password">
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
 
         <!--Sign Up button-->
         <button type="submit" class="btn btn-black">Sign Up</button>
     </form>
 
     <!--Already have an account / Login-->
-    <p class="have-account">Already have an account? <a href="{{ url_for('login') }}" class="btn btn-transparant" style="padding: 10px 10px; margin-top: 20px;">Login</a></p>
+    <div style="text-align: right; margin-top: 20px;">
+        <span class="have-account">Already have an account?</span>
+        <form action="{{ url_for('login') }}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-transparant">Login</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

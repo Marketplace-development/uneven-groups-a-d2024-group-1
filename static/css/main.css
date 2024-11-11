@@ -12,6 +12,7 @@ body, html {
     transition: background-color 0.3s;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
 }
 
 .btn-transparent {
@@ -26,6 +27,11 @@ body, html {
     color: white;
     font-weight: normal;
     border: 2px solid black;
+}
+
+.inline-form {
+    display: inline-block;
+    margin-right: 10px;
 }
 
 .image-container {

@@ -15,9 +15,17 @@ def home():
 def login():
     return render_template('login.html')
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if request.method == 'POST':
+        # You would add logic here to handle storing the new user in the database
+        # and any other signup processing
+        return redirect(url_for('success'))  # Redirect to success page after signup
     return render_template('signup.html')
+
+@app.route('/success')
+def success():
+    return render_template('success.html')
 
 #@app.route('/products')
 #def products():
