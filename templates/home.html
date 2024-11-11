@@ -6,19 +6,19 @@
 
 {% block body %}
 <!--Chairing-->
-<h1 style="text-align: center; font-size: 3em; font-weight: bold;">Chairing</h1>
+<h1 style="text-align: center; font-size: 4em; font-weight: bold;">Chairing</h1>
 
 <!--your seats-->
-<p style="text-align: center; color: grey; font-size: 1.5em; margin-top: -20px; margin-bottom: 40px;">Your Seats</p>
+<p style="text-align: center; color: grey; font-size: 1.5em; margin-top: -30px; margin-bottom: 30px;">Your Seats</p>
 
 <!--Sign Up and Log In buttons-->
-<div style="text-align: center; margin-top: 20px;">
-    <button class="btn btn-transparent">Sign Up</button>
-    <button class="btn btn-black">Log In</button>
+<div style="text-align: center; margin-top: 30px;">
+    <a href="{{ url_for('signup') }}" class="btn btn-transparant">Sign Up</a>
+    <a href="{{ url_for('login') }}" class="btn btn-black">Login</a>
 </div>
 
 <!--Introductory text above image-->
-<div class="image-container" style="margin-top: 3%;">
+<div class="image-container" style="margin-top: 40px; opacity: 80%;">
     <div class="overlay-text">
         <p>Looking for the perfect place to study?</p>
         <p>Chairing has you covered!</p>

@@ -11,18 +11,17 @@ app.config.from_object(Config)  # Load the config settings
 def home():
     return render_template('home.html')
 
-#@app.route('/register')
-#def register():
-    #return "Register: Name and Password"
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
-#@app.route('/login')
-#def login():
-    #return "Login : Name and Password"
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 #@app.route('/products')
 #def products():
     #return "Chairing"
-
 
 if __name__ == "__main__":
     app.run(debug=True)  # Run the app in debug mode
