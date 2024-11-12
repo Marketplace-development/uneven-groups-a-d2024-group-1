@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Chairing</title>
+{% endblock %}
+
+{% block body %}
+<div class="main-container" style="text-align: center; margin-top: 50px;">
+
+    <!--Logout button-->
+    <form action="{{ url_for('home') }}" method="get" class="inline-form" style="position: absolute; top: 20px; right: 20px;">
+        <button type="submit" class="btn btn-black">Logout</button>
+    </form>
+
+    <!--Chairing Title-->
+    <h1 style="text-align: center; font-size: 4em; font-weight: bold;">Chairing</h1>
+
+    <!--Your Seats-->
+    <p style="text-align: center; color: grey; font-size: 1.5em; margin-top: -30px; margin-bottom: 30px;">Your Seats</p>
+
+    <!--Buttons for Reservation and Uploading Locations-->
+    <div style="display: flex; justify-content: center; gap: 50px; margin-top: 50px;">
+
+        <!--Make a Reservation-->
+        <div class="option-container" style="text-align: center; width: 250px;">
+            <form action="{{ url_for('reservations') }}" method="get" class="inline-form">
+                <button type="submit" class="btn btn-black" style="width: 100%; font-size: 1.2em; padding: 10px 20px">Make a Reservation</button>
+            </form>
+            <img src="{{ url_for('static', filename='images/reservation.JPG') }}" alt="Reservation Image" style="width: 100%; margin-top: 20px;">
+            <p style="font-size: 1.3em; color: grey; margin-top: 5px;"> Book a seat at a<br>location of your choice.</p>
+        </div>
+
+        <!--Upload Your Location-->
+        <div class="option-container" style="text-align: center; width: 250px;">
+            <form action="{{ url_for('locations') }}" method="get" class="inline-form">
+                <button type="submit" class="btn btn-transparant" style="width: 100%; font-size: 1.2em; padding: 10px 20px">Upload Your Location</button>
+            </form>
+            <img src="{{ url_for('static', filename='images/location.JPG') }}" alt="Location Image" style="width: 100%; margin-top: 20px">
+            <p style="font-size: 1.3em; color: grey; margin-top: 20px;">Upload your own location<br>for students to visit.</p>
+        </div>
+    </div>
+{% endblock %}

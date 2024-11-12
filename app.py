@@ -11,8 +11,12 @@ app.config.from_object(Config)  # Load the config settings
 def home():
     return render_template('home.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        # You would add logic here to handle storing the new user in the database
+        # and any other signup processing
+        return redirect(url_for('main'))  # Redirect to success page after signup
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -27,9 +31,17 @@ def signup():
 def success():
     return render_template('success.html')
 
-#@app.route('/products')
-#def products():
-    #return "Chairing"
+@app.route('/main')
+def main():
+    return render_template('main.html')
+
+@app.route('/locations')
+def locations():
+    return render_template('locations.html')
+
+@app.route('/reservations')
+def reservations():
+    return render_template('reservations.html')
 
 if __name__ == "__main__":
     app.run(debug=True)  # Run the app in debug mode
