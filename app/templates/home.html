@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Chairing</title>
+{% endblock %}
+
+{% block body %}
+<!--Chairing-->
+<h1 style="text-align: center; font-size: 4em; font-weight: bold;">Chairing</h1>
+
+<!--your seats-->
+<p style="text-align: center; color: grey; font-size: 1.5em; margin-top: -30px; margin-bottom: 30px;">Your Seats</p>
+
+<!--Sign Up and Log In buttons-->
+<div style="text-align: center; margin-top: 30px;">
+    <form action="{{ url_for('main.signup') }}" method="get" class="inline-form">
+        <button type="submit" class="btn btn-transparant">Sign Up</button>
+    </form>
+
+    <form action="{{ url_for('main.login') }}" method="get" class="inline-form">
+        <button type="submit" class="btn btn-black">Login</button>
+    </form>
+</div>
+
+<!--Introductory text above image-->
+<div class="image-container" style="margin-top: 40px;">
+    <div class="overlay-text">
+        <p>Looking for the perfect place to study?</p>
+        <p>Chairing has you covered!</p>
+        <p>Pick a study location for the day and get to work!</p>
+    </div>
+    <img src="{{ url_for('static', filename='images/studylibrary.jpg') }}" alt="Chairing Image" class="image">
+</div>
+{% endblock %}

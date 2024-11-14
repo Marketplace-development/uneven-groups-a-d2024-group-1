@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Login</title>
+{% endblock %}
+
+{% block body %}
+<div class="login-signup-container" style="height: 350px">
+    <h1 style="text-align: left;">Already have an account?</h1>
+
+    <form action="{{ url_for('main.login') }}" method="post">
+        <!--Username-->
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+        <!--Password-->
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <button type="submit" class="btn btn-black">Login</button>
+    </form>
+
+    <!--No Account / Sign Up-->
+    <div style="text-align: right; margin-top: 20px;">
+        <span class="no-account">No account</span>
+        <form action="{{ url_for('main.signup') }}" method="get" style="display: inline;">
+            <button type="submit" class="btn btn-transparant">Sign Up</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

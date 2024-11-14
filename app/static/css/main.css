@@ -1,0 +1,145 @@
+body, html {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: #d3d3d3;
+}
+
+.btn {
+    padding: 10px 30px;
+    font-size: 1em;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+
+.btn-transparent {
+    background-color: transparent;
+    color: black;
+    font-weight: normal;
+    border: 2px solid black;
+}
+
+.btn-black {
+    background-color: black;
+    color: white;
+    font-weight: normal;
+    border: 2px solid black;
+}
+
+.inline-form {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.image-container {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    color: white;
+    font-size: 2.4em;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    width: 70%;
+}
+
+.image {
+    max-width: 100%;
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.login-signup-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    transition: height 0.3s ease-in-out;
+}
+
+.login-signup-container h1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.login-signup-container label {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    color: black;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.login-signup-container input[type="text"],
+.login-signup-container input[type="email"],
+.login-signup-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 1em;
+    color: grey;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.no-account {
+    font-size: 0.9em;
+    color: black;
+    margin-top: 15px;
+    text-align: right;
+}
+
+.have-account {
+    font-size: 0.9em;
+    color: black;
+    margin-top: 15px;
+    text-align: right;
+}
+
+.flash {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+}
+
+.flash.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+.flash.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.login-signup-container.flash-active {
+    height: auto;
+    padding-bottom: 75px;
+}
+
+.flash-messages {
+    margin-bottom: 20px;
+}
