@@ -20,12 +20,12 @@ p {
 .btn {
     padding: 10px 30px;
     font-size: 1em;
-    margin: 5px;
+    margin: 10px 0;
     cursor: pointer;
-    transition: background-color 0.3s;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-decoration: none;
+    width: 35%;
 }
 
 .btn:hover {
@@ -95,10 +95,15 @@ form label {
     left: 50%;
     transform: translate(-50%, -20%);
     color: white;
-    font-size: 2.4em;
+    font-size: 1.4em;
     font-weight: bold;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
     width: 70%;
+}
+
+.image-container .overlay-text p {
+    font-size: 1.2em;
+    color: white;
 }
 
 .image {
@@ -110,12 +115,16 @@ form label {
 }
 
 .login-signup-container {
+    width: 100%;
     background-color: #ffffff;
-    padding: 40px;
+    padding-top: 30px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 60px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     max-width: 400px;
-    margin: 50px auto;
+    margin: 0 auto;
     text-align: center;
     transition: height 0.3s ease-in-out;
 }
@@ -140,25 +149,20 @@ form label {
 .login-signup-container input[type="email"],
 .login-signup-container input[type="password"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    font-size: 1.1em;
     margin-bottom: 15px;
-    font-size: 1em;
-    color: grey;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
     border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    color: grey;
+    box-sizing: border-box;
     outline: none;
 }
 
-.no-account {
-    font-size: 0.9em;
-    color: black;
-    margin-top: 15px;
-    text-align: right;
-}
-
-.have-account {
-    font-size: 0.9em;
+.no-account, .have-account {
+    font-size: 1em;
+    width: 100px;
     color: black;
     margin-top: 15px;
     text-align: right;
@@ -210,7 +214,21 @@ form label {
 .picture-item {
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
     align-items: center;
+}
+
+.picture-item input[type="radio"] {
+    margin-bottom: 10px;  /* Add margin between the radio button and the image */
+    width: 20px;  /* Adjust radio button size */
+    height: 20px;  /* Adjust radio button size */
+}
+
+/* Adjust the picture size (optional, if needed) */
+.picture-item img {
+    max-width: 200px; /* Adjust the max width of the image */
+    max-height: 120px;
+    height: auto; /* Maintain aspect ratio */
 }
 
 .picture-option {
@@ -249,6 +267,14 @@ form .address-section .form-group {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Two equal columns */
     gap: 20px; /* Space between the grid items */
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
 }
 
 .address-grid {
@@ -297,7 +323,7 @@ h3, p {
 }
 
 .form-field:nth-child(7) { /* Number of Chairs */
-    grid-column: 1 / span 2; /* Span across both columns */
+    grid-column: 1 / span 2;  /* Span across both columns */
     grid-row: 4;
 }
 
@@ -305,6 +331,7 @@ h3, p {
 .form-field {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .form-field label {
@@ -322,14 +349,22 @@ h3, p {
 .hours-grid {
     display: grid;
     grid-template-columns: 1fr 2fr 2fr 1fr;
-    gap: 10px;
-    max-width: 800px;
+    gap: 20px;
+    max-width: 600px;
     margin: 0 auto;
     align-items: center;
 }
+
+.hours-grid select {
+    height: 30px;
+    padding: 5px;
+    font-size: 1em;
+    line-height: 1.2;
+}
+
 .day-label {
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 .time-select {
     display: flex;

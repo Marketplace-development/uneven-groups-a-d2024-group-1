@@ -1,0 +1,50 @@
+@main.route('/locations', methods=['GET', 'POST'])
+def locations():
+    if request.method == 'POST':
+        # Collecting basic form data
+        username = request.form['username']
+        phonenumber = request.form['phonenumber']
+        location_name = request.form['location_name']
+        location_type = request.form['location_type']
+        country = request.form['country']
+        postal_code = request.form['postal_code']
+        city = request.form['city']
+        street = request.form['street']
+        street_number = request.form['street_number']
+        bus = request.form.get('bus', '')  # Optional field
+        num_chairs = request.form['num_chairs']
+
+        # Prepare opening hours dictionary and validate times if not closed
+        opening_hours = {}
+        for day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']:
+            is_closed = f'{day}_closed' in request.form # Check if "closed" checkbox is checked
+
+            # If the location is not closed on this day, validate opening and closing times.
+            if not is_closed:
+                open_hour = request.form.get(f'{day}_open')
+                open_min = request.form.get(f'{day}_open_min')
+                close_hour = request.form.get(f'{day}_close')
+                close_min = request.form.get(f'{day}_close_min')
+
+                # If any of the time fields are missing, add an error message
+                if not open_hour or not open_min or not close_hour or not close_min:
+                    flash(f'Please provide both opening and closing times for {day.capitalize()}.', 'error')
+                    return redirect(url_for('main.locations')) # Redirect back to the form
+                opening_hours[day] = {'open': f'{open_hour}:{open_min}', 'close': f'{close_hour}:{close_min}'}
+            else:
+                opening_hours[day] = {'open': None, 'close': None} # If closed, don't require times
+   
+        # Save the location data to the database
+        new_location = Location(username=username, phonenumber=phonenumber, location_name=location_name,
+                                 location_type=location_type, country=country, postal_code=postal_code,
+                                 city=city, street=street, street_number=street_number,
+                                 bus=bus, num_chairs=num_chairs, opening_hours=opening_hours)
+        
+        # Add to the database session and commit
+        db.session.add(new_location)
+        db.session.commit()
+        
+        flash('Location added successfully!', 'success')
+        return redirect(url_for('main.location_uploaded'))  # Redirect after success
+
+    return render_template('locations.html')

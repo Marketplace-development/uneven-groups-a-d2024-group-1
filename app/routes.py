@@ -76,43 +76,50 @@ def main_page():
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():
     if request.method == 'POST':
-        username = request.form['username']
-        phonenumber = request.form['phonenumber']
-        location_name = request.form['location_name']
-        location_type = request.form['location_type']
-        other_type = request.form['other_type']
-        country = request.form['country']
-        postal_code = request.form['postal_code']
-        city = request.form['city']
-        street = request.form['street']
-        street_number = request.form['street_number']
-        bus = request.form.get('bus', '')  # Optional field
-        num_chairs = request.form['num_chairs']
-        opening_hours = {day: {
-            'open': request.form.get(f'{day}_open'),
-            'close': request.form.get(f'{day}_close')
-        } for day in ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']}
-        # Save the location data to Supabase (or your DB)
+        # Extract form data
+        location = Location(
+            username=request.form.get("username"),
+            phone_number=request.form.get("phone_number"),
+            location_name=request.form.get("location_name"),
+            location_type=request.form.get("location_type"),
+            country=request.form.get("country"),
+            postal_code=request.form.get("postal_code"),
+            city=request.form.get("city"),
+            street=request.form.get("street"),
+            street_number=request.form.get("street_number"),
+            bus=request.form.get("bus"),
+            chairs=int(request.form.get("chairs")),
+            monday_open=request.form.get("monday_open") + ":" + request.form.get("monday_open_min"),
+            monday_close=request.form.get("monday_close") + ":" + request.form.get("monday_close_min"),
+            tuesday_open=request.form.get("tuesday_open") + ":" + request.form.get("tuesday_open_min"),
+            tuesday_close=request.form.get("tuesday_close") + ":" + request.form.get("tuesday_close_min"),
+            wednesday_open=request.form.get("wednesday_open") + ":" + request.form.get("wednesday_open_min"),
+            wednesday_close=request.form.get("wednesday_close") + ":" + request.form.get("wednesday_close_min"),
+            thursday_open=request.form.get("thursday_open") + ":" + request.form.get("thursnesday_open_min"),
+            thursday_close=request.form.get("thursday_close") + ":" + request.form.get("thursnesday_close_min"),
+            friday_open=request.form.get("friday_open") + ":" + request.form.get("friday_open_min"),
+            friday_close=request.form.get("friday_close") + ":" + request.form.get("friday_close_min"),
+            saturday_open=request.form.get("saturday_open") + ":" + request.form.get("saturday_open_min"),
+            saturday_close=request.form.get("saturday_close") + ":" + request.form.get("saturday_close_min"),
+            sunday_open=request.form.get("sunday_open") + ":" + request.form.get("sunday_open_min"),
+            sunday_close=request.form.get("sunday_close") + ":" + request.form.get("sunday_close_min"),
+            location_picture=request.form.get("location_picture")
+        )
         
-        # Assuming you're using SQLAlchemy or an ORM
-        new_location = Location(username=username, phonenumber=phonenumber, location_name=location_name,
-                                 location_type=location_type, other_type=other_type, country=country,
-                                 postal_code=postal_code, city=city, street=street, street_number=street_number,
-                                 bus=bus, num_chairs=num_chairs, opening_hours=opening_hours)
-
-        db.session.add(new_location)
+        # Add to database
+        db.session.add(location)
         db.session.commit()
-        
-        flash('Location added successfully!', 'success')
-        return redirect(url_for('location_uploaded'))  # Redirect after success
+
+        return redirect(url_for('success_page'))  # Redirect to a success page
 
     return render_template('locations.html')
+
 
 @main.route('/reservations')
 def reservations():
     return render_template('reservations.html')
 
-@main.route('/upload_location', methods=['POST'])
+@main.route('/upload_location', methods=['GET', 'POST'])
 def upload_location():
     # Get form data
     username = request.form['username']
