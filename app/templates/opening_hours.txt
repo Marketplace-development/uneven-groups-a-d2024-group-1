@@ -1,0 +1,521 @@
+<!-- Opening hours for each day -->
+<h3 style="text-align: center; font-size: 1.5em;">Opening Hours</h3>
+<p style="text-align: center; color: grey; font-size: 1.2em;">Select the opening and closing times for each day</p>
+
+<!-- Monday Opening Hours -->
+<label for="monday_open">Monday Opening Time</label>
+<select id="monday_open" name="monday_open" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="monday_open_min" name="monday_open_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Monday Closing Hours -->
+<label for="monday_close">Monday Closing Time</label>
+<select id="monday_close" name="monday_close" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="monday_close_min" name="monday_close_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Tuesday Opening Hours -->
+<label for="tuesday_open">Tuesday Opening Time</label>
+<select id="tuesday_open" name="tuesday_open" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="tuesday_open_min" name="tuesday_open_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Tuesday Closing Hours -->
+<label for="tuesday_close">Tuesday Closing Time</label>
+<select id="tuesday_close" name="tuesday_close" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="tuesday_close_min" name="tuesday_close_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Wednesday Opening Hours -->
+<label for="wednesday_open">Wednesday Opening Time</label>
+<select id="wednesday_open" name="wednesday_open" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="wednesday_open_min" name="wednesday_open_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Wednesday Closing Hours -->
+<label for="wednesday_close">Wednesday Closing Time</label>
+<select id="wednesday_close" name="wednesday_close" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="wednesday_close_min" name="wednesday_close_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Thursday Opening Hours -->
+<label for="thursday_open">Thursday Opening Time</label>
+<select id="thursday_open" name="thursday_open" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="thursday_open_min" name="thursday_open_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Thursday Closing Hours -->
+<label for="thursday_close">Thursday Closing Time</label>
+<select id="thursday_close" name="thursday_close" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="thursday_close_min" name="thursday_close_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Friday Opening Hours -->
+<label for="friday_open">Friday Opening Time</label>
+<select id="friday_open" name="friday_open" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="friday_open_min" name="friday_open_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Friday Closing Hours -->
+<label for="friday_close">Friday Closing Time</label>
+<select id="friday_close" name="friday_close" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="friday_close_min" name="friday_close_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Saturday Opening Hours -->
+<label for="saturday_open">Saturday Opening Time</label>
+<select id="saturday_open" name="saturday_open" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="saturday_open_min" name="saturday_open_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Saturday Closing Hours -->
+<label for="saturday_close">Saturday Closing Time</label>
+<select id="saturday_close" name="saturday_close" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="saturday_close_min" name="saturday_close_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Sunday Opening Hours -->
+<label for="sunday_open">Sunday Opening Time</label>
+<select id="sunday_open" name="sunday_open" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="sunday_open_min" name="sunday_open_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>
+
+<!-- Sunday Closing Hours -->
+<label for="sunday_close">Sunday Closing Time</label>
+<select id="sunday_close" name="sunday_close" required>
+    <!-- Hours -->
+    <option value="00">00</option>
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+</select>
+<select id="sunday_close_min" name="sunday_close_min" required>
+    <!-- Minutes -->
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+</select>

@@ -4,6 +4,19 @@ body, html {
     background-color: #d3d3d3;
 }
 
+h1, h2, h3 {
+    font-family: 'Arial', sans-serif;
+    color: black;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    text-align: center;
+    color: grey;
+    font-size: 1.2em;
+}
+
 .btn {
     padding: 10px 30px;
     font-size: 1em;
@@ -15,6 +28,10 @@ body, html {
     text-decoration: none;
 }
 
+.btn:hover {
+    transform: scale(1.05);
+}
+
 .btn-transparent {
     background-color: transparent;
     color: black;
@@ -22,11 +39,41 @@ body, html {
     border: 2px solid black;
 }
 
+.btn-transparent:hover {
+    background-color: #333;
+    color: white;
+}
+
 .btn-black {
     background-color: black;
     color: white;
     font-weight: normal;
     border: 2px solid black;
+}
+
+.btn-black:hover {
+    background-color: #444;
+}
+
+form input[type="text"],
+form input[type="number"],
+form select,
+form input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+form label {
+    font-weight: bold;
+    color: black;
+    margin-bottom: 5px;
+    display: block;
 }
 
 .inline-form {
@@ -142,4 +189,149 @@ body, html {
 
 .flash-messages {
     margin-bottom: 20px;
+}
+
+.locations-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.picture-selection {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-top: 20px;
+}
+
+.picture-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.picture-option {
+    width: 200px;
+    height: 150px;
+    border-radius: 10px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.picture-option:hover {
+    transform: scale(1.1);
+}
+
+form .address-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+form .address-section input {
+    width: 100%;
+}
+
+form .address-section .form-group {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    text-align: center;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 20px; /* Space between the grid items */
+}
+
+.address-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Title and Subtitle adjustments */
+h3, p {
+    text-align: center;
+    grid-column: 1 / -1; /* Makes title and subtitle span full width */
+}
+
+/* Specific placements for each form field */
+.form-field:nth-child(1) { /* Country */
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.form-field:nth-child(2) { /* Postal Code */
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.form-field:nth-child(3) { /* City */
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.form-field:nth-child(4) { /* Street */
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.form-field:nth-child(5) { /* Street Number */
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.form-field:nth-child(6) { /* Bus */
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.form-field:nth-child(7) { /* Number of Chairs */
+    grid-column: 1 / span 2; /* Span across both columns */
+    grid-row: 4;
+}
+
+/* General styling for form fields */
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-field input {
+    padding: 8px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.hours-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 1fr;
+    gap: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+    align-items: center;
+}
+.day-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.time-select {
+    display: flex;
+    gap: 5px;
 }
