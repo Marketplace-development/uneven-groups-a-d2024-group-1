@@ -4,6 +4,8 @@ from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 
+
+
 # Create a Blueprint for the main app
 main = Blueprint('main', __name__)
 
@@ -13,22 +15,28 @@ def home():
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
+    message = None
+    message_color = None  # Green for success, red for failure
+
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # Fetch the user by username (ensure user exists)
+        # Fetch the user by username
         user = User.query.filter_by(username=username).first()
 
         if user and check_password_hash(user.password_hash, password):
             login_user(user)
-            flash('Login Successful!', 'success')
-            return redirect(url_for('main.main_page'))
+            message = "Login Successful!"
+            message_color = "green"
+            return render_template('login.html', message=message, message_color=message_color)  # Show message before redirect
         else:
-            flash('Invalid username or password, please try again.', 'error')
-            return redirect(url_for('main.login'))
-        
+            message = "Login Failed."
+            message_color = "red"
+            return render_template('login.html', message=message, message_color=message_color)  # Show message if login failed
+
     return render_template('login.html')
+
 
 @main.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -58,7 +66,7 @@ def success():
     return render_template('success.html')
 
 @main.route('/main_page')
-@login_required
+#@login_required
 def main_page():
     return render_template('main_page.html')
 
@@ -102,9 +110,18 @@ def locations():
 @main.route('/reservations', methods=['GET', 'POST'])
 @login_required
 def reservations():
+    # Debugging current_user
+    print(f"Current User: {current_user}")
+    print(f"Is authenticated: {current_user.is_authenticated}")
+
+    if not current_user.is_authenticated:
+        print("User is not authenticated!")
+        return redirect(url_for('main.login'))  # Optional: Just in case
+    
     locations = Location.query.all()
     user_reservations = Reservation.query.filter_by(user_id=current_user.id).all()
     return render_template('reservations.html', locations=locations, reservations=user_reservations)
+
 
 @main.route('/make_reservation', methods=['POST'])
 @login_required
@@ -125,6 +142,8 @@ def make_reservation():
     flash('Reservation made successfully!', 'success')
     return redirect(url_for('main.reservations'))
 
+
+
 @main.route('/cancel_reservation/<int:reservation_id>', methods=['POST'])
 @login_required
 def cancel_reservation(reservation_id):
@@ -138,3 +157,14 @@ def cancel_reservation(reservation_id):
     db.session.commit()
     flash('Reservation canceled.', 'success')
     return redirect(url_for('main.reservations'))
+
+
+@main.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.login'))  # Redirect to login after logout
+
+@main.route('/upload_location', methods=['POST'])
+def upload_location():
+    # Logic for uploading location data goes here
+    return redirect(url_for('main.locations'))  # Redirect back to the locations page after the upload

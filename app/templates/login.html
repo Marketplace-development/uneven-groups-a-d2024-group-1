@@ -8,18 +8,45 @@
 <div class="login-signup-container" style="height: 350px">
     <h1 style="text-align: left;">Already have an account?</h1>
 
+    <!-- Display Login Status Message -->
+    {% if message %}
+        <div id="message" style="text-align: center; color: {{ message_color }}; font-size: 1.2em; margin-bottom: 20px;">
+            {{ message }}
+        </div>
+        {% if message_color == 'green' %}
+            <!-- Redirect after 2 seconds only if the message is green (successful login) -->
+            <script>
+                setTimeout(function() {
+                    window.location.href = "{{ url_for('main.main_page') }}"; // Redirect to the main page
+                }, 2000);  // 2000 ms = 2 seconds
+            </script>
+        {% endif %}
+    {% endif %}
+
+    <!-- Login Form -->
     <form action="{{ url_for('main.login') }}" method="post">
-        <!--Username-->
+        <!-- Username -->
         <label for="username">Username</label>
         <input type="text" id="username" name="username" placeholder="Enter your username" required>
 
-        <!--Password-->
+        <!-- Password -->
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        <div style="position: relative;">
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <button type="button" onclick="togglePassword()" style="position: absolute; right: 10px; top: 5px; background: none; border: none; cursor: pointer;">👁️</button>
+        </div>
+        <script>
+            function togglePassword() {
+                const passwordField = document.getElementById('password');
+                const type = passwordField.type === 'password' ? 'text' : 'password';
+                passwordField.type = type;
+            }
+        </script>
+
         <button type="submit" class="btn btn-black">Login</button>
     </form>
 
-    <!--No Account / Sign Up-->
+    <!-- No Account / Sign Up -->
     <div style="text-align: right; margin-top: 20px;">
         <span class="no-account">No account</span>
         <form action="{{ url_for('main.signup') }}" method="get" style="display: inline;">

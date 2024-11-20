@@ -1,6 +1,7 @@
 from . import db
 from datetime import datetime, timezone
 from flask_login import UserMixin
+from sqlalchemy.dialects.postgresql import TIMESTAMP
 
 # User model for authentication
 class User(UserMixin, db.Model):
