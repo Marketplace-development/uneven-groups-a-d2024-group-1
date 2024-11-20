@@ -73,37 +73,43 @@ def main_page():
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():
     if request.method == 'POST':
-        location = Location(
-            username=request.form.get("username"),
-            phone_number=request.form.get("phone_number"),
-            location_name=request.form.get("location_name"),
-            location_type=request.form.get("location_type"),
-            country=request.form.get("country"),
-            postal_code=request.form.get("postal_code"),
-            city=request.form.get("city"),
-            street=request.form.get("street"),
-            street_number=request.form.get("street_number"),
-            bus=request.form.get("bus"),
-            chairs=int(request.form.get("chairs")),
-            monday_open=request.form.get("monday_open"),
-            monday_close=request.form.get("monday_close"),
-            tuesday_open=request.form.get("tuesday_open"),
-            tuesday_close=request.form.get("tuesday_close"),
-            wednesday_open=request.form.get("wednesday_open"),
-            wednesday_close=request.form.get("wednesday_close"),
-            thursday_open=request.form.get("thursday_open"),
-            thursday_close=request.form.get("thursday_close"),
-            friday_open=request.form.get("friday_open"),
-            friday_close=request.form.get("friday_close"),
-            saturday_open=request.form.get("saturday_open"),
-            saturday_close=request.form.get("saturday_close"),
-            sunday_open=request.form.get("sunday_open"),
-            sunday_close=request.form.get("sunday_close"),
-            location_picture=request.form.get("location_picture")
-        )
-        db.session.add(location)
+        username = request.form.get("username"),
+        phone_number = request.form.get("phone_number"),
+        location_name = request.form.get("location_name"),
+        location_type = request.form.get("location_type"),
+        country = request.form.get("country"),
+        postal_code = request.form.get("postal_code"),
+        city = request.form.get("city"),
+        street = request.form.get("street"),
+        street_number = request.form.get("street_number"),
+        bus = request.form.get("bus"),
+        chairs = int(request.form.get("chairs")),
+        monday_open = request.form.get("monday_open"),
+        monday_close = request.form.get("monday_close"),
+        tuesday_open = request.form.get("tuesday_open"),
+        tuesday_close = request.form.get("tuesday_close"),
+        wednesday_open = request.form.get("wednesday_open"),
+        wednesday_close = request.form.get("wednesday_close"),
+        thursday_open = request.form.get("thursday_open"),
+        thursday_close = request.form.get("thursday_close"),
+        friday_open = request.form.get("friday_open"),
+        friday_close = request.form.get("friday_close"),
+        saturday_open = request.form.get("saturday_open"),
+        saturday_close = request.form.get("saturday_close"),
+        sunday_open = request.form.get("sunday_open"),
+        sunday_close = request.form.get("sunday_close"),
+        location_picture = request.form.get("location_picture")
+
+        new_location = Location(username=username, phone_number=phone_number, location_name=location_name, location_type=location_type,
+                                country=country, postal_code=postal_code, city=city, street=street, street_number=street_number, bus=bus,
+                                chairs=chairs, monday_open=monday_open, monday_close=monday_close, tuesday_open=tuesday_open, tuesday_close=tuesday_close,
+                                wednesday_open=wednesday_open, wednesday_close=wednesday_close, thursday_open=thursday_open, thursday_close=thursday_close,
+                                friday_open=friday_open, friday_close=friday_close, saturday_open=saturday_open, saturday_close=saturday_close,
+                                sunday_open=sunday_open, sunday_close=sunday_close, location_picture=location_picture)
+
+        db.session.add(new_location)
         db.session.commit()
-        return redirect(url_for('main.success'))
+        return redirect(url_for('main.upload_location'))
 
     return render_template('locations.html')
 
@@ -164,7 +170,7 @@ def logout():
     logout_user()
     return redirect(url_for('main.login'))  # Redirect to login after logout
 
-@main.route('/upload_location', methods=['POST'])
+@main.route('/upload_location', methods=['GET','POST'])
 def upload_location():
     # Logic for uploading location data goes here
-    return redirect(url_for('main.locations'))  # Redirect back to the locations page after the upload
+    return render_template('upload_location.html')  # Redirect back to the locations page after the upload
