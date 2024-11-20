@@ -1,3 +1,11 @@
+#Display all available locations where users can reserve a seat.
+#Allow users to filter by location type (e.g., cafe, library).
+#Include a form to select a date and time for reservations.
+#Show existing reservations for the logged-in user.#
+#
+#
+#
+#
 {% extends 'base.html' %}
 
 {% block head %}
@@ -5,5 +13,51 @@
 {% endblock %}
 
 {% block body %}
-<h1>Here will you be able to make a reservation</h1>
+<div class="reservation-container" style="text-align: center; margin: 20px;">
+    <h1 style="font-size: 2.5em;">Make a Reservation</h1>
+    <p style="color: gray; font-size: 1.2em;">Choose a location, date, and time to reserve your study spot.</p>
+
+    <!-- Form for making a reservation -->
+    <form action="{{ url_for('main.make_reservation') }}" method="POST" style="max-width: 600px; margin: auto; text-align: left;">
+        <!-- Location Dropdown -->
+        <label for="location">Choose Location:</label>
+        <select name="location_id" id="location" required style="width: 100%; padding: 10px; margin-bottom: 15px;">
+            <option value="" disabled selected>-- Select Location --</option>
+            {% for location in locations %}
+            <option value="{{ location.id }}">{{ location.name }} - {{ location.type }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Date Input -->
+        <label for="date">Choose Date:</label>
+        <input type="date" name="date" id="date" required style="width: 100%; padding: 10px; margin-bottom: 15px;">
+
+        <!-- Time Input -->
+        <label for="time">Choose Time:</label>
+        <input type="time" name="time" id="time" required style="width: 100%; padding: 10px; margin-bottom: 15px;">
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-black" style="width: 100%; padding: 10px;">Reserve</button>
+    </form>
+</div>
+
+<!-- Display User's Existing Reservations -->
+<div class="user-reservations" style="margin: 40px auto; max-width: 800px; text-align: left;">
+    <h2 style="font-size: 2em; text-align: center;">Your Reservations</h2>
+    {% if reservations %}
+        <ul style="list-style: none; padding: 0;">
+            {% for reservation in reservations %}
+            <li style="margin: 10px 0; background: #f9f9f9; padding: 10px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <strong>{{ reservation.location.name }}</strong> <br>
+                {{ reservation.date }} at {{ reservation.time }}
+                <form action="{{ url_for('main.cancel_reservation', reservation_id=reservation.id) }}" method="POST" style="display: inline;">
+                    <button type="submit" class="btn btn-transparant" style="color: red; font-size: 0.9em;">Cancel</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="text-align: center; color: gray;">You don't have any reservations yet.</p>
+    {% endif %}
+</div>
 {% endblock %}
