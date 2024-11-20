@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from .models import User, Location, Reservation
+from datetime import datetime
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
@@ -111,6 +112,7 @@ def locations():
         db.session.commit()
         return redirect(url_for('main.upload_location'))
 
+    locations = Location.query.all()
     return render_template('locations.html')
 
 @main.route('/reservations', methods=['GET', 'POST'])
@@ -125,6 +127,35 @@ def reservations():
         return redirect(url_for('main.login'))  # Optional: Just in case
     
     locations = Location.query.all()
+
+    if request.method == 'POST':
+        location_id = request.form.get('location_id')
+        reservation_time_str = request.form.get('reservation_time')
+        reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%dT%H:%M')
+        number_of_guests = int(request.form.get('number_of_guests'))
+        reservation_date = reservation_time.date()  # Extracts just the date part (e.g., 2024-11-20)
+        reservation_time_only = reservation_time.time()
+
+        # Create a new reservation (this assumes the data validation is done already)
+        new_reservation = Reservation(
+            user_id=current_user.id,
+            location_id=location_id,
+            date=reservation_date,
+            time=reservation_time_only,
+            reservation_time=reservation_time,
+            number_of_guests=number_of_guests
+        )
+
+        # Save the new reservation to the database
+        db.session.add(new_reservation)
+        db.session.commit()
+
+        # Flash a success message
+        flash('Your reservation has been successfully created!', 'success')
+
+        # Redirect to the 'reservation_successful' page after successful reservation
+        return redirect(url_for('main.reservation_successful'))
+
     user_reservations = Reservation.query.filter_by(user_id=current_user.id).all()
     return render_template('reservations.html', locations=locations, reservations=user_reservations)
 
@@ -146,7 +177,7 @@ def make_reservation():
     db.session.commit()
 
     flash('Reservation made successfully!', 'success')
-    return redirect(url_for('main.reservations'))
+    return redirect(url_for('main.reservation_successful'))
 
 
 
@@ -174,3 +205,9 @@ def logout():
 def upload_location():
     # Logic for uploading location data goes here
     return render_template('upload_location.html')  # Redirect back to the locations page after the upload
+
+
+@main.route('/reservation_successful', methods=['GET','POST'])
+def reservation_successful():
+    # Logic for uploading location data goes here
+    return render_template('reservation_successful.html')  # Redirect back to the locations page after the upload

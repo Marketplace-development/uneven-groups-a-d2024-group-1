@@ -58,7 +58,8 @@ p {
 form input[type="text"],
 form input[type="number"],
 form select,
-form input[type="file"] {
+form input[type="file"],
+form input[type="datetime-local"] {
     width: 100%;
     padding: 12px;
     font-size: 1.1em;
@@ -69,10 +70,10 @@ form input[type="file"] {
     background-color: #f9f9f9;
 }
 
-form label {
+.form-label {
     font-weight: bold;
     color: black;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     display: block;
 }
 

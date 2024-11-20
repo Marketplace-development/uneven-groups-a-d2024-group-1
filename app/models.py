@@ -5,6 +5,8 @@ from sqlalchemy.dialects.postgresql import TIMESTAMP
 
 # User model for authentication
 class User(UserMixin, db.Model):
+    __tablename__ = 'user'
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
@@ -50,17 +52,21 @@ class Location(db.Model):
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     def __repr__(self):
-        return f"<Location {self.location_name} ({self.city})>"
+        return f"<Location {self.location_name} ({self.location_type})>"
 
 # Reservation model to store reservations
 class Reservation(db.Model):
+    __tablename__ = "reservation"
+
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
+    reservation_time = db.Column(db.DateTime, nullable=False)
+    number_of_guests = db.Column(db.Integer, nullable=False)
     location = db.relationship('Location', backref='reservations')
     user = db.relationship('User', backref='reservations')
 
     def __repr__(self):
-        return f"<Reservation {self.date} at {self.time} for User {self.user_id}>"
+        return f"<Reservation {self.id} by User {self.user_id} at Location {self.location_id} on {self.reservation_time}>"
