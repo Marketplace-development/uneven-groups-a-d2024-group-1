@@ -24,16 +24,16 @@
         <!--Make a Reservation-->
         <div class="option-container" style="text-align: center; width: 250px;">
             <form action="{{ url_for('main.reservations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-black" style="width: 100%; font-size: 1.2em; padding: 10px 20px">Make a Reservation</button>
+                <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Consult or Make<br>your Reservation</button>
             </form>
             <img src="{{ url_for('static', filename='images/reservation.JPG') }}" alt="Reservation Image" style="width: 100%; margin-top: 20px;">
-            <p style="font-size: 1.3em; color: grey; margin-top: 5px;"> Book a seat at a<br>location of your choice.</p>
+            <p style="font-size: 1.3em; color: grey; margin-top: 5px;"> View you reservations<br>or book a seat at a<br>location of your choice.</p>
         </div>
 
         <!--Upload Your Location-->
         <div class="option-container" style="text-align: center; width: 250px;">
             <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-transparant" style="width: 100%; font-size: 1.2em; padding: 10px 20px">Upload Your Location</button>
+                <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Upload Your<br>Location</button>
             </form>
             <img src="{{ url_for('static', filename='images/location.JPG') }}" alt="Location Image" style="width: 100%; margin-top: 20px">
             <p style="font-size: 1.3em; color: grey; margin-top: 20px;">Upload your own location<br>for students to visit.</p>

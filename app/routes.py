@@ -159,28 +159,6 @@ def reservations():
     user_reservations = Reservation.query.filter_by(user_id=current_user.id).all()
     return render_template('reservations.html', locations=locations, reservations=user_reservations)
 
-
-@main.route('/make_reservation', methods=['POST'])
-@login_required
-def make_reservation():
-    location_id = request.form['location_id']
-    date = request.form['date']
-    time = request.form['time']
-
-    existing = Reservation.query.filter_by(location_id=location_id, date=date, time=time).first()
-    if existing:
-        flash('This time slot is already reserved!', 'error')
-        return redirect(url_for('main.reservations'))
-
-    new_reservation = Reservation(user_id=current_user.id, location_id=location_id, date=date, time=time)
-    db.session.add(new_reservation)
-    db.session.commit()
-
-    flash('Reservation made successfully!', 'success')
-    return redirect(url_for('main.reservation_successful'))
-
-
-
 @main.route('/cancel_reservation/<int:reservation_id>', methods=['POST'])
 @login_required
 def cancel_reservation(reservation_id):
