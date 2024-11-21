@@ -9,25 +9,21 @@
     <!-- Buttons in the right upper corner -->
     <div class="button-container" style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0px; z-index: 999;">
         <form action="{{ url_for('main.main_page') }}" method="get" class="inline-form">
-            <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
-        </form>
-        <form action="{{ url_for('main.reservations') }}" method="get" class="inline-form">
-            <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Make a Reservation</button>
+            <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
         </form>
         <form action="{{ url_for('main.home') }}" method="get" class="inline-form">
             <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Logout</button>
         </form>
     </div>
-    
 
+    <!-- Logo -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+    </div>
+    
       <!-- Page title and subtitle -->
       <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Upload Your Location</h1>
       <p style="text-align: center; color: grey; font-size: 1.5em;">Quick and Easy</p>
-
-     <!-- Image -->
-      <div style="text-align: center; margin-top: 20px;">
-        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Location Image" class="image">
-      </div>
 
       <!-- Questionnaire title -->
      <h2 style="text-align: center; margin-top: 30px; font-size: 2em;">Please fill out the following questions</h2>
@@ -53,12 +49,6 @@
                 <input type="text" id="username" name="username" value="{{ current_user.username }}" required readonly>
             </div>
         
-            <!-- Phone Number -->
-            <div class="form-field">
-                <label for="phone_number">Phone Number</label>
-                <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" required>
-            </div>
-        
             <!-- Location Name -->
             <div class="form-field">
                 <label for="location_name">Location Name</label>
@@ -70,14 +60,21 @@
                 <label for="location_type">Type of Location</label>
                 <select id="location_type" name="location_type" required>
                     <option value="" disabled selected>Choose your type of location</option>
-                    <option value="library">Library</option>
-                    <option value="cafe">Cafe</option>
-                    <option value="coffeehouse">Coffeehouse</option>
-                    <option value="tearoom">Tearoom</option>
-                    <option value="restaurant">Restaurant</option>
-                    <option value="other">Other</option>
+                    <option value="Library">Library</option>
+                    <option value="Cafe">Cafe</option>
+                    <option value="Coffeehouse">Coffeehouse</option>
+                    <option value="Tearoom">Tearoom</option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Other">Other</option>
                 </select>
             </div>
+
+            <!-- Number of Chairs Available -->
+            <div class="form-field">
+                <label for="chairs">Number of Chairs Available</label>
+                <input type="number" id="chairs" name="chairs" placeholder="Enter the number of chairs" min="1" required>
+            </div>
+            
         </div>
         
 
@@ -116,18 +113,7 @@
                 <label for="street_number">Street Number</label>
                 <input type="text" id="street_number" name="street_number" placeholder="Enter your street number" required>
             </div>
-        
-            <!-- Bus (Optional) -->
-            <div class="form-field">
-                <label for="bus">Bus</label>
-                <input type="text" id="bus" name="bus" placeholder="Enter bus (optional)">
-            </div>
-        
-            <!-- Number of Chairs Available -->
-            <div class="form-field">
-                <label for="chairs">Number of Chairs Available</label>
-                <input type="number" id="chairs" name="chairs" placeholder="Enter the number of chairs available"min="1" required>
-            </div>
+
         </div>
         
 

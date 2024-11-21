@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Reservations</title>
+{% endblock %}
+
+{% block body %}
+<div class="locations-container">
+    <!-- Buttons in the right upper corner -->
+    <div class="button-container" style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0px; z-index: 999;">
+        <form action="{{ url_for('main.main_page') }}" method="get" class="inline-form">
+            <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
+        </form>
+        <form action="{{ url_for('main.home') }}" method="get" class="inline-form">
+            <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Logout</button>
+        </form>
+    </div>
+
+    <!-- Logo -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+    </div>
+
+    <!-- Page title and subtitle -->
+    <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Your Current Reservations</h1>
+    <p style="text-align: center; color: grey; font-size: 1.5em;">Check or cancel your reservations</p>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Existing Reservations -->
+    {% if reservations %}
+        <div class="location-grid">
+            {% for reservation in reservations %}
+            <div class="location-card">
+                <!-- Location Name -->
+                <h3 style="font-size: 1.5em;">{{ reservation.location.location_name }}</h3>
+                
+                <!-- Location Picture -->
+                <img src="{{ url_for('static', filename='images/' ~ reservation.location.location_picture ~ '.jpg') }}" alt="Location Picture" style="height: 200px;">
+                
+                <!-- Location Type -->
+                <p><strong>Type:</strong> {{ reservation.location.location_type }}</p>
+                
+                <!-- Address -->
+                <p><strong>Address:</strong>
+                    {{ reservation.location.street }} {{ reservation.location.street_number }}, 
+                    {{ reservation.location.postal_code }} {{ reservation.location.city }}, 
+                    {{ reservation.location.country }}
+                </p>
+                
+                <!-- Host's Name -->
+                <p><strong>Host:</strong> {{ reservation.location.username }}</p>
+                
+                <!-- Reservation Date -->
+                <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
+                
+                <!-- Reservation Time -->
+                <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
+
+                <!-- Study Time -->
+                <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
+                
+                <!-- Number of Guests -->
+                <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
+
+                <!-- Cancel Reservation Button (currently non-functional) -->
+                <form action="#" method="post">
+                    <button type="submit" class="btn-cancel">Cancel Reservation</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no reservations yet.</p>
+    {% endif %}
+{% endblock %}

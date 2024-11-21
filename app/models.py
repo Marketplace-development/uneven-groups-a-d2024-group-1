@@ -9,8 +9,6 @@ class User(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
-    email = db.Column(db.String(120), nullable=False, unique=True)
-    student_id = db.Column(db.String(50), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)  # This column
 
@@ -23,7 +21,6 @@ class Location(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False)  # Location owner's username
-    phone_number = db.Column(db.String(15), nullable=False)
     location_name = db.Column(db.String(100), nullable=False)
     location_type = db.Column(db.String(50), nullable=False)  # e.g., cafe, library
     country = db.Column(db.String(50), nullable=False)
@@ -31,23 +28,22 @@ class Location(db.Model):
     city = db.Column(db.String(50), nullable=False)
     street = db.Column(db.String(100), nullable=False)
     street_number = db.Column(db.String(10), nullable=False)
-    bus = db.Column(db.String(10), nullable=True)  # Optional
     chairs = db.Column(db.Integer, nullable=False)  # Number of available chairs
     # Opening hours for each day of the week
-    monday_open = db.Column(db.String(5), nullable=True)
-    monday_close = db.Column(db.String(5), nullable=True)
-    tuesday_open = db.Column(db.String(5), nullable=True)
-    tuesday_close = db.Column(db.String(5), nullable=True)
-    wednesday_open = db.Column(db.String(5), nullable=True)
-    wednesday_close = db.Column(db.String(5), nullable=True)
-    thursday_open = db.Column(db.String(5), nullable=True)
-    thursday_close = db.Column(db.String(5), nullable=True)
-    friday_open = db.Column(db.String(5), nullable=True)
-    friday_close = db.Column(db.String(5), nullable=True)
-    saturday_open = db.Column(db.String(5), nullable=True)
-    saturday_close = db.Column(db.String(5), nullable=True)
-    sunday_open = db.Column(db.String(5), nullable=True)
-    sunday_close = db.Column(db.String(5), nullable=True)
+    monday_open = db.Column(db.String(10), nullable=True)
+    monday_close = db.Column(db.String(10), nullable=True)
+    tuesday_open = db.Column(db.String(10), nullable=True)
+    tuesday_close = db.Column(db.String(10), nullable=True)
+    wednesday_open = db.Column(db.String(10), nullable=True)
+    wednesday_close = db.Column(db.String(10), nullable=True)
+    thursday_open = db.Column(db.String(10), nullable=True)
+    thursday_close = db.Column(db.String(10), nullable=True)
+    friday_open = db.Column(db.String(10), nullable=True)
+    friday_close = db.Column(db.String(10), nullable=True)
+    saturday_open = db.Column(db.String(10), nullable=True)
+    saturday_close = db.Column(db.String(10), nullable=True)
+    sunday_open = db.Column(db.String(10), nullable=True)
+    sunday_close = db.Column(db.String(10), nullable=True)
     location_picture = db.Column(db.String(200), nullable=True)  # Optional URL to the uploaded image
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -60,11 +56,15 @@ class Reservation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    username = db.Column(db.String(100), nullable=False)        # Student's username
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)
     reservation_time = db.Column(db.DateTime, nullable=False)
     number_of_guests = db.Column(db.Integer, nullable=False)
+    study_time = db.Column(db.Integer, nullable=False)
+
+    # Relationships
     location = db.relationship('Location', backref='reservations')
     user = db.relationship('User', backref='reservations')
 

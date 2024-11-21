@@ -43,8 +43,6 @@ def login():
 def signup():
     if request.method == 'POST':
         username = request.form.get('username')
-        email = request.form.get('email')
-        student_id = request.form.get('studentID')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
 
@@ -53,7 +51,7 @@ def signup():
             return redirect(url_for('main.signup'))
 
         password_hash = generate_password_hash(password, method='pbkdf2:sha256')
-        new_user = User(username=username, email=email, student_id=student_id, password_hash=password_hash)
+        new_user = User(username=username, password_hash=password_hash)
 
         db.session.add(new_user)
         db.session.commit()
@@ -74,35 +72,58 @@ def main_page():
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():
     if request.method == 'POST':
-        username = request.form.get("username"),
-        phone_number = request.form.get("phone_number"),
-        location_name = request.form.get("location_name"),
-        location_type = request.form.get("location_type"),
-        country = request.form.get("country"),
-        postal_code = request.form.get("postal_code"),
-        city = request.form.get("city"),
-        street = request.form.get("street"),
-        street_number = request.form.get("street_number"),
-        bus = request.form.get("bus"),
-        chairs = int(request.form.get("chairs")),
-        monday_open = request.form.get("monday_open"),
-        monday_close = request.form.get("monday_close"),
-        tuesday_open = request.form.get("tuesday_open"),
-        tuesday_close = request.form.get("tuesday_close"),
-        wednesday_open = request.form.get("wednesday_open"),
-        wednesday_close = request.form.get("wednesday_close"),
-        thursday_open = request.form.get("thursday_open"),
-        thursday_close = request.form.get("thursday_close"),
-        friday_open = request.form.get("friday_open"),
-        friday_close = request.form.get("friday_close"),
-        saturday_open = request.form.get("saturday_open"),
-        saturday_close = request.form.get("saturday_close"),
-        sunday_open = request.form.get("sunday_open"),
-        sunday_close = request.form.get("sunday_close"),
+        username = request.form.get("username")
+        location_name = request.form.get("location_name")
+        location_type = request.form.get("location_type")
+        country = request.form.get("country")
+        postal_code = request.form.get("postal_code")
+        city = request.form.get("city")
+        street = request.form.get("street")
+        street_number = request.form.get("street_number")
+        chairs = int(request.form.get("chairs"))
+
+        def format_time(hour, minute):
+            """Formats hour and minute into 'HH:mm'. Returns None for invalid/missing values."""
+            if not hour or not minute:  # Check if either value is missing
+                return None
+            try:
+                # Convert hour and minute to integers
+                hour = int(hour)
+                minute = int(minute)
+                # Validate ranges (hour: 0-23, minute: 0-59)
+                if 0 <= hour < 24 and 0 <= minute < 60:
+                    return f"{hour:02}:{minute:02}"  # Return formatted time
+            except ValueError:
+                pass  # If conversion fails, return None
+            return None
+
+        
+        # Use helper function to format times
+        monday_open = format_time(request.form.get('monday_open'), request.form.get('monday_open_min'))
+        monday_close = format_time(request.form.get('monday_close'), request.form.get('monday_close_min'))
+        tuesday_open = format_time(request.form.get('tuesday_open'), request.form.get('tuesday_open_min'))
+        tuesday_close = format_time(request.form.get('tuesday_close'), request.form.get('tuesday_close_min'))
+        wednesday_open = format_time(request.form.get('wednesday_open'), request.form.get('wednesday_open_min'))
+        wednesday_close = format_time(request.form.get('wednesday_close'), request.form.get('wednesday_close_min'))
+        thursday_open = format_time(request.form.get('thursday_open'), request.form.get('thursday_open_min'))
+        thursday_close = format_time(request.form.get('thursday_close'), request.form.get('thursday_close_min'))
+        friday_open = format_time(request.form.get('friday_open'), request.form.get('friday_open_min'))
+        friday_close = format_time(request.form.get('friday_close'), request.form.get('friday_close_min'))
+        saturday_open = format_time(request.form.get('saturday_open'), request.form.get('saturday_open_min'))
+        saturday_close = format_time(request.form.get('saturday_close'), request.form.get('saturday_close_min'))
+        sunday_open = format_time(request.form.get('sunday_open'), request.form.get('sunday_open_min'))
+        sunday_close = format_time(request.form.get('sunday_close'), request.form.get('sunday_close_min'))
+
         location_picture = request.form.get("location_picture")
 
-        new_location = Location(username=username, phone_number=phone_number, location_name=location_name, location_type=location_type,
-                                country=country, postal_code=postal_code, city=city, street=street, street_number=street_number, bus=bus,
+        # Check if the user already has a location
+        existing_location = Location.query.filter_by(username=username).first()
+        if existing_location:
+            flash("You can only upload one location. You already uploaded a location.", "danger")
+            return redirect(url_for('main.locations'))
+
+        new_location = Location(username=username, location_name=location_name, location_type=location_type,
+                                country=country, postal_code=postal_code, city=city, street=street, street_number=street_number,
                                 chairs=chairs, monday_open=monday_open, monday_close=monday_close, tuesday_open=tuesday_open, tuesday_close=tuesday_close,
                                 wednesday_open=wednesday_open, wednesday_close=wednesday_close, thursday_open=thursday_open, thursday_close=thursday_close,
                                 friday_open=friday_open, friday_close=friday_close, saturday_open=saturday_open, saturday_close=saturday_close,
@@ -110,6 +131,8 @@ def locations():
 
         db.session.add(new_location)
         db.session.commit()
+
+        flash("Your location has been successfully added.", "success")
         return redirect(url_for('main.upload_location'))
 
     locations = Location.query.all()
@@ -130,20 +153,28 @@ def reservations():
 
     if request.method == 'POST':
         location_id = request.form.get('location_id')
-        reservation_time_str = request.form.get('reservation_time')
-        reservation_time = datetime.strptime(reservation_time_str, '%Y-%m-%dT%H:%M')
-        number_of_guests = int(request.form.get('number_of_guests'))
-        reservation_date = reservation_time.date()  # Extracts just the date part (e.g., 2024-11-20)
-        reservation_time_only = reservation_time.time()
+        username = request.form.get('username')
+        reservation_time = request.form.get('reservation_time')
+        number_of_guests = request.form.get('number_of_guests')
+        study_time = request.form.get('study_time')
 
-        # Create a new reservation (this assumes the data validation is done already)
+        # Get the location name from the selected location
+        selected_location = Location.query.get(location_id)
+        location_name = selected_location.location_name  # Retrieve the location name from the selected location
+
+        # Parse the reservation_time as a datetime object
+        reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
+
+        # Create a new reservation
         new_reservation = Reservation(
-            user_id=current_user.id,
+            user_id=current_user.id,  # Assuming `current_user` is available
+            username = username,
             location_id=location_id,
-            date=reservation_date,
-            time=reservation_time_only,
-            reservation_time=reservation_time,
-            number_of_guests=number_of_guests
+            reservation_time=reservation_datetime,
+            number_of_guests=int(number_of_guests),
+            study_time=int(study_time),
+            date=reservation_datetime.date(),  # Extract date from datetime
+            time=reservation_datetime.time(),  # Extract time from datetime
         )
 
         # Save the new reservation to the database
@@ -156,7 +187,10 @@ def reservations():
         # Redirect to the 'reservation_successful' page after successful reservation
         return redirect(url_for('main.reservation_successful'))
 
+    # Retrieve all the current reservations for the user
     user_reservations = Reservation.query.filter_by(user_id=current_user.id).all()
+
+    # Render the reservation form with locations and current user reservations
     return render_template('reservations.html', locations=locations, reservations=user_reservations)
 
 @main.route('/cancel_reservation/<int:reservation_id>', methods=['POST'])
@@ -189,3 +223,32 @@ def upload_location():
 def reservation_successful():
     # Logic for uploading location data goes here
     return render_template('reservation_successful.html')  # Redirect back to the locations page after the upload
+
+@main.route('/current_reservations', methods=['GET','POST'])
+@login_required
+def current_reservations():
+    # Retrieve the current user's reservations
+    reservations = Reservation.query.filter_by(user_id=current_user.id).all()
+    
+    # Debugging: Print current user and reservations
+    print(f"Current User: {current_user.username}")
+    print(f"Reservations: {reservations}")
+
+    return render_template('current_reservations.html', reservations=reservations)
+
+@main.route('/location_bookings', methods=['GET','POST'])
+@login_required
+def location_bookings():
+    # Fetch the location of the current logged-in user
+    location = Location.query.filter_by(username=current_user.username).first()
+
+    if not location:
+        flash('You do not own any locations yet.', 'danger')
+        return redirect(url_for('main.main_page'))
+
+    # Get the reservations for this location
+    reservations = Reservation.query.filter_by(location_id=location.id).all()
+
+    # Render the template, passing the location and reservations
+    return render_template('location_bookings.html', location=location, reservations=reservations)
+

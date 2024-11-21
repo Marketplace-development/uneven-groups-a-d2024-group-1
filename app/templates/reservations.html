@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Reservations</title>
+<title>Make a Reservation</title>
 {% endblock %}
 
 {% block body %}
@@ -9,107 +9,144 @@
     <!-- Buttons in the right upper corner -->
     <div class="button-container" style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0px; z-index: 999;">
         <form action="{{ url_for('main.main_page') }}" method="get" class="inline-form">
-            <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
-        </form>
-        <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
-            <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Upload your Location</button>
+            <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
         </form>
         <form action="{{ url_for('main.home') }}" method="get" class="inline-form">
             <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Logout</button>
         </form>
     </div>
 
+    <!-- Logo -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+    </div>
+
     <!-- Page title and subtitle -->
-    <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Your Reservations</h1>
-    <p style="text-align: center; color: grey; font-size: 1.5em;">Check your reservation, or create a new one</p>
+    <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Make a Reservation</h1>
+    <p style="text-align: center; color: grey; font-size: 1.5em;">Create a new reservation</p>
 
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
             <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
         {% endif %}
     {% endwith %}
 
-    <!-- Existing Reservations -->
-    <h2>Your Current Reservations</h2>
-    {% if reservations %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Location Picture</th>
-                    <th>Location Name</th>
-                    <th>Location Type</th>
-                    <th>Reservation Date</th>
-                    <th>Reservation Time</th>
-                    <th>Number of Guests</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reservation in reservations %}
-                    <tr>
-                        <!-- Location Picture -->
-                        <td>
-                            {% if reservation.location.location_picture %}
-                                <img src="{{ url_for('static', filename='images/' ~ reservation.location.location_picture ~ '.jpg') }}"  
-                                    style="width: 100px; height: auto;">
-                            {% else %}
-                                <span>No Picture</span>
-                            {% endif %}
-                        </td>
-                        
-                        <!-- Location Name -->
-                        <td>{{ reservation.location.location_name }}</td>
-                        
-                        <!-- Location Type -->
-                        <td>{{ reservation.location.location_type }}</td>
-                        
-                        <!-- Reservation Date -->
-                        <td>{{ reservation.reservation_time.strftime('%Y-%m-%d') }}</td>
-                        
-                        <!-- Reservation Time -->
-                        <td>{{ reservation.reservation_time.strftime('%H:%M') }}</td>
-                        
-                        <!-- Number of Guests -->
-                        <td>{{ reservation.number_of_guests }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>You have no reservations yet.</p>
-    {% endif %}
+    <br>
 
     <!-- New Reservation Form -->
-    <h2>Create a New Reservation</h2>
-    <form method="POST" action="{{ url_for('main.reservations') }}">
-        <div class="form-field">
-            <label for="location" class="form-label">Choose Location:</label>
-            <select name="location_id" id="location" class="form-select" required>
-                <option value="" disabled selected>-- Select Location --</option>
-                {% for location in locations %}
-                    <option value="{{ location.id }}">{{ location.location_name }} - {{ location.location_type }}</option>
-                {% endfor %}
-            </select>
-        </div>
+    <div class="form-wrapper">
+        <form method="POST" action="{{ url_for('main.reservations') }}">
+            <h3>Select a Location</h3>
 
-        <div class="form-field">
-            <label for="reservation_time">Reservation Time:</label>
-            <input type="datetime-local" name="reservation_time" id="reservation_time" required>
-        </div>
+            <!-- Check if the locations list is empty -->
+            {% if locations|length == 0 %}
+            <p style="font-size: 1.2em; color: #888; text-align: center; margin-top: 20px;">
+                There are no locations available at the moment.
+            </p>
+            {% else %}
+                <div class="location-grid">
+                    {% for location in locations %}
+                    <label>
+                        <!-- Radio button for selecting a location -->
+                        <input type="radio" name="location_id" value="{{ location.id }}" class="location-card-input" {% if location.id == selected_location_id %} checked {% endif %} required>
+                        <div class="location-card">
+                            <h3 style="font-size: 1.5em">{{ location.location_name }}</h3>
+                            <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Image of {{ location.location_name }}">
+                            <p><strong>Type:</strong> {{ location.location_type }}</p>
+                            <p><strong>Address:</strong>
+                                {{ location.street }} {{ location.street_number }}, 
+                                {{ location.postal_code }} {{ location.city }}, 
+                                {{ location.country }}
+                            </p>
 
-        <div class="form-field">
-            <label for="number_of_guests">Number of Guests:</label>
-            <input type="number" id="number_of_guests" name="number_of_guests" placeholder="Enter the number of guests" min="1" required>
-        </div>
+                            <p><strong>Opening Hours:</strong></p>
+                            <ul style="list-style-type: none; padding: 0; margin-top: 0;">
+                                {% if location.monday_open and location.monday_close %}
+                                    <li><strong>Monday:</strong> {{ location.monday_open }}h - {{ location.monday_close }}h</li>
+                                {% else %}
+                                    <li><strong>Monday:</strong> Closed</li>
+                                {% endif %}
 
-        <div class="form-group">
-            <button type="submit" class="btn btn-black">Book Your Reservation</button>
-         </div>
-    </form>
+                                {% if location.tuesday_open and location.tuesday_close %}
+                                    <li><strong>Tuesday:</strong> {{ location.tuesday_open }}h - {{ location.tuesday_close }}h</li>
+                                {% else %}
+                                    <li><strong>Tuesday:</strong> Closed</li>
+                                {% endif %}
+
+                                {% if location.wednesday_open and location.wednesday_close %}
+                                    <li><strong>Wednesday:</strong> {{ location.wednesday_open }}h - {{ location.wednesday_close }}h</li>
+                                {% else %}
+                                    <li><strong>Wednesday:</strong> Closed</li>
+                                {% endif %}
+
+                                {% if location.thursday_open and location.thursday_close %}
+                                    <li><strong>Thursday:</strong> {{ location.thursday_open }}h - {{ location.thursday_close }}h</li>
+                                {% else %}
+                                    <li><strong>Thursday:</strong> Closed</li>
+                                {% endif %}
+
+                                {% if location.friday_open and location.friday_close %}
+                                    <li><strong>Friday:</strong> {{ location.friday_open }}h - {{ location.friday_close }}h</li>
+                                {% else %}
+                                    <li><strong>Friday:</strong> Closed</li>
+                                {% endif %}
+
+                                {% if location.saturday_open and location.saturday_close %}
+                                    <li><strong>Saturday:</strong> {{ location.saturday_open }}h - {{ location.saturday_close }}h</li>
+                                {% else %}
+                                    <li><strong>Saturday:</strong> Closed</li>
+                                {% endif %}
+
+                                {% if location.sunday_open and location.sunday_close %}
+                                    <li><strong>Sunday:</strong> {{ location.sunday_open }}h - {{ location.sunday_close }}h</li>
+                                {% else %}
+                                    <li><strong>Sunday:</strong> Closed</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <br>
+                
+                <div class="reservation-form-grid">
+                    <!-- Username -->
+                    <div class="form-field">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" value="{{ current_user.username }}" required readonly>
+                    </div>
+            
+                    <!-- Number of Guests -->
+                    <div class="form-field">
+                        <label for="number_of_guests">Number of Guests:</label>
+                        <input type="number" id="number_of_guests" name="number_of_guests" placeholder="Enter the number of guests" min="1" required>
+                    </div>
+            
+                    <!-- Reservation Time -->
+                    <div class="form-field">
+                        <label for="reservation_time">Reservation Time:</label>
+                        <input type="datetime-local" name="reservation_time" id="reservation_time" required>
+                    </div>
+            
+                    <!-- Study Time -->
+                    <div class="form-field">
+                        <label for="study_time">Study Time (in minutes):</label>
+                        <input type="number" name="study_time" id="study_time" placeholder="Enter study time in minutes" min="30" required>
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <button type="submit" class="btn btn-black">Book Your Reservation</button>
+                </div>
+            {% endif %}
+        </form>
+    </div>
 </div>
 {% endblock %}
