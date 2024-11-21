@@ -41,8 +41,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Reservation ID</th>
-                    <th>Location</th>
+                    <th>Location Picture</th>
+                    <th>Location Name</th>
+                    <th>Location Type</th>
+                    <th>Reservation Date</th>
                     <th>Reservation Time</th>
                     <th>Number of Guests</th>
                 </tr>
@@ -50,9 +52,29 @@
             <tbody>
                 {% for reservation in reservations %}
                     <tr>
-                        <td>{{ reservation.id }}</td>
-                        <td>{{ reservation.location.location_name }} - {{ reservation.location.location_type }}</td>
-                        <td>{{ reservation.reservation_time.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <!-- Location Picture -->
+                        <td>
+                            {% if reservation.location.location_picture %}
+                                <img src="{{ url_for('static', filename='images/' ~ reservation.location.location_picture ~ '.jpg') }}"  
+                                    style="width: 100px; height: auto;">
+                            {% else %}
+                                <span>No Picture</span>
+                            {% endif %}
+                        </td>
+                        
+                        <!-- Location Name -->
+                        <td>{{ reservation.location.location_name }}</td>
+                        
+                        <!-- Location Type -->
+                        <td>{{ reservation.location.location_type }}</td>
+                        
+                        <!-- Reservation Date -->
+                        <td>{{ reservation.reservation_time.strftime('%Y-%m-%d') }}</td>
+                        
+                        <!-- Reservation Time -->
+                        <td>{{ reservation.reservation_time.strftime('%H:%M') }}</td>
+                        
+                        <!-- Number of Guests -->
                         <td>{{ reservation.number_of_guests }}</td>
                     </tr>
                 {% endfor %}
