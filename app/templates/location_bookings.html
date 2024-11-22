@@ -86,10 +86,10 @@
 
     <!-- Delete Location Button -->
     <div class="delete-location" style="text-align: center; margin-top: 30px;">
-        <form action="{{ url_for('main.location_bookings') }}" method="get">
+        <form action="{{ url_for('main.delete_location') }}" method="post">
+            <input type="hidden" name="location_id" value="{{ location.id }}">
             <button type="submit" class="btn-cancel" style="font-size: 1.2em; padding: 10px 20px;">Delete Location</button>
         </form>
     </div>
-
 </div>
 {% endblock %}

@@ -237,31 +237,61 @@ def reservation_successful():
     # Logic for uploading location data goes here
     return render_template('reservation_successful.html')  # Redirect back to the locations page after the upload
 
-@main.route('/current_reservations', methods=['GET','POST'])
+@main.route('/current_reservations', methods=['GET', 'POST'])
 @login_required
 def current_reservations():
-    # Retrieve the current user's reservations
-    reservations = Reservation.query.filter_by(user_id=current_user.id).all()
-    
-    # Debugging: Print current user and reservations
-    print(f"Current User: {current_user.username}")
-    print(f"Reservations: {reservations}")
+    reservations = Reservation.query \
+        .join(Location, Reservation.location_id == Location.id) \
+        .filter(Reservation.user_id == current_user.id).all()
 
-    return render_template('current_reservations.html', reservations=reservations)
+    # Separate reservations by status
+    active_reservations = [r for r in reservations if r.status == "active"]
+    loc_del_reservations = [r for r in reservations if r.status == "loc_del"]
 
-@main.route('/location_bookings', methods=['GET','POST'])
+    if loc_del_reservations:
+        flash("Some of your reservations are no longer valid as their associated locations have been deleted.", "warning")
+
+    return render_template('current_reservations.html', reservations=active_reservations)
+
+
+@main.route('/location_bookings', methods=['GET', 'POST'])
 @login_required
 def location_bookings():
-    # Fetch the location of the current logged-in user
-    location = Location.query.filter_by(username=current_user.username).first()
+    # Fetch the active location of the current logged-in user
+    location = Location.query.filter_by(username=current_user.username, status='active').first()
 
     if not location:
-        flash('You do not own any locations yet.', 'danger')
+        flash('You do not own any active locations.', 'danger')
         return redirect(url_for('main.main_page'))
 
-    # Get the reservations for this location
-    reservations = Reservation.query.filter_by(location_id=location.id).filter(Reservation.status == 'active').all()
+    # Get active reservations for this location
+    reservations = Reservation.query.filter_by(location_id=location.id, status='active').all()
 
     # Render the template, passing the location and reservations
     return render_template('location_bookings.html', location=location, reservations=reservations)
 
+
+@main.route('/delete_location', methods=['POST'])
+@login_required
+def delete_location():
+    # Get the location ID from the form
+    location_id = request.form.get('location_id')
+    location = Location.query.filter_by(id=location_id, username=current_user.username, status="active").first()
+
+    if not location:
+        flash("Location not found or unauthorized action.", "danger")
+        return redirect(url_for('main.location_bookings'))
+
+    # Update the location's status to 'deleted'
+    location.status = "deleted"
+
+    # Update the status of all associated reservations to 'loc_del'
+    reservations = Reservation.query.filter_by(location_id=location.id, status="active").all()
+    for reservation in reservations:
+        reservation.status = "loc_del"
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    flash(f"Location '{location.location_name}' has been deleted.", "success")
+    return redirect(url_for('main.location_bookings'))

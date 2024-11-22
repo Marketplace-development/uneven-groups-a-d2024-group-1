@@ -44,6 +44,8 @@ class Location(db.Model):
     saturday_close = db.Column(db.String(10), nullable=True)
     sunday_open = db.Column(db.String(10), nullable=True)
     sunday_close = db.Column(db.String(10), nullable=True)
+
+    status = db.Column(db.String(20), nullable=False, default='active')
     location_picture = db.Column(db.String(200), nullable=True)  # Optional URL to the uploaded image
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
