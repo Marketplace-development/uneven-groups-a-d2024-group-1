@@ -63,10 +63,12 @@ class Reservation(db.Model):
     reservation_time = db.Column(db.DateTime, nullable=False)
     number_of_guests = db.Column(db.Integer, nullable=False)
     study_time = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(10), nullable=False, default="active")
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships
     location = db.relationship('Location', backref='reservations')
     user = db.relationship('User', backref='reservations')
 
     def __repr__(self):
-        return f"<Reservation {self.id} by User {self.user_id} at Location {self.location_id} on {self.reservation_time}>"
+        return f"<Reservation {self.id} by User {self.user_id} at Location {self.location_id} on {self.reservation_time} - Status: {self.status}>"

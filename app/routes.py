@@ -160,7 +160,6 @@ def reservations():
 
         # Get the location name from the selected location
         selected_location = Location.query.get(location_id)
-        location_name = selected_location.location_name  # Retrieve the location name from the selected location
 
         # Parse the reservation_time as a datetime object
         reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
@@ -188,24 +187,38 @@ def reservations():
         return redirect(url_for('main.reservation_successful'))
 
     # Retrieve all the current reservations for the user
-    user_reservations = Reservation.query.filter_by(user_id=current_user.id).all()
+    user_reservations = Reservation.query.filter_by(user_id=current_user.id, status="active").all()
 
     # Render the reservation form with locations and current user reservations
     return render_template('reservations.html', locations=locations, reservations=user_reservations)
 
-@main.route('/cancel_reservation/<int:reservation_id>', methods=['POST'])
+@main.route('/cancel_reservation', methods=['POST'])
 @login_required
-def cancel_reservation(reservation_id):
+def cancel_reservation():
+    # Get the reservation ID from the submitted form data
+    reservation_id = request.form.get('reservation_id')
+    
+    if not reservation_id:
+        flash('No reservation specified for cancellation.', 'error')
+        return redirect(url_for('main.reservations'))
+
+    # Retrieve the reservation
     reservation = Reservation.query.get_or_404(reservation_id)
 
+    # Check if the current user owns the reservation
     if reservation.user_id != current_user.id:
         flash('You are not authorized to cancel this reservation.', 'error')
         return redirect(url_for('main.reservations'))
 
-    db.session.delete(reservation)
+    # Update the status to "canceled"
+    reservation.status = "canceled"
     db.session.commit()
-    flash('Reservation canceled.', 'success')
-    return redirect(url_for('main.reservations'))
+
+    # Debugging: Check status after update
+    print(f"Reservation {reservation_id} canceled. Current status: {reservation.status}")
+
+    flash('Reservation successfully canceled.', 'success')
+    return redirect(url_for('main.current_reservations'))
 
 
 @main.route('/logout')
@@ -247,7 +260,7 @@ def location_bookings():
         return redirect(url_for('main.main_page'))
 
     # Get the reservations for this location
-    reservations = Reservation.query.filter_by(location_id=location.id).all()
+    reservations = Reservation.query.filter_by(location_id=location.id).filter(Reservation.status == 'active').all()
 
     # Render the template, passing the location and reservations
     return render_template('location_bookings.html', location=location, reservations=reservations)
