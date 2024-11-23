@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="login-signup-container" style="height: 350px">
+<div class="login-signup-container" style="height: auto">
     <h1 style="text-align: left;">Already have an account?</h1>
 
     <!-- Display Login Status Message -->
@@ -48,7 +48,7 @@
 
     <!-- No Account / Sign Up -->
     <div style="text-align: right; margin-top: 20px;">
-        <span class="no-account">No account</span>
+        <span class="no-account">No account:</span>
         <form action="{{ url_for('main.signup') }}" method="get" style="display: inline;">
             <button type="submit" class="btn btn-transparant">Sign Up</button>
         </form>

@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Uploaded Successfully</title>
+<title>Successful Reservation</title>
 {% endblock %}
 
 {% block body %}
 <div class="success-container" style="text-align: center; margin-top: 50px;">
     <!--Logout button-->
-     <form action="{{ url_for('main.home') }}" method="get" class="inline-form" style="text-align: center; position: absolute; top: 20px; right: 20px;">
+     <form action="{{ url_for('main.home') }}" method="get" class="inline-form" style="position: absolute; top: 20px; right: 20px;">
         <button type="submit" class="btn btn-black" style="width: 150px;">Logout</button>
      </form>
-     <h1>Your Location is Successfully Uploaded!</h1>
+     <h1>You Reservation is Successfully Booked!</h1>
      <p style="font-size: 1.25em;">Go back to main page: <a href="{{ url_for('main.main_page') }}" class="btn btn-black" style="margin-left: 10px;">Main Page</a></p>
 </div>
 {% endblock %}

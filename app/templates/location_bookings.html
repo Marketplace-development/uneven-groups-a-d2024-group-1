@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Your Location Bookings</title>
+{% endblock %}
+
+{% block body %}
+<div class="locations-container">
+    <!-- Buttons in the right upper corner -->
+    <div class="button-container" style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0px; z-index: 999;">
+        <form action="{{ url_for('main.main_page') }}" method="get" class="inline-form">
+            <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
+        </form>
+        <form action="{{ url_for('main.home') }}" method="get" class="inline-form">
+            <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Logout</button>
+        </form>
+    </div>
+
+    <!-- Logo -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+    </div>
+
+    <!-- Page title and subtitle -->
+    <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Your Location Bookings</h1>
+    <p style="text-align: center; color: grey; font-size: 1.5em;">See who booked your location and at what time</p>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Location Details -->
+    <div class="location-details" style="margin-top: 30px;">
+        <h2 style="text-align: center;">Your Location</h2>
+
+        <div class="location-info" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+            <!-- Location Picture -->
+            <div class="location-picture">
+                {% if location.location_picture %}
+                    <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Location Image" style="width: 300px; height: 200px; object-fit: cover; margin-right: 20px; margin-top: 0px;">
+                {% else %}
+                    <span>No Picture</span>
+                {% endif %}
+            </div>
+
+            <!-- Location Info -->
+            <div class="location-text">
+                <p style="text-align: left;"><strong>Location Name:</strong> {{ location.location_name }}</p>
+                <p style="text-align: left;"><strong>Location Type:</strong> {{ location.location_type }}</p>
+                <p style="text-align: left;"><strong>Address:</strong> {{ location.street }} {{ location.street_number }}, {{ location.postal_code }} {{ location.city }}, {{ location.country }}</p>
+                <p style="text-align: left;"><strong>Number of Chairs:</strong> {{ location.chairs }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bookings Details -->
+<div class="bookings-details">
+    <h3>Your location is booked by the following people:</h3>
+
+    {% if reservations %}
+        <div class="reservations-list">
+            {% for reservation in reservations %}
+                <div class="reservation-card">
+                    <p><strong>Username:</strong> {{ reservation.user.username }}</p>
+                    <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
+                    <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
+                    <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
+                </div>
+            {% endfor %}
+            
+        </div>
+    {% else %}
+        <p>No bookings yet for your location.</p>
+    {% endif %}
+</div>
+
+
+    <!-- Delete Location Button -->
+    <div class="delete-location" style="text-align: center; margin-top: 30px;">
+        <form action="{{ url_for('main.delete_location') }}" method="post">
+            <input type="hidden" name="location_id" value="{{ location.id }}">
+            <button type="submit" class="btn-cancel" style="font-size: 1.2em; padding: 10px 20px;">Delete Location</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

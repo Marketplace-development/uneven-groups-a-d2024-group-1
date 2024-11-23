@@ -12,11 +12,8 @@
         <button type="submit" class="btn btn-black" style="width: 120px; font-size: 1em; padding: 10px 20px;">Logout</button>
     </form>
 
-    <!--Chairing Title-->
-    <h1 style="text-align: center; font-size: 4em; font-weight: bold;">Chairing</h1>
-
-    <!--Your Seats-->
-    <p style="text-align: center; color: grey; font-size: 1.5em; margin-top: -30px; margin-bottom: 30px;">Your Seats</p>
+    <!-- Logo -->
+    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo" style="width: 300px; margin-top: 20px;">
 
     <!--Buttons for Reservation and Uploading Locations-->
     <div style="display: flex; justify-content: center; gap: 50px; margin-top: 50px;">
@@ -24,19 +21,41 @@
         <!--Make a Reservation-->
         <div class="option-container" style="text-align: center; width: 250px;">
             <form action="{{ url_for('main.reservations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-black" style="width: 100%; font-size: 1.2em; padding: 10px 20px">Make a Reservation</button>
+                <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Make a Reservation</button>
             </form>
             <img src="{{ url_for('static', filename='images/reservation.JPG') }}" alt="Reservation Image" style="width: 100%; margin-top: 20px;">
-            <p style="font-size: 1.3em; color: grey; margin-top: 5px;"> Book a seat at a<br>location of your choice.</p>
+            <p style="font-size: 1.3em; color: grey; margin-top: 5px;"> Book a seat at a<br>location of your choice</p>
         </div>
 
         <!--Upload Your Location-->
         <div class="option-container" style="text-align: center; width: 250px;">
             <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-transparant" style="width: 100%; font-size: 1.2em; padding: 10px 20px">Upload Your Location</button>
+                <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Upload Your<br>Location</button>
             </form>
             <img src="{{ url_for('static', filename='images/location.JPG') }}" alt="Location Image" style="width: 100%; margin-top: 20px">
-            <p style="font-size: 1.3em; color: grey; margin-top: 20px;">Upload your own location<br>for students to visit.</p>
+            <p style="font-size: 1.3em; color: grey; margin-top: 20px;">Upload your own location<br>for students to visit</p>
+        </div>
+    </div>
+
+    <!--Buttons for Reservation and Uploading Locations-->
+    <div style="display: flex; justify-content: center; gap: 50px; margin-top: 10px;">
+
+        <!-- Your Current Reservations -->
+        <div class="option-container" style="text-align: center; width: 250px;">
+            <form action="{{ url_for('main.current_reservations') }}" method="get" class="inline-form">
+                <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Your Current Reservations</button>
+            </form>
+            <img src="{{ url_for('static', filename='images/check.JPG') }}" alt="Current Reservation Image" style="height: 200px; margin-top: 20px;">
+            <p style="font-size: 1.3em; color: grey; margin-top: 20px;"> Consult or cancel your current reservations</p>
+        </div>
+
+        <!--Your Location Bookings-->
+        <div class="option-container" style="text-align: center; width: 250px;">
+            <form action="{{ url_for('main.location_bookings') }}" method="get" class="inline-form">
+                <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Your Location Bookings</button>
+            </form>
+            <img src="{{ url_for('static', filename='images/pin.JPG') }}" alt="Booking Image" style="height: 200px; margin-top: 20px">
+            <p style="font-size: 1.3em; color: grey; margin-top: 20px;">See who booked your location and at what time</p>
         </div>
     </div>
 {% endblock %}
