@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from .models import User, Location, Reservation
-from datetime import datetime
+from datetime import datetime, timedelta
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
+from sqlalchemy import and_, func
+from sqlalchemy.sql import text, func
 
 
 
@@ -148,49 +150,161 @@ def reservations():
     if not current_user.is_authenticated:
         print("User is not authenticated!")
         return redirect(url_for('main.login'))  # Optional: Just in case
-    
-    locations = Location.query.all()
 
     if request.method == 'POST':
-        location_id = request.form.get('location_id')
+        # Get reservation details from the form
         username = request.form.get('username')
         reservation_time = request.form.get('reservation_time')
         number_of_guests = request.form.get('number_of_guests')
         study_time = request.form.get('study_time')
 
-        # Get the location name from the selected location
-        selected_location = Location.query.get(location_id)
+        # Validate and parse the reservation time
+        try:
+            reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
+        except ValueError:
+            flash('Invalid reservation time format. Please try again.', 'danger')
+            return redirect(url_for('main.reservations'))
 
-        # Parse the reservation_time as a datetime object
-        reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
+        # Filter locations based on availability
+        available_locations = filter_available_locations(reservation_datetime, study_time, number_of_guests)
 
-        # Create a new reservation
-        new_reservation = Reservation(
-            user_id=current_user.id,  # Assuming `current_user` is available
-            username = username,
-            location_id=location_id,
-            reservation_time=reservation_datetime,
-            number_of_guests=int(number_of_guests),
-            study_time=int(study_time),
-            date=reservation_datetime.date(),  # Extract date from datetime
-            time=reservation_datetime.time(),  # Extract time from datetime
+        # Pass the filtered locations to the location selection page
+        return render_template(
+            'select_location.html',
+            locations=available_locations,
+            reservation_time=reservation_time,
+            study_time=study_time,
+            number_of_guests=number_of_guests,
         )
 
-        # Save the new reservation to the database
-        db.session.add(new_reservation)
-        db.session.commit()
+    # Render the reservation form
+    return render_template('reservations.html')
 
-        # Flash a success message
-        flash('Your reservation has been successfully created!', 'success')
+@main.route('/select_location', methods=['GET', 'POST'])
+@login_required
+def select_location():
+    reservation_time = request.args.get('reservation_time')
+    study_time = int(request.args.get('study_time', 0))
+    number_of_guests = int(request.args.get('number_of_guests', 1))
 
-        # Redirect to the 'reservation_successful' page after successful reservation
-        return redirect(url_for('main.reservation_successful'))
+    reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
+    reservation_end_time = reservation_datetime + timedelta(minutes=study_time)
 
-    # Retrieve all the current reservations for the user
-    user_reservations = Reservation.query.filter_by(user_id=current_user.id, status="active").all()
+    # Query all locations
+    locations = Location.query.all()
 
-    # Render the reservation form with locations and current user reservations
-    return render_template('reservations.html', locations=locations, reservations=user_reservations)
+    return render_template(
+        'select_location.html',
+        locations=locations,
+        reservation_time=reservation_time,
+        study_time=study_time,
+        number_of_guests=number_of_guests,
+    )
+
+@main.route('/confirm_reservation', methods=['POST'])
+@login_required
+def confirm_reservation():
+    location_id = request.form.get('location_id')
+    reservation_time = request.form.get('reservation_time')
+    study_time = request.form.get('study_time')
+    number_of_guests = int(request.form.get('number_of_guests'))
+
+    if not location_id:
+        flash('You must select a location to complete your reservation.', 'danger')
+        return redirect(url_for('main.select_location'))
+
+    reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
+    reservation_end_time = reservation_datetime + timedelta(minutes=int(study_time))
+
+    location = Location.query.get(location_id)
+    if not location:
+        flash('The selected location does not exist.', 'danger')
+        return redirect(url_for('main.select_location'))
+
+    # Create a new reservation
+    new_reservation = Reservation(
+        user_id=current_user.id,
+        username=current_user.username,
+        location_id=location_id,
+        reservation_time=reservation_datetime,
+        number_of_guests=number_of_guests,
+        study_time=int(study_time),
+        date=reservation_datetime.date(),
+        time=reservation_datetime.time(),
+    )
+
+    db.session.add(new_reservation)
+    db.session.commit()
+
+    flash('Your reservation has been successfully created!', 'success')
+    return redirect(url_for('main.reservation_successful'))
+
+
+def filter_available_locations(reservation_datetime, study_time, number_of_guests):
+    """
+    Helper function to filter locations based on reservation time, study time, and number of guests.
+    This includes handling locations that are open past midnight (e.g., from 10 PM to 2 AM).
+    """
+    # Define the end time of the reservation based on the study time
+    reservation_end_time = reservation_datetime + timedelta(minutes=int(study_time))
+
+    # Query all locations
+    all_locations = Location.query.all()
+    available_locations = []
+
+    for location in all_locations:
+        # Check if the location has enough seats
+        if location.chairs < int(number_of_guests):
+            continue
+
+        # Check if the location is open during the reservation period
+        day_name = reservation_datetime.strftime('%A').lower()  # Get the day of the week in lowercase
+        open_time_str = getattr(location, f"{day_name}_open")
+        close_time_str = getattr(location, f"{day_name}_close")
+
+        # If the location is closed on that day, skip it
+        if not open_time_str or not close_time_str:
+            continue
+
+        try:
+            # Convert strings to datetime.time objects
+            open_time = datetime.strptime(open_time_str, "%H:%M").time()
+            close_time = datetime.strptime(close_time_str, "%H:%M").time()
+        except ValueError:
+            # If the time format is invalid, skip this location
+            continue
+
+        # Convert opening and closing times to full datetime objects
+        open_time_datetime = datetime.combine(reservation_datetime.date(), open_time)
+
+        # Handle times that span past midnight
+        if close_time < open_time:
+            # Extend close_time to the next day
+            close_time_datetime = datetime.combine(reservation_datetime.date() + timedelta(days=1), close_time)
+        else:
+            # Both open and close times are on the same day
+            close_time_datetime = datetime.combine(reservation_datetime.date(), close_time)
+
+        # Check if the reservation falls within the location's open hours
+        if not (open_time_datetime <= reservation_datetime <= close_time_datetime):
+            continue
+        if not (open_time_datetime <= reservation_end_time <= close_time_datetime):
+            continue
+
+        # Check for existing reservations that conflict with the requested time
+        conflicting_reservations = Reservation.query.filter(
+            Reservation.location_id == location.id,
+            Reservation.reservation_time < reservation_end_time,  # Starts before the requested end time
+            Reservation.reservation_time + timedelta(minutes=int(study_time)) > reservation_datetime  # Ends after the requested start time
+        ).all()
+
+        if conflicting_reservations:
+            continue
+
+        # If all checks pass, add the location to the list of available locations
+        available_locations.append(location)
+
+    return available_locations
 
 @main.route('/cancel_reservation', methods=['POST'])
 @login_required
