@@ -14,11 +14,11 @@
             {{ message }}
         </div>
         {% if message_color == 'green' %}
-            <!-- Redirect after 2 seconds only if the message is green (successful login) -->
+            <!-- Redirect only if the message is green (successful login) -->
             <script>
                 setTimeout(function() {
                     window.location.href = "{{ url_for('main.main_page') }}"; // Redirect to the main page
-                }, 2000);  // 2000 ms = 2 seconds
+                }, 0);
             </script>
         {% endif %}
     {% endif %}
