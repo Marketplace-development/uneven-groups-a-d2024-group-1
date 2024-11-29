@@ -171,7 +171,7 @@ def reservations():
         # Pass the filtered locations to the location selection page
         return render_template(
             'select_location.html',
-            locations=available_locations,
+            location_data=available_locations,
             reservation_time=reservation_time,
             study_time=study_time,
             number_of_guests=number_of_guests,
@@ -183,19 +183,24 @@ def reservations():
 @main.route('/select_location', methods=['GET', 'POST'])
 @login_required
 def select_location():
-    reservation_time = request.args.get('reservation_time')
-    study_time = int(request.args.get('study_time', 0))
-    number_of_guests = int(request.args.get('number_of_guests', 1))
+    # Get data from POST request
+    if request.method == 'POST':
+        reservation_time = request.form.get('reservation_time')
+        study_time = int(request.form.get('study_time'))
+        number_of_guests = int(request.form.get('number_of_guests'))
+    else:  # Fallback for GET requests
+        reservation_time = request.args.get('reservation_time')
+        study_time = int(request.args.get('study_time'))
+        number_of_guests = int(request.args.get('number_of_guests'))
 
     reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
-    reservation_end_time = reservation_datetime + timedelta(minutes=study_time)
 
-    # Query all locations
-    locations = Location.query.all()
+    # Ensure that the function is being called
+    available_locations = filter_available_locations(reservation_datetime, study_time, number_of_guests)
 
     return render_template(
         'select_location.html',
-        locations=locations,
+        location_data=available_locations,
         reservation_time=reservation_time,
         study_time=study_time,
         number_of_guests=number_of_guests,
@@ -220,6 +225,20 @@ def confirm_reservation():
     if not location:
         flash('The selected location does not exist.', 'danger')
         return redirect(url_for('main.select_location'))
+    
+    # Calculate reserved seats for this location and time slot
+    overlapping_reservations = Reservation.query.filter(
+        Reservation.location_id == location.id,
+        Reservation.reservation_time < reservation_end_time,
+        (Reservation.reservation_time + timedelta(minutes=int(study_time))) > reservation_datetime,
+    ).all()
+
+    reserved_seats = sum(res.number_of_guests for res in overlapping_reservations)
+    available_seats = location.chairs - reserved_seats
+
+    if number_of_guests > available_seats:
+        flash(f'Only {available_seats} seats are available at {location.location_name}.', 'danger')
+        return redirect(url_for('main.select_location', reservation_time=reservation_time, study_time=study_time, number_of_guests=number_of_guests))
 
     # Create a new reservation
     new_reservation = Reservation(
@@ -244,6 +263,7 @@ def filter_available_locations(reservation_datetime, study_time, number_of_guest
     """
     Helper function to filter locations based on reservation time, study time, and number of guests.
     This includes handling locations that are open past midnight (e.g., from 10 PM to 2 AM).
+    It dynamically calculates available seats based on existing reservations.
     """
     # Define the end time of the reservation based on the study time
     reservation_end_time = reservation_datetime + timedelta(minutes=int(study_time))
@@ -253,8 +273,18 @@ def filter_available_locations(reservation_datetime, study_time, number_of_guest
     available_locations = []
 
     for location in all_locations:
-        # Check if the location has enough seats
-        if location.chairs < int(number_of_guests):
+        # Calculate already reserved seats for this location and time slot
+        existing_reservations = Reservation.query.filter(
+            Reservation.location_id == location.id,
+            Reservation.reservation_time < reservation_end_time, # Reservation starts before end time
+            Reservation.reservation_time + timedelta(minutes=int(study_time)) > reservation_datetime # Reservation ends after the requested start time
+        ).all()
+
+        reserved_seats = sum(res.number_of_guests for res in existing_reservations)
+
+        # Check if the location has enough seats left
+        available_seats = location.chairs - reserved_seats
+        if available_seats < int(number_of_guests):
             continue
 
         # Check if the location is open during the reservation period
@@ -291,19 +321,11 @@ def filter_available_locations(reservation_datetime, study_time, number_of_guest
         if not (open_time_datetime <= reservation_end_time <= close_time_datetime):
             continue
 
-        # Check for existing reservations that conflict with the requested time
-        conflicting_reservations = Reservation.query.filter(
-            Reservation.location_id == location.id,
-            Reservation.reservation_time < reservation_end_time,  # Starts before the requested end time
-            Reservation.reservation_time + timedelta(minutes=int(study_time)) > reservation_datetime  # Ends after the requested start time
-        ).all()
-
-        if conflicting_reservations:
-            continue
-
         # If all checks pass, add the location to the list of available locations
-        available_locations.append(location)
-
+        available_locations.append({
+            'location': location,
+            'available_seats': available_seats  # Pass the dynamically calculated seats
+        })
     return available_locations
 
 @main.route('/cancel_reservation', methods=['POST'])
@@ -327,9 +349,6 @@ def cancel_reservation():
     # Update the status to "canceled"
     reservation.status = "canceled"
     db.session.commit()
-
-    # Debugging: Check status after update
-    print(f"Reservation {reservation_id} canceled. Current status: {reservation.status}")
 
     flash('Reservation successfully canceled.', 'success')
     return redirect(url_for('main.current_reservations'))

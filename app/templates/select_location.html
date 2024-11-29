@@ -44,69 +44,68 @@
             <input type="hidden" name="study_time" value="{{ study_time }}">
             <input type="hidden" name="number_of_guests" value="{{ number_of_guests }}">
 
-            {% if locations|length == 0 %}
+            {% if location_data|length == 0 %}
                 <p style="font-size: 1.2em; color: #888; text-align: center; margin-top: 20px;">
                     There are no locations available at your selected moment.
                 </p>
             {% else %}
                 <div class="location-grid">
                     <p style="text-align: center; color: grey; font-size: 1.5em;">These locations are still available at your selected moment!</p>
-                    {% for location in locations %}
+                    {% for item in location_data %}
                     <label>
-                        <!-- Radio button for selecting a location -->
-                        <input type="radio" name="location_id" value="{{ location.id }}" class="location-card-input" required>
+                        <input type="radio" name="location_id" value="{{ item.location.id }}" class="location-card-input" required>
                         <div class="location-card">
-                            <h3 style="font-size: 1.5em;">{{ location.location_name }}</h3>
-                            <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Image of {{ location.location_name }}">
-                            <p><strong>Type:</strong> {{ location.location_type }}</p>
+                            <h3>{{ item.location.location_name }}</h3>
+                            <img src="{{ url_for('static', filename='images/' ~ item.location.location_picture ~ '.jpg') }}" 
+                                alt="Image of {{ item.location.location_name }}">
+                            <p><strong>Type:</strong> {{ item.location.location_type }}</p>
                             <p><strong>Address:</strong>
-                                {{ location.street }} {{ location.street_number }}, 
-                                {{ location.postal_code }} {{ location.city }}, 
-                                {{ location.country }}
+                                {{ item.location.street }} {{ item.location.street_number }},
+                                {{ item.location.postal_code }} {{ item.location.city }},
+                                {{ item.location.country }}
                             </p>
-
-                            <p><strong>Available Seats:</strong> {{ location.chairs }}</p>                    
+                            <p><strong>Available Seats:</strong> {{ item.available_seats }}</p>            
                             
                             <p><strong>Opening Hours:</strong></p>
                             <ul style="list-style-type: none; padding: 0; margin-top: 0;">
-                                {% if location.monday_open and location.monday_close %}
-                                    <li><strong>Monday:</strong> {{ location.monday_open }}h - {{ location.monday_close }}h</li>
+                                {% if item.location.monday_open and item.location.monday_close %}
+                                    <li><strong>Monday:</strong> {{ item.location.monday_open }}h - {{ item.location.monday_close }}h</li>
                                 {% else %}
                                     <li><strong>Monday:</strong> Closed</li>
                                 {% endif %}
                                 
-                                {% if location.tuesday_open and location.tuesday_close %}
-                                    <li><strong>Tuesday:</strong> {{ location.tuesday_open }}h - {{ location.tuesday_close }}h</li>
+                                {% if item.location.tuesday_open and item.location.tuesday_close %}
+                                    <li><strong>Tuesday:</strong> {{ item.location.tuesday_open }}h - {{ item.location.tuesday_close }}h</li>
                                 {% else %}
                                     <li><strong>Tuesday:</strong> Closed</li>
                                 {% endif %}
-
-                                {% if location.wednesday_open and location.wednesday_close %}
-                                    <li><strong>Wednesday:</strong> {{ location.wednesday_open }}h - {{ location.wednesday_close }}h</li>
+                
+                                {% if item.location.wednesday_open and item.location.wednesday_close %}
+                                    <li><strong>Wednesday:</strong> {{ item.location.wednesday_open }}h - {{ item.location.wednesday_close }}h</li>
                                 {% else %}
                                     <li><strong>Wednesday:</strong> Closed</li>
                                 {% endif %}
-
-                                {% if location.thursday_open and location.thursday_close %}
-                                    <li><strong>Thursday:</strong> {{ location.thursday_open }}h - {{ location.thursday_close }}h</li>
+                
+                                {% if item.location.thursday_open and item.location.thursday_close %}
+                                    <li><strong>Thursday:</strong> {{ item.location.thursday_open }}h - {{ item.location.thursday_close }}h</li>
                                 {% else %}
                                     <li><strong>Thursday:</strong> Closed</li>
                                 {% endif %}
-
-                                {% if location.friday_open and location.friday_close %}
-                                    <li><strong>Friday:</strong> {{ location.friday_open }}h - {{ location.friday_close }}h</li>
+                
+                                {% if item.location.friday_open and item.location.friday_close %}
+                                    <li><strong>Friday:</strong> {{ item.location.friday_open }}h - {{ item.location.friday_close }}h</li>
                                 {% else %}
                                     <li><strong>Friday:</strong> Closed</li>
                                 {% endif %}
-
-                                {% if location.saturday_open and location.saturday_close %}
-                                    <li><strong>Saturday:</strong> {{ location.saturday_open }}h - {{ location.saturday_close }}h</li>
+                
+                                {% if item.location.saturday_open and item.location.saturday_close %}
+                                    <li><strong>Saturday:</strong> {{ item.location.saturday_open }}h - {{ item.location.saturday_close }}h</li>
                                 {% else %}
                                     <li><strong>Saturday:</strong> Closed</li>
                                 {% endif %}
-
-                                {% if location.sunday_open and location.sunday_close %}
-                                    <li><strong>Sunday:</strong> {{ location.sunday_open }}h - {{ location.sunday_close }}h</li>
+                
+                                {% if item.location.sunday_open and item.location.sunday_close %}
+                                    <li><strong>Sunday:</strong> {{ item.location.sunday_open }}h - {{ item.location.sunday_close }}h</li>
                                 {% else %}
                                     <li><strong>Sunday:</strong> Closed</li>
                                 {% endif %}
