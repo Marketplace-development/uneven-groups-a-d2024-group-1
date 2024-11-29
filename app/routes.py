@@ -380,12 +380,36 @@ def current_reservations():
     # Separate reservations by status
     active_reservations = [r for r in reservations if r.status == "active"]
     loc_del_reservations = [r for r in reservations if r.status == "loc_del"]
+    expired_reservations = [r for r in reservations if r.status == "expired"]
 
     if loc_del_reservations:
         flash("Some of your reservations are no longer valid as their associated locations have been deleted.", "warning")
 
-    return render_template('current_reservations.html', reservations=active_reservations)
+    # Call the function to expire old reservations
+    expire_old_reservations(current_user.id)
 
+    return render_template(
+        'current_reservations.html', 
+        reservations=active_reservations,
+        expired_reservations=expired_reservations
+    )
+
+def expire_old_reservations(user_id):
+    # Get current time
+    now = datetime.now()
+
+    # Query to find active reservations that should expire
+    reservations_to_expire = Reservation.query.filter(
+        Reservation.user_id == user_id,
+        Reservation.status == "active",
+        Reservation.reservation_time < now
+    ).all()
+
+    # Check each reservation to see if it should expire
+    for reservation in reservations_to_expire:
+        reservation.status = "expired"
+
+    db.session.commit()
 
 @main.route('/location_bookings', methods=['GET', 'POST'])
 @login_required
@@ -400,8 +424,16 @@ def location_bookings():
     # Get active reservations for this location
     reservations = Reservation.query.filter_by(location_id=location.id, status='active').all()
 
+    # Get expired reservations for this location
+    expired_reservations = Reservation.query.filter_by(location_id=location.id, status='expired').all()
+
     # Render the template, passing the location and reservations
-    return render_template('location_bookings.html', location=location, reservations=reservations)
+    return render_template(
+        'location_bookings.html',
+        location=location, 
+        reservations=reservations,
+        expired_reservations=expired_reservations
+        )
 
 
 @main.route('/delete_location', methods=['POST'])

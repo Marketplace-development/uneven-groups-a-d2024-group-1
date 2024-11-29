@@ -61,8 +61,16 @@
         </div>
     </div>
 
+    <!-- Delete Location Button -->
+    <div class="delete-location" style="text-align: center; margin-top: 30px;">
+        <form action="{{ url_for('main.delete_location') }}" method="post">
+            <input type="hidden" name="location_id" value="{{ location.id }}">
+            <button type="submit" class="btn-cancel" style="font-size: 1.2em; padding: 10px 20px;">Delete Location</button>
+        </form>
+    </div>
+
     <!-- Bookings Details -->
-<div class="bookings-details">
+    <div class="bookings-details">
     <h3>Your location is booked by the following people:</h3>
 
     {% if reservations %}
@@ -81,15 +89,27 @@
     {% else %}
         <p>No bookings yet for your location.</p>
     {% endif %}
-</div>
+    </div>
 
+    <!-- Past Bookings Details -->
+    <div class="bookings-details">
+    <h3>Your location was previously booked by the following people:</h3>
 
-    <!-- Delete Location Button -->
-    <div class="delete-location" style="text-align: center; margin-top: 30px;">
-        <form action="{{ url_for('main.delete_location') }}" method="post">
-            <input type="hidden" name="location_id" value="{{ location.id }}">
-            <button type="submit" class="btn-cancel" style="font-size: 1.2em; padding: 10px 20px;">Delete Location</button>
-        </form>
+    {% if expired_reservations %}
+        <div class="reservations-list">
+            {% for reservation in expired_reservations %}
+                <div class="reservation-card">
+                    <p><strong>Username:</strong> {{ reservation.user.username }}</p>
+                    <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
+                    <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
+                    <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
+                    <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
+                </div>
+            {% endfor %}  
+        </div>
+    {% else %}
+        <p>Your location was never booked yet.</p>
+    {% endif %}
     </div>
 </div>
 {% endblock %}

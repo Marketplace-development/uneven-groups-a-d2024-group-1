@@ -26,8 +26,6 @@
     <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Your Current Reservations</h1>
     <p style="text-align: center; color: grey; font-size: 1.5em;">Check or cancel your reservations</p>
 
-    
-
     <!-- Existing Reservations -->
     {% if reservations %}
         <div class="location-grid">
@@ -77,5 +75,52 @@
         </div>
     {% else %}
         <p>You have no reservations yet.</p>
+    {% endif %}
+
+    <!-- Page title and subtitle -->
+    <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Your Past Reservations</h1>
+    <p style="text-align: center; color: grey; font-size: 1.5em;">Give a rating to your past reservations!</p>
+
+    <!-- Expired Reservations -->
+    {% if expired_reservations %}
+        <div class="location-grid">
+            {% for reservation in expired_reservations %}
+                <div class="location-card">
+                    <!-- Location Name -->
+                    <h3 style="font-size: 1.5em;">{{ reservation.location.location_name }}</h3>
+                    
+                    <!-- Location Picture -->
+                    <img src="{{ url_for('static', filename='images/' ~ reservation.location.location_picture ~ '.jpg') }}" alt="Location Picture" style="height: 200px;">
+                    
+                    <!-- Location Type -->
+                    <p><strong>Type:</strong> {{ reservation.location.location_type }}</p>
+                    
+                    <!-- Address -->
+                    <p><strong>Address:</strong>
+                        {{ reservation.location.street }} {{ reservation.location.street_number }}, 
+                        {{ reservation.location.postal_code }} {{ reservation.location.city }}, 
+                        {{ reservation.location.country }}
+                    </p>
+                    
+                    <!-- Host's Name -->
+                    <p><strong>Your Host:</strong> {{ reservation.location.username }}</p>
+                    
+                    <!-- Reservation Date -->
+                    <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
+                    
+                    <!-- Reservation Time -->
+                    <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
+
+                    <!-- Study Time -->
+                    <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
+                    
+                    <!-- Number of Guests -->
+                    <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no past reservations yet.</p>
     {% endif %}
 {% endblock %}

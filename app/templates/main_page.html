@@ -8,7 +8,7 @@
 <div class="main-container" style="text-align: center; margin-top: 50px;">
 
     <!--Logout button-->
-    <form action="{{ url_for('main.home') }}" method="get" class="inline-form" style="position: absolute; top: 20px; right: 20px;">
+    <form action="{{ url_for('main.home') }}" method="get" class="inline-form" style="position: fixed; top: 20px; right: 20px;">
         <button type="submit" class="btn btn-black" style="width: 120px; font-size: 1em; padding: 10px 20px;">Log out</button>
     </form>
 
@@ -40,13 +40,13 @@
     <!--Buttons for Reservation and Uploading Locations-->
     <div style="display: flex; justify-content: center; gap: 50px; margin-top: 10px;">
 
-        <!-- Your Current Reservations -->
+        <!-- Your Reservations -->
         <div class="option-container" style="text-align: center; width: 250px;">
             <form action="{{ url_for('main.current_reservations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Your Current Reservations</button>
+                <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Your Reservations</button>
             </form>
             <img src="{{ url_for('static', filename='images/check.JPG') }}" alt="Current Reservation Image" style="height: 200px; margin-top: 20px;">
-            <p style="font-size: 1.3em; color: grey; margin-top: 20px;"> Consult or cancel your current reservations</p>
+            <p style="font-size: 1.3em; color: grey; margin-top: 20px;"> Consult, cancel or rate your reservation</p>
         </div>
 
         <!--Your Location Bookings-->
