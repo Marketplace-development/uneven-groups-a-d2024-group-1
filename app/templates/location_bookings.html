@@ -69,6 +69,13 @@
         </form>
     </div>
 
+    <!-- Change Location Button -->
+    <div class="change-location" style="text-align: center; margin-top: 30px;">
+        <form action="{{ url_for('main.edit_location', location_id=location.id) }}" method="get">
+            <button type="submit" class="btn-edit" style="font-size: 1.2em; padding: 10px 10px;">Change Location</button>
+        </form>
+    </div>
+
     <!-- Bookings Details -->
     <div class="bookings-details">
     <h3>Your location is booked by the following people:</h3>
