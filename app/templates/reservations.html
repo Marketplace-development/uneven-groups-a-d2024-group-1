@@ -58,7 +58,7 @@
                 <!-- Reservation Time -->
                 <div class="form-field">
                     <label for="reservation_time">Reservation Time:</label>
-                    <input type="datetime-local" name="reservation_time" id="reservation_time" required>
+                    <input type="datetime-local" name="reservation_time" id="reservation_time" min="{{ current_time }}" required>
                 </div>
         
                 <!-- Study Time -->
