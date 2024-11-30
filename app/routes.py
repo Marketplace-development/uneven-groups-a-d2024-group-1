@@ -194,7 +194,7 @@ def select_location():
         number_of_guests = int(request.args.get('number_of_guests'))
 
     reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
-
+    
     # Ensure that the function is being called
     available_locations = filter_available_locations(reservation_datetime, study_time, number_of_guests)
 
@@ -219,6 +219,16 @@ def confirm_reservation():
         return redirect(url_for('main.select_location'))
 
     reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
+    
+    current_time = datetime.utcnownow().replace(microsecond=0)
+
+    print(f"Current time: {current_time}")
+    print(f"Reservation time: {reservation_datetime}")
+
+    if reservation_datetime < current_time:
+        flash('You can only make reservations for the future.' , 'danger')
+        return redirect(url_for('main.select_location'))
+
     reservation_end_time = reservation_datetime + timedelta(minutes=int(study_time))
 
     location = Location.query.get(location_id)
@@ -460,3 +470,39 @@ def delete_location():
 
     flash(f"Location '{location.location_name}' has been deleted.", "success")
     return redirect(url_for('main.location_bookings'))
+
+@main.route('/location/edit/<int:location_id>', methods=['GET', 'POST'])
+def edit_location(location_id):
+    # Retrieve the location from the database
+    location = Location.query.get_or_404(location_id)
+    
+    if request.method == 'POST':
+        # Get the updated details from the form
+        location_name = request.form.get("location_name")
+        location_type = request.form.get("location_type")
+        country = request.form.get("country")
+        postal_code = request.form.get("postal_code")
+        city = request.form.get("city")
+        street = request.form.get("street")
+        street_number = request.form.get("street_number")
+        chairs = int(request.form.get("chairs"))
+        
+        # Update only the changed fields (or keep the original ones)
+        location.location_name = location_name if location_name else location.location_name
+        location.location_type = location_type if location_type else location.location_type
+        location.country = country if country else location.country
+        location.postal_code = postal_code if postal_code else location.postal_code
+        location.city = city if city else location.city
+        location.street = street if street else location.street
+        location.street_number = street_number if street_number else location.street_number
+        location.chairs = chairs if chairs else location.chairs
+        
+
+        # Save the updated location
+        db.session.commit()
+        
+        # Redirect back to a page showing the updated information or success message
+        return redirect(url_for('main.location_bookings', location_id=location.id))
+    
+    # If it's a GET request, render the form to edit the location
+    return render_template('edit_location.html', location=location)
