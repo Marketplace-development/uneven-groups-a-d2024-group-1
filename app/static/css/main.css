@@ -37,23 +37,23 @@ p {
     transform: scale(1.05);
 }
 
-.btn-transparent {
+.btn-transparant {
     background-color: transparent;
-    color: black;
+    color: rgb(25, 70, 202);
     font-weight: normal;
-    border: 2px solid black;
+    border: 2px solid rgb(25, 70, 202);
 }
 
-.btn-transparent:hover {
-    background-color: #333;
+.btn-transparant:hover {
+    background-color: rgb(25, 70, 202);
     color: white;
 }
 
 .btn-black {
-    background-color: black;
+    background-color: rgb(25, 70, 202);
     color: white;
     font-weight: normal;
-    border: 2px solid black;
+    border: 2px solid rgb(25, 70, 202);
 }
 
 .btn-black:hover {
@@ -572,4 +572,60 @@ h3, p {
 .time-select {
     display: flex;
     gap: 5px;
+}
+
+
+.btn-edit {
+    margin-top: 10px;
+    padding: 15px 10px;
+    background-color: transparent;
+    color: rgb(25, 70, 202);
+    font-size: 1.1em;
+    font-weight: normal;
+    border: 2px solid rgb(25, 70, 202);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: rgb(25, 70, 202)
+}
+
+.centered-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 auto;
+
+}
+
+/* Limit the width of the form and give some margin */
+form-change {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Separate sections for opening hours */
+.opening-hours-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.opening-hours-section div {
+    margin-bottom: 10px;
+}
+
+
+/* Style for labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
