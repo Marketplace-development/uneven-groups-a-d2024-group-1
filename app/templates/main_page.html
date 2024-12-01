@@ -15,6 +15,97 @@
     <!-- Logo -->
     <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo" style="width: 300px; margin-top: 20px;">
 
+    <!--the spotlighted location-->
+    <div id="highlighted-location">
+        <h2>This Week's Spotlight</h2>
+        <div class="location-card">
+            <h3 id="location-name">{{ highlighted_location }}</h3>
+            <p>Book a spot here to study!</p>
+        </div>
+    </div>
+
+    <!-- Target Setting Section -->
+    <div id="weekly-target">
+        <h3>Set Your Target for the Week</h3>
+        <form id="target-form">
+            <textarea id="target-input" placeholder="Enter your target for this week..." rows="4"></textarea>
+            <button type="submit" id="submit-target">Set Target</button>
+        </form>
+        <p id="target-feedback"></p>
+    </div>
+    
+    <style>
+    /* Styling for the highlighted location section */
+    #highlighted-location {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        width: 250px;
+        background-color: #f0f8ff;
+        border: 2px solid #1e90ff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgb(25, 70, 202);
+        z-index: 1000;
+    }
+            
+    /* Styling for the location card */
+    .location-card {
+        background-color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgb(25, 70, 202);
+    }
+            
+    /* Styling for the weekly target section */
+    #weekly-target {
+        position: fixed;
+        top: 250px;
+        left: 20px;
+        width: 280px;
+        background-color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgb(25, 70, 202);
+    }
+            
+    #weekly-target h3 {
+        font-size: 18px;
+        color: #333;
+        text-align: center;
+    }
+            
+    #target-input {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+            
+    #submit-target {
+        background-color:rgb(25, 70, 202);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        width: 100%;
+        cursor: pointer;
+        font-size: 16px;
+    }
+            
+    #submit-target:hover {
+        background-color: #00bfff;
+    }
+            
+    #target-feedback {
+        text-align: center;
+        color: green;
+        margin-top: 10px;
+    }
+    </style>
+            
     <!--Buttons for Reservation and Uploading Locations-->
     <div style="display: flex; justify-content: center; gap: 50px; margin-top: 50px;">
 
