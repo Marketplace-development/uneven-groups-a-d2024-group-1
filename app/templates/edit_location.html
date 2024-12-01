@@ -5,6 +5,23 @@
 {% endblock %}
 
 {% block body %}
+<div class="locations-container">
+    <!-- Buttons in the right upper corner -->
+    <div class="button-container" style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0px; z-index: 999;">
+        <form action="{{ url_for('main.main_page') }}" method="get" class="inline-form">
+            <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
+        </form>
+        <form action="{{ url_for('main.home') }}" method="get" class="inline-form">
+            <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Log out</button>
+        </form>
+    </div>
+
+    <!-- Logo -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+    </div>
+
+
 <!-- edit_location.html -->
 <div class="centered-form">
 <form-change action="{{ url_for('main.edit_location', location_id=location.id) }}" method="POST">
@@ -130,5 +147,5 @@
             Update Location
         </button>
     </div>
-</form>
+</form-change>
 {% endblock %}
