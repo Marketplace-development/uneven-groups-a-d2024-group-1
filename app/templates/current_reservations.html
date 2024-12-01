@@ -50,6 +50,9 @@
                     
                     <!-- Host's Name -->
                     <p><strong>Your Host:</strong> {{ reservation.location.username }}</p>
+
+                    <!-- Host's Phone Number -->
+                    <p><strong>Phonenumber:</strong> {{ reservation.location.user.phonenumber }}</p>
                     
                     <!-- Reservation Date -->
                     <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
@@ -105,6 +108,9 @@
                     <!-- Host's Name -->
                     <p><strong>Your Host:</strong> {{ reservation.location.username }}</p>
                     
+                    <!-- Host's Phone Number -->
+                    <p><strong>Phonenumber:</strong> {{ reservation.location.user.phonenumber }}</p>
+
                     <!-- Reservation Date -->
                     <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
                     
@@ -117,45 +123,10 @@
                     <!-- Number of Guests -->
                     <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
 
-                    <!-- Make a Review Button -->
-                    <button onclick="openReviewModal({{ reservation.id }})" style="margin-top: 10px;">Make a Review</button>
                 </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>You have no past reservations yet.</p>
-        {% endif %}
-    {% endblock %}
-
-</div>
-
-
-<!-- Review Modal -->
-<div id="reviewModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeReviewModal()">&times;</span>
-        <h2>Submit Your Review</h2>
-        <form action="{{ url_for('main.submit_review') }}" method="post">
-            <!-- Reservation ID -->
-            <input type="hidden" id="modalReservationId" name="reservation_id">
-            
-            <!-- 5-Star Rating -->
-            <label for="rating">Rating:</label>
-            <div id="starRating">
-                {% for i in range(1, 6) %}
-                <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}">
-                <label for="star{{ i }}" class="star">&#9733;</label>
-                {% endfor %}
-            </div>
-
-            <!-- Note -->
-            <label for="note">Write a Note:</label>
-            <textarea id="note" name="note" rows="4" placeholder="Write your review here..." required></textarea>
-
-            <!-- Submit Button -->
-            <button type="submit" style="margin-top: 10px;">Submit Review</button>
-        </form>
-    </div>
-</div>
-
-
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no past reservations yet.</p>
+    {% endif %}
+{% endblock %}

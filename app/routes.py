@@ -49,6 +49,15 @@ def signup():
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
 
+        # Basic validation
+        if not phonenumber.isdigit():
+            flash('Phone number must contain only digits.', 'error')
+            return redirect(url_for('main.signup'))
+        
+        if len(phonenumber) < 9 or len(phonenumber) > 15:
+            flash('Phone number must be between 9 and 15 digits.', 'error')
+            return redirect(url_for('main.signup'))
+
         if password != confirm_password:
             flash('Passwords do not match. Please try again.', 'error')
             return redirect(url_for('main.signup'))
@@ -56,10 +65,17 @@ def signup():
         password_hash = generate_password_hash(password, method='pbkdf2:sha256')
         new_user = User(username=username, phonenumber=phonenumber, password_hash=password_hash)
 
-        db.session.add(new_user)
-        db.session.commit()
-
-        return redirect(url_for('main.success'))
+        try:
+            # Add user to the database
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Account created successfully!', 'success')
+            return redirect(url_for('main.success'))
+        except:
+            # Handle duplicate entries (e.g., unique phone number or username constraint)
+            db.session.rollback()
+            flash('Username or phone number already exists.', 'error')
+            return redirect(url_for('main.signup'))
 
     return render_template('signup.html')
 
@@ -500,39 +516,3 @@ def delete_location():
 
     flash(f"Location '{location.location_name}' has been deleted.", "success")
     return redirect(url_for('main.location_bookings'))
-
-@main.route('/location/edit/<int:location_id>', methods=['GET', 'POST'])
-def edit_location(location_id):
-    # Retrieve the location from the database
-    location = Location.query.get_or_404(location_id)
-    
-    if request.method == 'POST':
-        # Get the updated details from the form
-        location_name = request.form.get("location_name")
-        location_type = request.form.get("location_type")
-        country = request.form.get("country")
-        postal_code = request.form.get("postal_code")
-        city = request.form.get("city")
-        street = request.form.get("street")
-        street_number = request.form.get("street_number")
-        chairs = int(request.form.get("chairs"))
-        
-        # Update only the changed fields (or keep the original ones)
-        location.location_name = location_name if location_name else location.location_name
-        location.location_type = location_type if location_type else location.location_type
-        location.country = country if country else location.country
-        location.postal_code = postal_code if postal_code else location.postal_code
-        location.city = city if city else location.city
-        location.street = street if street else location.street
-        location.street_number = street_number if street_number else location.street_number
-        location.chairs = chairs if chairs else location.chairs
-        
-
-        # Save the updated location
-        db.session.commit()
-        
-        # Redirect back to a page showing the updated information or success message
-        return redirect(url_for('main.location_bookings', location_id=location.id))
-    
-    # If it's a GET request, render the form to edit the location
-    return render_template('edit_location.html', location=location)

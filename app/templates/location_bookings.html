@@ -69,13 +69,6 @@
         </form>
     </div>
 
-    <!-- Change Location Button -->
-    <div class="change-location" style="text-align: center; margin-top: 30px;">
-        <form action="{{ url_for('main.edit_location', location_id=location.id) }}" method="get">
-            <button type="submit" class="btn-edit" style="font-size: 1.2em; padding: 10px 10px;">Change Location</button>
-        </form>
-    </div>
-
     <!-- Bookings Details -->
     <div class="bookings-details">
     <h3>Your location is booked by the following people:</h3>
@@ -85,6 +78,7 @@
             {% for reservation in reservations %}
                 <div class="reservation-card">
                     <p><strong>Username:</strong> {{ reservation.user.username }}</p>
+                    <p><strong>Phonenumber:</strong> {{ reservation.user.phonenumber }}</p>
                     <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
                     <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
                     <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
@@ -107,6 +101,7 @@
             {% for reservation in expired_reservations %}
                 <div class="reservation-card">
                     <p><strong>Username:</strong> {{ reservation.user.username }}</p>
+                    <p><strong>Phonenumber:</strong> {{ reservation.user.phonenumber }}</p>
                     <p><strong>Reservation Date:</strong> {{ reservation.reservation_time.strftime('%Y-%m-%d') }}</p>
                     <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
                     <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
