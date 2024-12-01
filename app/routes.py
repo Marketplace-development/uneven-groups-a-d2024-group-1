@@ -369,7 +369,7 @@ def cancel_reservation():
 def change_reservation():
     if request.method == 'GET':
         reservation_id = request.args.get('reservation_id')
-        
+
         if not reservation_id:
             flash('No reservation specified for modification.', 'error')
             return redirect(url_for('main.current_reservations'))
@@ -417,9 +417,24 @@ def change_reservation():
             flash('You are not authorized to change this reservation.', 'error')
             return redirect(url_for('main.current_reservations'))
 
+        # Fetch location details to check hours
+        location = Location.query.get_or_404(new_location)
+        open_time = location.opening_time  # Assuming these are stored as datetime.time
+        close_time = location.closing_time
+
+        # Validate reservation time
+        from datetime import datetime, timedelta
+        start_datetime = datetime.strptime(f"{new_date} {new_start_time}", "%Y-%m-%d %H:%M")
+        end_datetime = start_datetime + timedelta(minutes=int(new_duration))
+
+        # Check if the reservation is within opening hours
+        if start_datetime.time() < open_time or end_datetime.time() > close_time:
+            flash(f'Reservation must be within opening hours: {open_time.strftime("%H:%M")} - {close_time.strftime("%H:%M")}', 'error')
+            return redirect(url_for('main.change_reservation', reservation_id=reservation_id))
+
         # Update the reservation
         reservation.location_id = new_location
-        reservation.reservation_time = f"{new_date} {new_start_time}"
+        reservation.reservation_time = start_datetime
         reservation.study_time = new_duration
         reservation.number_of_guests = new_guests
 
@@ -427,6 +442,7 @@ def change_reservation():
 
         flash('Reservation successfully updated.', 'success')
         return redirect(url_for('main.current_reservations'))
+
 
 
 @main.route('/logout')
