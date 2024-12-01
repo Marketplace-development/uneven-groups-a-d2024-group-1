@@ -45,6 +45,7 @@ def login():
 def signup():
     if request.method == 'POST':
         username = request.form.get('username')
+        phonenumber = request.form.get('phonenumber')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
 
@@ -53,7 +54,7 @@ def signup():
             return redirect(url_for('main.signup'))
 
         password_hash = generate_password_hash(password, method='pbkdf2:sha256')
-        new_user = User(username=username, password_hash=password_hash)
+        new_user = User(username=username, phonenumber=phonenumber, password_hash=password_hash)
 
         db.session.add(new_user)
         db.session.commit()
