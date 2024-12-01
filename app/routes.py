@@ -184,21 +184,49 @@ def reservations():
 @main.route('/select_location', methods=['GET', 'POST'])
 @login_required
 def select_location():
-    # Get data from POST request
+    # Initialiseer variabelen
+    reservation_time = None
+    study_time = None
+    number_of_guests = None
+
+    # Haal gegevens op van POST- of GET-verzoeken
     if request.method == 'POST':
         reservation_time = request.form.get('reservation_time')
-        study_time = int(request.form.get('study_time'))
-        number_of_guests = int(request.form.get('number_of_guests'))
-    else:  # Fallback for GET requests
+        study_time = request.form.get('study_time')
+        number_of_guests = request.form.get('number_of_guests')
+    else:  # Voor GET-verzoeken
         reservation_time = request.args.get('reservation_time')
-        study_time = int(request.args.get('study_time'))
-        number_of_guests = int(request.args.get('number_of_guests'))
+        study_time = request.args.get('study_time')
+        number_of_guests = request.args.get('number_of_guests')
 
-    reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
-    
-    # Ensure that the function is being called
+    # Controleer of de vereiste gegevens aanwezig zijn
+    if not reservation_time or not study_time or not number_of_guests:
+        flash("All fields are required to proceed.", "error")
+        return redirect(url_for('main.reservations'))  # Stuur gebruiker terug naar het reserveringsformulier
+
+    # Converteer en valideer de gegevens
+    try:
+        reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
+    except ValueError:
+        flash("Invalid reservation time format.", "error")
+        return redirect(url_for('main.reservations'))
+
+    try:
+        study_time = int(study_time)
+        number_of_guests = int(number_of_guests)
+    except ValueError:
+        flash("Study time and number of guests must be valid numbers.", "error")
+        return redirect(url_for('main.reservations'))
+
+    # Controleer of de reserveringsdatum in de toekomst ligt
+    if reservation_datetime < datetime.now():
+        flash("You can only make reservations for future dates and times.", "error")
+        return redirect(url_for('main.reservations'))
+
+    # Roep de functie aan om beschikbare locaties te filteren
     available_locations = filter_available_locations(reservation_datetime, study_time, number_of_guests)
 
+    # Render de pagina met beschikbare locaties
     return render_template(
         'select_location.html',
         location_data=available_locations,
@@ -206,6 +234,7 @@ def select_location():
         study_time=study_time,
         number_of_guests=number_of_guests,
     )
+
 
 @main.route('/confirm_reservation', methods=['POST'])
 @login_required
@@ -363,86 +392,6 @@ def cancel_reservation():
 
     flash('Reservation successfully canceled.', 'success')
     return redirect(url_for('main.current_reservations'))
-
-@main.route('/change_reservation', methods=['GET', 'POST'])
-@login_required
-def change_reservation():
-    if request.method == 'GET':
-        reservation_id = request.args.get('reservation_id')
-
-        if not reservation_id:
-            flash('No reservation specified for modification.', 'error')
-            return redirect(url_for('main.current_reservations'))
-
-        # Get reservation
-        reservation = Reservation.query.get_or_404(reservation_id)
-
-        # Check if the current user owns the reservation
-        if reservation.user_id != current_user.id:
-            flash('You are not authorized to change this reservation.', 'error')
-            return redirect(url_for('main.current_reservations'))
-
-        # Show the change reservation page
-        all_locations = Location.query.all()  # Fetch all locations
-        return render_template('change_reservation.html', reservation=reservation, all_locations=all_locations)
-
-    elif request.method == 'POST':
-        # Log the received form data for debugging
-        print("Received form data:")
-        print("Reservation ID:", request.form.get('reservation_id'))
-        print("Location ID:", request.form.get('location'))
-        print("Date:", request.form.get('date'))
-        print("Start Time:", request.form.get('start_time'))
-        print("Duration:", request.form.get('duration'))
-        print("Number of Guests:", request.form.get('guests'))
-
-        # Get the form data
-        reservation_id = request.form.get('reservation_id')
-        new_location = request.form.get('location')
-        new_date = request.form.get('date')
-        new_start_time = request.form.get('start_time')
-        new_duration = request.form.get('duration')
-        new_guests = request.form.get('guests')
-
-        # Check if all required fields are provided
-        if not all([reservation_id, new_location, new_date, new_start_time, new_duration, new_guests]):
-            flash('All fields are required.', 'error')
-            return redirect(url_for('main.change_reservation', reservation_id=reservation_id))
-
-        # Get the reservation to modify
-        reservation = Reservation.query.get_or_404(reservation_id)
-
-        # Check if the current user owns the reservation
-        if reservation.user_id != current_user.id:
-            flash('You are not authorized to change this reservation.', 'error')
-            return redirect(url_for('main.current_reservations'))
-
-        # Fetch location details to check hours
-        location = Location.query.get_or_404(new_location)
-        open_time = location.opening_time  # Assuming these are stored as datetime.time
-        close_time = location.closing_time
-
-        # Validate reservation time
-        from datetime import datetime, timedelta
-        start_datetime = datetime.strptime(f"{new_date} {new_start_time}", "%Y-%m-%d %H:%M")
-        end_datetime = start_datetime + timedelta(minutes=int(new_duration))
-
-        # Check if the reservation is within opening hours
-        if start_datetime.time() < open_time or end_datetime.time() > close_time:
-            flash(f'Reservation must be within opening hours: {open_time.strftime("%H:%M")} - {close_time.strftime("%H:%M")}', 'error')
-            return redirect(url_for('main.change_reservation', reservation_id=reservation_id))
-
-        # Update the reservation
-        reservation.location_id = new_location
-        reservation.reservation_time = start_datetime
-        reservation.study_time = new_duration
-        reservation.number_of_guests = new_guests
-
-        db.session.commit()
-
-        flash('Reservation successfully updated.', 'success')
-        return redirect(url_for('main.current_reservations'))
-
 
 
 @main.route('/logout')
