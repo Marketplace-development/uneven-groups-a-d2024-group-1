@@ -221,7 +221,7 @@ def confirm_reservation():
 
     reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
     
-    current_time = datetime.utcnownow().replace(microsecond=0)
+    current_time = datetime.utcnow().replace(microsecond=0)
 
     print(f"Current time: {current_time}")
     print(f"Reservation time: {reservation_datetime}")
@@ -363,6 +363,70 @@ def cancel_reservation():
 
     flash('Reservation successfully canceled.', 'success')
     return redirect(url_for('main.current_reservations'))
+
+@main.route('/change_reservation', methods=['GET', 'POST'])
+@login_required
+def change_reservation():
+    if request.method == 'GET':
+        reservation_id = request.args.get('reservation_id')
+        
+        if not reservation_id:
+            flash('No reservation specified for modification.', 'error')
+            return redirect(url_for('main.current_reservations'))
+
+        # Get reservation
+        reservation = Reservation.query.get_or_404(reservation_id)
+
+        # Check if the current user owns the reservation
+        if reservation.user_id != current_user.id:
+            flash('You are not authorized to change this reservation.', 'error')
+            return redirect(url_for('main.current_reservations'))
+
+        # Show the change reservation page
+        all_locations = Location.query.all()  # Fetch all locations
+        return render_template('change_reservation.html', reservation=reservation, all_locations=all_locations)
+
+    elif request.method == 'POST':
+        # Log the received form data for debugging
+        print("Received form data:")
+        print("Reservation ID:", request.form.get('reservation_id'))
+        print("Location ID:", request.form.get('location'))
+        print("Date:", request.form.get('date'))
+        print("Start Time:", request.form.get('start_time'))
+        print("Duration:", request.form.get('duration'))
+        print("Number of Guests:", request.form.get('guests'))
+
+        # Get the form data
+        reservation_id = request.form.get('reservation_id')
+        new_location = request.form.get('location')
+        new_date = request.form.get('date')
+        new_start_time = request.form.get('start_time')
+        new_duration = request.form.get('duration')
+        new_guests = request.form.get('guests')
+
+        # Check if all required fields are provided
+        if not all([reservation_id, new_location, new_date, new_start_time, new_duration, new_guests]):
+            flash('All fields are required.', 'error')
+            return redirect(url_for('main.change_reservation', reservation_id=reservation_id))
+
+        # Get the reservation to modify
+        reservation = Reservation.query.get_or_404(reservation_id)
+
+        # Check if the current user owns the reservation
+        if reservation.user_id != current_user.id:
+            flash('You are not authorized to change this reservation.', 'error')
+            return redirect(url_for('main.current_reservations'))
+
+        # Update the reservation
+        reservation.location_id = new_location
+        reservation.reservation_time = f"{new_date} {new_start_time}"
+        reservation.study_time = new_duration
+        reservation.number_of_guests = new_guests
+
+        db.session.commit()
+
+        flash('Reservation successfully updated.', 'success')
+        return redirect(url_for('main.current_reservations'))
 
 
 @main.route('/logout')

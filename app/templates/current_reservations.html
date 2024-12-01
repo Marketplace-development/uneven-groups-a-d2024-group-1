@@ -63,6 +63,13 @@
                     <!-- Number of Guests -->
                     <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
 
+                    <!-- Change Reservation Button -->
+                    <form action="{{ url_for('main.change_reservation') }}" method="get">
+                        <!-- Hidden field for reservation ID -->
+                        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                        <button type="submit" class="btn-change">Change Reservation</button>
+                    </form>
+
                     <!-- Cancel Reservation Button -->
                     <form action="{{ url_for('main.cancel_reservation') }}" method="post">
                         <!-- Hidden field for reservation ID -->
