@@ -86,20 +86,7 @@ def success():
 @main.route('/main_page')
 @login_required
 def main_page():
-    # Calculate the average student rating
-    avg_rating = (
-        db.session.query(func.avg(Reservation.student_rating))
-        .filter(Reservation.user_id == current_user.id, Reservation.student_rating.isnot(None))
-        .scalar()
-    )
-    avg_rating = round(avg_rating) if avg_rating else None  # Round to the nearest integer or set to None
-
-    # Update the user's `user_rating` in the database
-    user = User.query.get(current_user.id)
-    user.user_rating = avg_rating
-    db.session.commit()
-
-    return render_template('main_page.html', avg_rating=avg_rating, user=current_user)
+    return render_template('main_page.html', user=current_user)
 
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():
@@ -263,7 +250,6 @@ def select_location():
         study_time=study_time,
         number_of_guests=number_of_guests,
     )
-
 
 @main.route('/confirm_reservation', methods=['POST'])
 @login_required
@@ -457,6 +443,10 @@ def current_reservations():
                     if 1 <= location_rating <= 5:
                         reservation.location_rating = location_rating
                         db.session.commit()
+
+                        # Update the location's average rating
+                        update_location_rating(reservation.location_id)
+
                         flash("Your rating has been saved successfully!", "success")
                     else:
                         flash("Invalid rating value. Please select a value between 1 and 5.", "error")
@@ -487,7 +477,8 @@ def current_reservations():
     return render_template(
         'current_reservations.html', 
         reservations=active_reservations,
-        expired_reservations=expired_reservations
+        expired_reservations=expired_reservations,
+        user_rating=current_user.user_rating
     )
 
 def expire_old_reservations(user_id):
@@ -525,6 +516,13 @@ def location_bookings():
                     if 1 <= student_rating <= 5:
                         reservation.student_rating = student_rating
                         db.session.commit()
+
+                        # Update the student's average rating
+                        update_user_rating(reservation.user_id)
+
+                        # Update the location owner's average rating
+                        update_user_rating(reservation.location.user_id)
+
                         flash("Your rating has been saved successfully!", "success")
                     else:
                         flash("Invalid rating value. Please select a value between 1 and 5.", "error")
@@ -550,24 +548,10 @@ def location_bookings():
     # Get expired reservations for this location
     expired_reservations = Reservation.query.filter_by(location_id=location.id, status='expired').all()
 
-    # Calculate the average location rating
-    avg_rating = (
-        db.session.query(func.avg(Reservation.student_rating))
-        .filter(Reservation.location_id == location.id, Reservation.student_rating.isnot(None))
-        .scalar()
-    )
-    avg_rating = round(avg_rating) if avg_rating else None  # Round to nearest integer or None
-
-    # Update the location's average rating in the database
-    if avg_rating is not None:
-        location.location_rating = avg_rating
-        db.session.commit()
-
     # Render the template, passing the location and reservations
     return render_template(
         'location_bookings.html',
         location=location, 
-        avg_rating=avg_rating,
         reservations=reservations,
         expired_reservations=expired_reservations
         )
@@ -596,3 +580,39 @@ def delete_location():
 
     flash(f"Location '{location.location_name}' has been deleted.", "success")
     return redirect(url_for('main.location_bookings'))
+
+def update_user_rating(user_id):
+    """ Calculate and update the average rating for a user. """
+    # Calculate the average student rating
+    avg_rating = (
+        db.session.query(func.avg(Reservation.student_rating))
+        .filter(Reservation.user_id == user_id, Reservation.student_rating.isnot(None))
+        .scalar()
+    )
+    avg_rating = round(avg_rating) if avg_rating else None  # Round to the nearest integer or set to None
+
+    # Update the user's `user_rating` in the database
+    user = User.query.get(user_id)
+    if user:
+        user.user_rating = avg_rating
+        db.session.commit()
+
+    return avg_rating
+
+def update_location_rating(location_id):
+    """ Calculate and update the average rating for a location. """
+    # Calculate the average location rating
+    avg_rating = (
+        db.session.query(func.avg(Reservation.location_rating))
+        .filter(Reservation.location_id == location_id, Reservation.location_rating.isnot(None))
+        .scalar()
+    )
+    avg_rating = round(avg_rating) if avg_rating else None  # Round to nearest integer or None
+
+    # Update the location's average rating in the database
+    location = Location.query.get(location_id)
+    if location and avg_rating is not None:
+        location.location_rating = avg_rating
+        db.session.commit()
+
+    return avg_rating

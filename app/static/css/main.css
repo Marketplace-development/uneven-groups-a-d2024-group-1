@@ -60,6 +60,51 @@ p {
     margin-right: 5px;
 }
 
+#student-rating h3 {
+    font-size: 2em;
+    text-align: center;
+    color: #333;
+    margin-bottom: 0px;
+}
+
+.star {
+    font-size: 4em;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: transform 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+}
+
+/* Filled star styling */
+.star.filled {
+    color: gold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* Empty star styling */
+.star.empty {
+    color: lightgray;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Hover effects */
+.star:hover {
+    transform: scale(1.2);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 223, 0, 1);
+}
+
+/* Filled star hover */
+.star.filled:hover {
+    color: orange;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 140, 0, 1);
+}
+
+/* Empty star hover */
+.star.empty:hover {
+    color: white;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 223, 0, 0.8);
+}
+
+
 .btn {
     padding: 10px 30px;
     font-size: 1em;
@@ -95,7 +140,8 @@ p {
 }
 
 .btn-black:hover {
-    background-color: #444;
+    background-color: transparent;
+    color: rgb(25, 70, 202);
 }
 
 form input[type="text"],
@@ -412,6 +458,14 @@ input[type="radio"]:checked + .location-card {
     color: #555;
 }
 
+.location-card strong {
+    color: black;
+}
+
+.location-card li {
+    color: #555;
+}
+
 /* Add hover effect to cards */
 .location-card:hover {
     transform: scale(1.02); /* Slight zoom on hover */
@@ -669,4 +723,74 @@ label {
     font-weight: bold;
     padding-top: 5px; 
     padding-bottom: 5px;
+}
+
+/* Styling for the highlighted location section */
+#highlighted-location {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 250px;
+    background-color: #f0f8ff;
+    border: 2px solid #1e90ff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgb(25, 70, 202);
+    z-index: 1000;
+}
+
+/* Styling for the location card */
+.location-card {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(25, 70, 202);
+}
+
+/* Styling for the weekly target section */
+#weekly-target {
+    position: fixed;
+    top: 250px;
+    left: 20px;
+    width: 280px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(25, 70, 202);
+}
+
+#weekly-target h3 {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+
+#target-input {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+#submit-target {
+    background-color: rgb(25, 70, 202);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#submit-target:hover {
+    background-color: #00bfff;
+}
+
+#target-feedback {
+    text-align: center;
+    color: green;
+    margin-top: 10px;
 }

@@ -99,6 +99,20 @@
                     <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
                     <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
                     <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
+                    <p><strong>Student's Rating:</strong>
+                        <!-- Display stars for user's rating -->
+                        {% if reservation.user.user_rating %}
+                            {% for star in range(1, 6) %}
+                                {% if star <= reservation.user.user_rating %}
+                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                                {% else %}
+                                    <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            No rating yet.
+                        {% endif %}
+                    </p>
                 </div>
             {% endfor %}
             

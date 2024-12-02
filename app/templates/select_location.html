@@ -54,10 +54,24 @@
                     {% for item in location_data %}
                     <label>
                         <input type="radio" name="location_id" value="{{ item.location.id }}" class="location-card-input" required>
-                        <div class="location-card">
+                        <div class="location-card" style="height: 540px;">
                             <h3>{{ item.location.location_name }}</h3>
                             <img src="{{ url_for('static', filename='images/' ~ item.location.location_picture ~ '.jpg') }}" 
                                 alt="Image of {{ item.location.location_name }}">
+
+                            <!-- Average Location Rating Display -->
+                            {% if item.location.location_rating %}
+                                {% for star in range(5) %}
+                                    {% if star < item.location.location_rating %}
+                                        <span class="star filled" style="font-size: 2em;">&#9733;</span>
+                                    {% else %}
+                                        <span class="star empty" style="font-size: 2em;">&#9733;</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <span>No Rating Yet</span>
+                            {% endif %}
+
                             <p><strong>Type:</strong> {{ item.location.location_type }}</p>
                             <p><strong>Address:</strong>
                                 {{ item.location.street }} {{ item.location.street_number }},
@@ -71,43 +85,43 @@
                                 {% if item.location.monday_open and item.location.monday_close %}
                                     <li><strong>Monday:</strong> {{ item.location.monday_open }}h - {{ item.location.monday_close }}h</li>
                                 {% else %}
-                                    <li>Monday: Closed</li>
+                                    <li><strong>Monday:</strong> Closed</li>
                                 {% endif %}
 
                                 {% if item.location.tuesday_open and item.location.tuesday_close %}
                                     <li><strong>Tuesday:</strong> {{ item.location.tuesday_open }}h - {{ item.location.tuesday_close }}h</li>
                                 {% else %}
-                                    <li>Tuesday: Closed</li>
+                                    <li><strong>Tuesday:</strong> Closed</li>
                                 {% endif %}
 
                                 {% if item.location.wednesday_open and item.location.wednesday_close %}
                                     <li><strong>Wednesday:</strong> {{ item.location.wednesday_open }}h - {{ item.location.wednesday_close }}h</li>
                                 {% else %}
-                                    <li>Wednesday: Closed</li>
+                                    <li><strong>Wednesday:</strong> Closed</li>
                                 {% endif %}
 
                                 {% if item.location.thursday_open and item.location.thursday_close %}
                                     <li><strong>Thursday:</strong> {{ item.location.thursday_open }}h - {{ item.location.thursday_close }}h</li>
                                 {% else %}
-                                    <li>Thursday: Closed</li>
+                                    <li><strong>Thursday:</strong> Closed</li>
                                 {% endif %}
 
                                 {% if item.location.friday_open and item.location.friday_close %}
                                     <li><strong>Friday:</strong> {{ item.location.friday_open }}h - {{ item.location.friday_close }}h</li>
                                 {% else %}
-                                    <li>Friday: Closed</li>
+                                    <li><strong>Friday:</strong> Closed</li>
                                 {% endif %}
 
                                 {% if item.location.saturday_open and item.location.saturday_close %}
                                     <li><strong>Saturday:</strong> {{ item.location.saturday_open }}h - {{ item.location.saturday_close }}h</li>
                                 {% else %}
-                                    <li>Saturday: Closed</li>
+                                    <li><strong>Saturday:</strong> Closed</li>
                                 {% endif %}
 
                                 {% if item.location.sunday_open and item.location.sunday_close %}
                                     <li><strong>Sunday:</strong> {{ item.location.sunday_open }}h - {{ item.location.sunday_close }}h</li>
                                 {% else %}
-                                    <li>Sunday: Closed</li>
+                                    <li><strong>Sunday:</strong> Closed</li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -125,9 +139,9 @@
     </div>
 
     <!-- Change Timeslot Button -->
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="text-align: center; margin-top: 0px;">
         <form method="GET" action="{{ url_for('main.reservations') }}">
-            <button type="submit" class="btn btn-primary">Change Your Timeslot</button>
+            <button type="submit" class="btn btn-transparant">Change Your Timeslot</button>
         </form>
     </div>
 </div>

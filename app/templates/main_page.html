@@ -33,89 +33,17 @@
         </form>
         <p id="target-feedback"></p>
     </div>
-    
-    <style>
-    /* Styling for the highlighted location section */
-    #highlighted-location {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        width: 250px;
-        background-color: #f0f8ff;
-        border: 2px solid #1e90ff;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgb(25, 70, 202);
-        z-index: 1000;
-    }
-            
-    /* Styling for the location card */
-    .location-card {
-        background-color: #fff;
-        padding: 10px;
-        margin-top: 10px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgb(25, 70, 202);
-    }
-            
-    /* Styling for the weekly target section */
-    #weekly-target {
-        position: fixed;
-        top: 250px;
-        left: 20px;
-        width: 280px;
-        background-color: #fff;
-        padding: 10px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgb(25, 70, 202);
-    }
-            
-    #weekly-target h3 {
-        font-size: 18px;
-        color: #333;
-        text-align: center;
-    }
-            
-    #target-input {
-        width: 80%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 14px;
-    }
-            
-    #submit-target {
-        background-color:rgb(25, 70, 202);
-        color: white;
-        padding: 10px 15px;
-        border: none;
-        border-radius: 5px;
-        width: 100%;
-        cursor: pointer;
-        font-size: 16px;
-    }
-            
-    #submit-target:hover {
-        background-color: #00bfff;
-    }
-            
-    #target-feedback {
-        text-align: center;
-        color: green;
-        margin-top: 10px;
-    }
-    </style>
 
     <!-- The Student's Average Rating -->
     <div id="student-rating">
-        <h3 style="font-size: 2em;">Your Rating:</h3>
+        <h3>Your Rating:</h3>
         {% if user.user_rating %}
             <!-- Display stars for received location rating -->
-            {% for star in range(5) %}  <!-- Loop through 5 stars -->
-                {% if star < user.user_rating %}  <!-- Compare 0-based index -->
-                    <span style="color: gold; font-size: 4em;">&#9733;</span>  <!-- Filled star -->
+            {% for star in range(5) %}
+                {% if star < user.user_rating %}
+                    <span class="star filled">&#9733;</span>
                 {% else %}
-                    <span style="color: white; font-size: 4em;">&#9733;</span>  <!-- Empty star -->
+                    <span class="star empty">&#9733;</span>
                 {% endif %}
             {% endfor %}
         {% else %}
