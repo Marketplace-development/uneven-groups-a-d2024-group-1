@@ -72,6 +72,7 @@ class Reservation(db.Model):
     number_of_guests = db.Column(db.Integer, nullable=False)
     study_time = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String(10), nullable=False, default="active")
+    location_rating = db.Column(db.Integer, nullable=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships

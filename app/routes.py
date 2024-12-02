@@ -429,6 +429,33 @@ def reservation_successful():
 @main.route('/current_reservations', methods=['GET', 'POST'])
 @login_required
 def current_reservations():
+    if request.method == 'POST':
+        # Process location rating submission
+        reservation_id = request.form.get('reservation_id')
+        location_rating = request.form.get('location_rating')
+
+        if reservation_id and location_rating:
+            reservation = Reservation.query.get_or_404(reservation_id)
+
+            # Ensure the user owns the reservation
+            if reservation.user_id == current_user.id:
+                try:
+                    location_rating = int(location_rating)
+                    if 1 <= location_rating <= 5:
+                        reservation.location_rating = location_rating
+                        db.session.commit()
+                        flash("Your rating has been saved successfully!", "success")
+                    else:
+                        flash("Invalid rating value. Please select a value between 1 and 5.", "error")
+                except ValueError:
+                    flash("Invalid rating input. Please try again.", "error")
+            else:
+                flash("You are not authorized to rate this reservation.", "error")
+        else:
+            flash("Missing reservation ID or rating value.", "error")
+
+        return redirect(url_for('main.current_reservations'))
+
     reservations = Reservation.query \
         .join(Location, Reservation.location_id == Location.id) \
         .filter(Reservation.user_id == current_user.id).all()

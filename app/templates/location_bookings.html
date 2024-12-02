@@ -106,6 +106,23 @@
                     <p><strong>Reservation Time:</strong> {{ reservation.reservation_time.strftime('%H:%M') }}</p>
                     <p><strong>Study Time:</strong> {{ reservation.study_time }} minutes</p>
                     <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
+
+                    <!-- Display the Location Rating from Student (if available) -->
+                    {% if reservation.location_rating %}
+                        <p><strong>Received Rating:</strong>
+                            <!-- Display stars for received location rating -->
+                            {% for star in range(1, 6) %}
+                                {% if star <= reservation.location_rating %}
+                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                                {% else %}
+                                    <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    {% else %}
+                        <p><strong>Received Rating:</strong> No rating yet.</p>
+                    {% endif %}
+
                 </div>
             {% endfor %}  
         </div>

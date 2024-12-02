@@ -22,6 +22,44 @@ p {
     font-size: 1.2em;
 }
 
+/* Styles for the rating form */
+.rating-form {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Hide the radio buttons */
+.rating-form input[type="radio"] {
+    display: none;
+}
+
+/* Style for the stars */
+.rating-form label {
+    font-size: 1.5em;
+    color: lightgray; /* Default color for unselected stars */
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    display: inline-block;
+    margin: 0;
+}
+
+/* Hover Effect: highlight the stars from left to right (gold) */
+.rating-form input[type="radio"]:not(:checked) + label:hover,
+.rating-form input[type="radio"]:not(:checked) + label:hover ~ label {
+    color: #FFD700; /* Highlight hovered star and all to the left in gold */
+}
+
+/* When a star is selected (checked), highlight from left to right (gold) */
+.rating-form input[type="radio"]:checked ~ label,
+.rating-form input[type="radio"]:checked + label {
+    color: #FFD700; /* Highlight selected star and all previous ones in gold */
+}
+
+/* Add some space between the stars */
+.rating-form label {
+    margin-right: 5px;
+}
+
 .btn {
     padding: 10px 30px;
     font-size: 1em;
