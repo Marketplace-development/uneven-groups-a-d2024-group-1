@@ -105,6 +105,23 @@
         margin-top: 10px;
     }
     </style>
+
+    <!-- The Student's Average Rating -->
+    <div id="student-rating">
+        <h3 style="font-size: 2em;">Your Rating:</h3>
+        {% if user.user_rating %}
+            <!-- Display stars for received location rating -->
+            {% for star in range(5) %}  <!-- Loop through 5 stars -->
+                {% if star < user.user_rating %}  <!-- Compare 0-based index -->
+                    <span style="color: gold; font-size: 4em;">&#9733;</span>  <!-- Filled star -->
+                {% else %}
+                    <span style="color: white; font-size: 4em;">&#9733;</span>  <!-- Empty star -->
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>No rating yet.</p>
+        {% endif %}
+    </div>
             
     <!--Buttons for Reservation and Uploading Locations-->
     <div style="display: flex; justify-content: center; gap: 50px; margin-top: 50px;">

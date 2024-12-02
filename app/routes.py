@@ -84,9 +84,22 @@ def success():
     return render_template('success.html')
 
 @main.route('/main_page')
-#@login_required
+@login_required
 def main_page():
-    return render_template('main_page.html')
+    # Calculate the average student rating
+    avg_rating = (
+        db.session.query(func.avg(Reservation.student_rating))
+        .filter(Reservation.user_id == current_user.id, Reservation.student_rating.isnot(None))
+        .scalar()
+    )
+    avg_rating = round(avg_rating) if avg_rating else None  # Round to the nearest integer or set to None
+
+    # Update the user's `user_rating` in the database
+    user = User.query.get(current_user.id)
+    user.user_rating = avg_rating
+    db.session.commit()
+
+    return render_template('main_page.html', avg_rating=avg_rating, user=current_user)
 
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():
@@ -537,14 +550,27 @@ def location_bookings():
     # Get expired reservations for this location
     expired_reservations = Reservation.query.filter_by(location_id=location.id, status='expired').all()
 
+    # Calculate the average location rating
+    avg_rating = (
+        db.session.query(func.avg(Reservation.student_rating))
+        .filter(Reservation.location_id == location.id, Reservation.student_rating.isnot(None))
+        .scalar()
+    )
+    avg_rating = round(avg_rating) if avg_rating else None  # Round to nearest integer or None
+
+    # Update the location's average rating in the database
+    if avg_rating is not None:
+        location.location_rating = avg_rating
+        db.session.commit()
+
     # Render the template, passing the location and reservations
     return render_template(
         'location_bookings.html',
         location=location, 
+        avg_rating=avg_rating,
         reservations=reservations,
         expired_reservations=expired_reservations
         )
-
 
 @main.route('/delete_location', methods=['POST'])
 @login_required

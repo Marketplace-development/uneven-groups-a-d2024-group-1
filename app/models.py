@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=False, unique=True)
     phonenumber = db.Column(db.String(15), nullable=False, unique=True)
+    user_rating = db.Column(db.Integer, nullable=True)
     password_hash = db.Column(db.String(128), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -31,6 +32,7 @@ class Location(db.Model):
     street = db.Column(db.String(100), nullable=False)
     street_number = db.Column(db.String(10), nullable=False)
     chairs = db.Column(db.Integer, nullable=False)
+    location_rating = db.Column(db.Integer, nullable=True)
 
     # Opening hours for each day of the week
     monday_open = db.Column(db.String(10), nullable=True)
