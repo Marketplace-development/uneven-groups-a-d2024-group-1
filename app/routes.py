@@ -497,6 +497,33 @@ def expire_old_reservations(user_id):
 @main.route('/location_bookings', methods=['GET', 'POST'])
 @login_required
 def location_bookings():
+    if request.method == 'POST':
+        # Process location rating submission
+        reservation_id = request.form.get('reservation_id')
+        student_rating = request.form.get('student_rating')
+
+        if reservation_id and student_rating:
+            reservation = Reservation.query.get_or_404(reservation_id)
+
+            # Ensure the user owns the location
+            if reservation.location and reservation.location.user_id == current_user.id:
+                try:
+                    student_rating = int(student_rating)
+                    if 1 <= student_rating <= 5:
+                        reservation.student_rating = student_rating
+                        db.session.commit()
+                        flash("Your rating has been saved successfully!", "success")
+                    else:
+                        flash("Invalid rating value. Please select a value between 1 and 5.", "error")
+                except ValueError:
+                    flash("Invalid rating input. Please try again.", "error")
+            else:
+                flash("You are not authorized to rate this reservation.", "error")
+        else:
+            flash("Missing reservation ID or rating value.", "error")
+
+        return redirect(url_for('main.location_bookings'))
+
     # Fetch the active location of the current logged-in user
     location = Location.query.filter_by(username=current_user.username, status='active').first()
 

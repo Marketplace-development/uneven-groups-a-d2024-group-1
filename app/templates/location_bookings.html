@@ -123,6 +123,18 @@
                         <p><strong>Received Rating:</strong> No rating yet.</p>
                     {% endif %}
 
+                    <!-- Rate the student -->
+                    <form method="POST" class="rating-form">
+                        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                        <strong>Rate the Student:</strong>
+                        {% for star in range(1, 6) %}
+                            <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="student_rating" value="{{ star }}"
+                                   {% if reservation.student_rating == star %}checked{% endif %}>
+                            <label for="star{{ star }}-{{ reservation.id }}">&#9733;</label>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-transparant">Submit</button>
+                    </form>
+
                 </div>
             {% endfor %}  
         </div>

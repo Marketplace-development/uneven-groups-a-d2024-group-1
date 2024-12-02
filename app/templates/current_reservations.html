@@ -123,7 +123,23 @@
                     <!-- Number of Guests -->
                     <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
 
-                    <!-- Rating -->
+                    <!-- Display the Rating from Location Owner (if available) -->
+                    {% if reservation.student_rating %}
+                        <p><strong>Received Rating:</strong>
+                            <!-- Display stars for received location rating -->
+                            {% for star in range(1, 6) %}
+                                {% if star <= reservation.student_rating %}
+                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                                {% else %}
+                                    <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    {% else %}
+                        <p><strong>Received Rating:</strong> No rating yet.</p>
+                    {% endif %}
+
+                    <!-- Rate the location -->
                     <form method="POST" class="rating-form">
                         <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
                         <strong>Rate Your Experience:</strong>
