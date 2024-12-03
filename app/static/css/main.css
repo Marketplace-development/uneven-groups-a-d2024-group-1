@@ -728,14 +728,14 @@ label {
 /* Styling for the highlighted location section */
 #highlighted-location {
     position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 250px;
+    top: 40px;
+    left: 40px;
+    width: 280px;
     background-color: #f0f8ff;
-    border: 2px solid #1e90ff;
+    border: 1px solid #1e90ff;
     padding: 20px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgb(25, 70, 202);
-    z-index: 1000;
 }
 
 /* Styling for the location card */
@@ -751,9 +751,10 @@ label {
 #weekly-target {
     position: fixed;
     top: 250px;
-    left: 20px;
+    left: 40px;
     width: 280px;
-    background-color: #fff;
+    background-color:#f0f8ff;
+    border: 1px solid #1e90ff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgb(25, 70, 202);
