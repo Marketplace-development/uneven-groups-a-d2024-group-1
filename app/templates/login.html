@@ -13,14 +13,6 @@
         <div id="message" style="text-align: center; color: {{ message_color }}; font-size: 1.2em; margin-bottom: 20px;">
             {{ message }}
         </div>
-        {% if message_color == 'green' %}
-            <!-- Redirect only if the message is green (successful login) -->
-            <script>
-                setTimeout(function() {
-                    window.location.href = "{{ url_for('main.main_page') }}"; // Redirect to the main page
-                }, 0);
-            </script>
-        {% endif %}
     {% endif %}
 
     <!-- Login Form -->
@@ -32,9 +24,10 @@
         <!-- Password -->
         <label for="password">Password</label>
         <div style="position: relative;">
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required style="padding-right: 40px;">
             <button type="button" onclick="togglePassword()" style="position: absolute; right: 10px; top: 5px; background: none; border: none; cursor: pointer;">👁️</button>
         </div>
+
         <script>
             function togglePassword() {
                 const passwordField = document.getElementById('password');
@@ -42,6 +35,7 @@
                 passwordField.type = type;
             }
         </script>
+
 
         <button type="submit" class="btn btn-black">Log in</button>
     </form>

@@ -747,6 +747,7 @@ label {
     box-shadow: 0 4px 8px rgb(25, 70, 202);
 }
 
+/* Styling for weekly targets */
 #weekly-target {
     position: fixed;
     top: 250px;
@@ -776,7 +777,7 @@ label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0px;
+    margin-bottom: -15px;
 }
 
 .time-select-group label {
@@ -803,21 +804,6 @@ label {
     margin: 0 auto;
 }
 
-button {
-    background-color: rgb(25, 70, 202);
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #00bfff;
-}
-
 button[name="delete_minutes_target"], button[name="delete_sessions_target"] {
     background-color: red;
     color: white;
@@ -826,6 +812,7 @@ button[name="delete_minutes_target"], button[name="delete_sessions_target"] {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    width: 100%;
 }
 
 button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"]:hover {

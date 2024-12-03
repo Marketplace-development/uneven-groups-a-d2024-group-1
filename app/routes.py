@@ -16,6 +16,8 @@ main = Blueprint('main', __name__)
 def home():
     return render_template('home.html')
 
+from flask import redirect, url_for
+
 @main.route('/login', methods=['GET', 'POST'])
 def login():
     message = None
@@ -32,13 +34,13 @@ def login():
             login_user(user)
             message = "Login Successful!"
             message_color = "green"
-            return render_template('login.html', message=message, message_color=message_color)  # Show message before redirect
+            return redirect(url_for('main.main_page'))  # Redirect to the main page after login
         else:
             message = "Login Failed."
             message_color = "red"
             return render_template('login.html', message=message, message_color=message_color)  # Show message if login failed
 
-    return render_template('login.html')
+    return render_template('login.html', message=message, message_color=message_color)
 
 
 @main.route('/signup', methods=['GET', 'POST'])
