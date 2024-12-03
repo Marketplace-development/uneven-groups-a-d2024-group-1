@@ -83,10 +83,126 @@ def signup():
 def success():
     return render_template('success.html')
 
-@main.route('/main_page')
+@main.route('/main_page', methods=['GET', 'POST'])
 @login_required
 def main_page():
-    return render_template('main_page.html', user=current_user)
+    # Get the current date
+    today = datetime.today()
+
+    # Get the start of the week (Monday) and the end of the week (Sunday)
+    start_of_week = today - timedelta(days=today.weekday())  # Monday
+    end_of_week = start_of_week + timedelta(days=6)  # Sunday
+
+    # Calculate the number of completed sessions this week
+    completed_sessions = db.session.query(Reservation).filter(
+        Reservation.user_id == current_user.id,  # Filter by current user
+        Reservation.date >= start_of_week.date(),  # Reservations this week
+        Reservation.date <= end_of_week.date(),  # Reservations this week
+        Reservation.status == 'active',  # Only active (completed) reservations
+        Reservation.date < today.date()  # Only count past reservations (before today)
+    ).count()
+
+    # Calculate the total study time for completed sessions this week
+    completed_study_time = db.session.query(db.func.sum(Reservation.study_time)).filter(
+        Reservation.user_id == current_user.id,  # Filter by current user
+        Reservation.date >= start_of_week.date(),  # Reservations this week
+        Reservation.date <= end_of_week.date(),  # Reservations this week
+        Reservation.status == 'active',  # Only active (completed) reservations
+        Reservation.date < today.date()  # Only count past reservations (before today)
+    ).scalar() or 0  # Use 0 if no study time exists
+
+    # Get the target study time and sessions for the week from the user model
+    target_study_time = current_user.minutes_target if current_user.minutes_target else 0  # Fallback to 0
+    target_sessions = current_user.sessions_target if current_user.sessions_target else 0  # Fallback to 0
+
+    # Check if the user has reached their targets
+    study_time_reached = completed_study_time >= target_study_time if target_study_time else False
+    sessions_reached = completed_sessions >= target_sessions if target_sessions else False
+
+    # Prepare the congratulations message
+    congratulations_message = ""
+    if study_time_reached and sessions_reached:
+        congratulations_message = "Congratulations, you reached both your study time and session targets this week!"
+    elif study_time_reached:
+        congratulations_message = "Congratulations, you reached your study time target this week!"
+    elif sessions_reached:
+        congratulations_message = "Congratulations, you reached your study session target this week!"
+
+    # Format the study times in hours and minutes
+    completed_hours, completed_minutes = divmod(completed_study_time, 60)
+    target_hours, target_minutes = divmod(target_study_time, 60)
+
+    # Format the dates to display "2 December - 8 December"
+    start_of_week_str = start_of_week.strftime('%d %B')  # Day Month (e.g., 2 December)
+    end_of_week_str = end_of_week.strftime('%d %B')  # Day Month (e.g., 8 December)
+
+    # Combine the start and end of the week into one string
+    week_range = f"{start_of_week_str} - {end_of_week_str}"
+    if request.method == 'POST':
+        # Handle setting the study time target (minutes)
+        if 'hours' in request.form and 'minutes' in request.form:
+            hours = request.form['hours']
+            minutes = request.form['minutes']
+            total_minutes = int(hours) * 60 + int(minutes)
+            current_user.minutes_target = total_minutes
+
+        # Handle setting the study sessions target
+        if 'sessions_target' in request.form:
+            sessions_target = request.form['sessions_target']
+            current_user.sessions_target = int(sessions_target)
+
+        # Handle deleting the study time target (minutes)
+        if 'delete_minutes_target' in request.form:
+            delete_target(current_user, 'minutes')
+
+        # Handle deleting the study sessions target
+        if 'delete_sessions_target' in request.form:
+            delete_target(current_user, 'sessions')
+
+        # Commit changes to the database
+        try:
+            db.session.commit()
+            flash("Targets updated successfully!", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"An error occurred while updating the target: {str(e)}", "error")
+
+        return redirect(url_for('main.main_page'))
+
+    return render_template('main_page.html', user=current_user, week_range=week_range,
+                           completed_sessions=completed_sessions, target_sessions=target_sessions,
+                           completed_study_time=completed_study_time, target_study_time=target_study_time,
+                           completed_hours=completed_hours, completed_minutes=completed_minutes,
+                           target_hours=target_hours, target_minutes=target_minutes,
+                           congratulations_message=congratulations_message)
+
+
+def delete_target(user, target_type):
+    """
+    Deletes the specified target for a user.
+    
+    Parameters:
+        user (User): The user object whose target needs to be deleted.
+        target_type (str): The type of target to delete, either 'minutes' or 'sessions'.
+    
+    Returns:
+        str: A success or error message.
+    """
+    try:
+        if target_type == 'minutes':
+            user.minutes_target = None
+        elif target_type == 'sessions':
+            user.sessions_target = None
+        else:
+            return "Invalid target type specified."
+
+        # Commit the changes to the database
+        db.session.commit()
+        return "Target deleted successfully."
+    except Exception as e:
+        db.session.rollback()
+        return f"An error occurred while deleting the target: {str(e)}"
+
 
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():

@@ -747,14 +747,13 @@ label {
     box-shadow: 0 4px 8px rgb(25, 70, 202);
 }
 
-/* Styling for the weekly target section */
 #weekly-target {
     position: fixed;
     top: 250px;
     left: 20px;
     width: 280px;
     background-color: #fff;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgb(25, 70, 202);
 }
@@ -763,18 +762,48 @@ label {
     font-size: 18px;
     color: #333;
     text-align: center;
+    margin-bottom: 15px;
 }
 
-#target-input {
-    width: 80%;
+#minutes-target h4, #sessions-target h4 {
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.time-select-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.time-select-group label {
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+#hours-select, #minutes-select {
+    width: 45%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#sessions-target select {
+    width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-bottom: 10px;
     font-size: 14px;
+    display: block;
+    margin: 0 auto;
 }
 
-#submit-target {
+button {
     background-color: rgb(25, 70, 202);
     color: white;
     padding: 10px 15px;
@@ -785,12 +814,28 @@ label {
     font-size: 16px;
 }
 
-#submit-target:hover {
+button:hover {
     background-color: #00bfff;
 }
 
-#target-feedback {
-    text-align: center;
+button[name="delete_minutes_target"], button[name="delete_sessions_target"] {
+    background-color: red;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"]:hover {
+    background-color: darkred;
+}
+
+.congratulations {
+    font-size: 18px;
+    font-weight: bold;
     color: green;
-    margin-top: 10px;
+    text-align: center;
+    margin-top: 15px;
 }

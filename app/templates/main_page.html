@@ -24,16 +24,72 @@
         </div>
     </div>
 
-    <!-- Target Setting Section -->
+    <!-- Target container -->
     <div id="weekly-target">
-        <h3>Set Your Target for the Week</h3>
-        <form id="target-form">
-            <textarea id="target-input" placeholder="Enter your target for this week..." rows="4"></textarea>
-            <button type="submit" id="submit-target">Set Target</button>
-        </form>
-        <p id="target-feedback"></p>
+        <h3>Set Your Targets for this Week!</h3>
+
+        <!-- This week's date range -->
+        <p>{{ week_range }}</p>
+
+        <!-- Display the congratulations message if the user reached their targets -->
+        {% if congratulations_message %}
+            <p class="congratulations">{{ congratulations_message }}</p>
+        {% endif %}
+
+        <!-- Study Time Target Section -->
+        <div id="minutes-target">
+            <h4>Study Time Target:</h4>
+            {% if user.minutes_target %}
+                <!-- Display the target if set -->
+                <p>{{ completed_hours }}h{{ completed_minutes }}min / {{ target_hours }}h{{ target_minutes }}min</p>
+                <form action="{{ url_for('main.main_page') }}" method="POST">
+                    <button type="submit" name="delete_minutes_target">Delete Target</button>
+                </form>
+            {% else %}
+                <!-- Show input if no target is set -->
+                <form action="{{ url_for('main.main_page') }}" method="POST" class="time-target-form">
+                    <div class="time-select-group">
+                        <select name="hours" id="hours-select">
+                            {% for hour in range(0, 100) %}
+                            <option value="{{ hour }}">{{ hour }} hour{{ '' if hour == 1 else 's' }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select name="minutes" id="minutes-select">
+                            {% for minute in [0, 15, 30, 45] %}
+                            <option value="{{ minute }}">{{ minute }} minute{{ '' if minute == 1 else 's' }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit">Set Study Time Target</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <!-- Study Sessions Target Section -->
+        <div id="sessions-target">
+            <h4>Study Sessions Target:</h4>
+            {% if user.sessions_target %}
+                <!-- Display the target if set -->
+                <p>{{ completed_sessions }} / {{ target_sessions }} sessions</p>
+                <form action="{{ url_for('main.main_page') }}" method="POST">
+                    <button type="submit" name="delete_sessions_target">Delete Target</button>
+                </form>
+            {% else %}
+                <!-- Show input if no target is set -->
+                <form action="{{ url_for('main.main_page') }}" method="POST">
+                    <select name="sessions_target" id="sessions-select">
+                        {% for session in range(0, 29) %}
+                        <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
+                        {% endfor %}
+                    </select>
+                    <button style="margin-top: 15px;" type="submit">Set Study Sessions Target</button>
+                </form>
+            {% endif %}
+        </div>
     </div>
 
+    
     <!-- Welcom Back -->
     <h1 style="color: grey;">Welcome,<br>{{ user.username }}</h1>
 
