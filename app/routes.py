@@ -98,7 +98,7 @@ def main_page():
         Reservation.user_id == current_user.id,  # Filter by current user
         Reservation.date >= start_of_week.date(),  # Reservations this week
         Reservation.date <= end_of_week.date(),  # Reservations this week
-        Reservation.status == 'active',  # Only active (completed) reservations
+        Reservation.status == 'expired',  # Only active (completed) reservations
         Reservation.date < today.date()  # Only count past reservations (before today)
     ).count()
 
@@ -107,7 +107,7 @@ def main_page():
         Reservation.user_id == current_user.id,  # Filter by current user
         Reservation.date >= start_of_week.date(),  # Reservations this week
         Reservation.date <= end_of_week.date(),  # Reservations this week
-        Reservation.status == 'active',  # Only active (completed) reservations
+        Reservation.status == 'expired',  # Only active (completed) reservations
         Reservation.date < today.date()  # Only count past reservations (before today)
     ).scalar() or 0  # Use 0 if no study time exists
 
