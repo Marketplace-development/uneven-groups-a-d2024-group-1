@@ -43,17 +43,13 @@ p {
     margin: 0;
 }
 
-/* Hover Effect: highlight the stars from left to right (gold) */
-.rating-form input[type="radio"]:not(:checked) + label:hover,
-.rating-form input[type="radio"]:not(:checked) + label:hover ~ label {
-    color: #FFD700; /* Highlight hovered star and all to the left in gold */
-}
+/* Removed hover effect CSS - now handled by JavaScript */
 
-/* When a star is selected (checked), highlight from left to right (gold) */
-.rating-form input[type="radio"]:checked ~ label,
-.rating-form input[type="radio"]:checked + label {
-    color: #FFD700; /* Highlight selected star and all previous ones in gold */
-}
+
+
+/* Removed checked effect CSS - now handled by JavaScript */
+
+
 
 /* Add some space between the stars */
 .rating-form label {

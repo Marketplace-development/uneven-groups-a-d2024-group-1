@@ -157,4 +157,44 @@
     {% else %}
         <p>You have no past reservations yet.</p>
     {% endif %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.rating-form label');
+    
+            stars.forEach((star, index) => {
+                // Highlight all stars up to the hovered one
+                star.addEventListener('mouseover', () => {
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].style.color = '#FFD700'; // Gold color for hovered stars
+                    }
+                });
+    
+                // Remove highlight from stars when not hovered
+                star.addEventListener('mouseout', () => {
+                    stars.forEach(s => {
+                        s.style.color = 'lightgray'; // Reset to default color
+                    });
+                    // Retain the color for checked stars
+                    const checkedInput = document.querySelector('.rating-form input[type="radio"]:checked');
+                    if (checkedInput) {
+                        const checkedIndex = Array.from(stars).findIndex(label => label.htmlFor === checkedInput.id);
+                        for (let i = 0; i <= checkedIndex; i++) {
+                            stars[i].style.color = '#FFD700'; // Gold color for selected stars
+                        }
+                    }
+                });
+    
+                // Set color when a star is clicked
+                star.addEventListener('click', () => {
+                    stars.forEach(s => {
+                        s.style.color = 'lightgray'; // Reset all to default
+                    });
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].style.color = '#FFD700'; // Gold color for selected stars
+                    }
+                });
+            });
+        });
+    </script>
+    
 {% endblock %}
