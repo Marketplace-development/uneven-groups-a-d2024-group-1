@@ -819,3 +819,6 @@ button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"
     margin-top: 20px;
     margin-bottom: 20px;
 }
+.alert, .flash, .alert-success {
+    transition: opacity 1s ease-out; /* Smooth fade-out effect */
+}
