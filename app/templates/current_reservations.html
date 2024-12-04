@@ -145,11 +145,13 @@
                         <strong>Rate Your Experience:</strong>
                         {% for star in range(1, 6) %}
                             <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="location_rating" value="{{ star }}"
-                                   {% if reservation.location_rating == star %}checked{% endif %}>
+                                   {% if reservation.location_rating >= star %}checked{% endif %}>
                             <label for="star{{ star }}-{{ reservation.id }}">&#9733;</label>
                         {% endfor %}
                         <button type="submit" class="btn btn-transparant">Submit</button>
                     </form>
+                    
+                    
 
                 </div>
             {% endfor %}
@@ -160,6 +162,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const stars = document.querySelectorAll('.rating-form label');
+            
+            // Highlight stars based on the checked rating (saved rating)
+            const checkedInput = document.querySelector('.rating-form input[type="radio"]:checked');
+            if (checkedInput) {
+                const checkedIndex = Array.from(stars).findIndex(label => label.htmlFor === checkedInput.id);
+                for (let i = 0; i <= checkedIndex; i++) {
+                    stars[i].style.color = '#FFD700'; // Gold color for selected stars
+                }
+            }
     
             stars.forEach((star, index) => {
                 // Highlight all stars up to the hovered one
@@ -196,6 +207,7 @@
             });
         });
     </script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Find the flash message by targeting common classes for alert messages
