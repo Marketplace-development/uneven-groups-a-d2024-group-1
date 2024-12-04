@@ -36,6 +36,68 @@
         <p style="font-size: 1.5em; color: #888; text-align: center; margin-top: 20px;">
             These are all the locations that are currently available.
         </p>
+
+        <!-- Sorting Form and Filter forms -->
+        <div style="text-align: center; margin-bottom: 20px;">
+
+            <!-- Sorting -->
+            <form action="{{ url_for('main.all_locations') }}" method="get">
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+                    <div>
+                        <label for="sort">Sort by:</label>
+                        <select name="sort" id="sort" onchange="this.form.submit()">
+                            <option value="" {% if not request.args.get('sort') %}selected{% endif %}>No Sorting</option>
+                            <option value="desc" {% if request.args.get('sort') == 'desc' %}selected{% endif %}>Rating (Highest to Lowest)</option>
+                            <option value="asc" {% if request.args.get('sort') == 'asc' %}selected{% endif %}>Rating (Lowest to Highest)</option>
+                            <option value="seats_desc" {% if request.args.get('sort') == 'seats_desc' %}selected{% endif %}>Available Seats (Most to Least)</option>
+                            <option value="seats_asc" {% if request.args.get('sort') == 'seats_asc' %}selected{% endif %}>Available Seats (Least to Most)</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Filter by Opening Day -->
+                    <div>
+                        <label for="opening_day">Filter by Opening Day:</label>
+                        <select name="opening_day" id="opening_day" onchange="this.form.submit()">
+                            <option value="" {% if not request.args.get('opening_day') %}selected{% endif %}>No Filter</option>
+                            <option value="monday_open" {% if request.args.get('opening_day') == 'monday_open' %}selected{% endif %}>Monday Open</option>
+                            <option value="tuesday_open" {% if request.args.get('opening_day') == 'tuesday_open' %}selected{% endif %}>Tuesday Open</option>
+                            <option value="wednesday_open" {% if request.args.get('opening_day') == 'wednesday_open' %}selected{% endif %}>Wednesday Open</option>
+                            <option value="thursday_open" {% if request.args.get('opening_day') == 'thursday_open' %}selected{% endif %}>Thursday Open</option>
+                            <option value="friday_open" {% if request.args.get('opening_day') == 'friday_open' %}selected{% endif %}>Friday Open</option>
+                            <option value="saturday_open" {% if request.args.get('opening_day') == 'saturday_open' %}selected{% endif %}>Saturday Open</option>
+                            <option value="sunday_open" {% if request.args.get('opening_day') == 'sunday_open' %}selected{% endif %}>Sunday Open</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Filter by Location -->
+                    <div>
+                        <label for="city">Filter by Location:</label>
+                        <select name="city" id="city" onchange="this.form.submit()">
+                            <option value="" {% if not request.args.get('city') %}selected{% endif %}>No Filter</option>
+                            {% for city, country in cities %}
+                                <option value="{{ city }}|{{ country }}" {% if request.args.get('city') == city ~ '|' ~ country %}selected{% endif %}>
+                                    {{ city }}, {{ country }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Filter by Location Type -->
+                    <div>
+                        <label for="location_type">Filter by Location Type:</label>
+                        <select name="location_type" id="location_type" onchange="this.form.submit()">
+                            <option value="" {% if not request.args.get('location_type') %}selected{% endif %}>No Filter</option>
+                            {% for location_type in location_types %}
+                                <option value="{{ location_type[0] }}" {% if request.args.get('location_type') == location_type[0] %}selected{% endif %}>
+                                    {{ location_type[0] }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <!-- Display Locations -->
         <div class="location-grid">
             {% for item in location_data %}

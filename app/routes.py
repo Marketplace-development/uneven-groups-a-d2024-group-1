@@ -198,14 +198,56 @@ def delete_target(user, target_type):
     except Exception as e:
         db.session.rollback()
         return f"An error occurred while deleting the target: {str(e)}"
-
+    
 @main.route('/all-locations', methods=['GET'])
+@login_required
 def all_locations():
-    # Fetch all locations from the database
-    location_data = Location.query.all()  # Get all locations from your Location model
-    return render_template('all_locations.html', location_data=location_data)
+    # Get all active filters from the URL
+    sort_order = request.args.get('sort', '')
+    opening_day = request.args.get('opening_day', '')
+    city_filter = request.args.get('city', '')
+    location_type = request.args.get('location_type', '')
+
+    query = Location.query
+
+    # Apply filters
+    if opening_day:
+        day_column = getattr(Location, opening_day)
+        query = query.filter(day_column.isnot(None))  # Check if the location is open that day
+
+    if city_filter:
+        city, country = city_filter.split('|')
+        query = query.filter(Location.city == city, Location.country == country)
+
+    if location_type:
+        query = query.filter(Location.location_type == location_type)
+
+    # Apply sorting
+    if sort_order == 'desc':
+        query = query.order_by(Location.location_rating.desc().nullslast())
+    elif sort_order == 'asc':
+        query = query.order_by(Location.location_rating.asc().nullsfirst())
+    elif sort_order == 'seats_desc':
+        query = query.order_by(Location.chairs.desc())
+    elif sort_order == 'seats_asc':
+        query = query.order_by(Location.chairs.asc())
+
+    location_data = query.all()
+
+    # Get available cities and location types for the filter options
+    cities = db.session.query(Location.city, Location.country).distinct().all()
+    location_types = db.session.query(Location.location_type).distinct().all()
+
+    return render_template(
+        'all_locations.html',
+        location_data=location_data,
+        cities=cities,
+        location_types=location_types
+    )
+
 
 @main.route('/locations', methods=['GET', 'POST'])
+@login_required
 def locations():
     if request.method == 'POST':
         location_name = request.form.get("location_name")
