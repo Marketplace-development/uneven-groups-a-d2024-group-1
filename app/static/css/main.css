@@ -721,37 +721,11 @@ label {
     padding-bottom: 5px;
 }
 
-/* Styling for the highlighted location section */
-#highlighted-location {
-    position: fixed;
-    top: 40px;
-    left: 40px;
-    width: 280px;
-    background-color: #f0f8ff;
-    border: 1px solid #1e90ff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgb(25, 70, 202);
-}
-
 /* Styling for the location card */
 .location-card {
     background-color: #fff;
     padding: 10px;
     margin-top: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgb(25, 70, 202);
-}
-
-/* Styling for weekly targets */
-#weekly-target {
-    position: fixed;
-    top: 250px;
-    left: 40px;
-    width: 280px;
-    background-color:#f0f8ff;
-    border: 1px solid #1e90ff;
-    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgb(25, 70, 202);
 }
@@ -822,4 +796,26 @@ button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"
     color: green;
     text-align: center;
     margin-top: 15px;
+}
+
+/* Styling for individual containers */
+#highlighted-location, #weekly-target {
+    width: 220px; /* Adjust width as needed */
+    background-color: #f0f8ff;
+    border: 1px solid #1e90ff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(25, 70, 202);
+    height: 330px;
+}
+
+/* Parent container for the layout */
+.target-spotlight-container {
+    display: flex;
+    flex-direction: row; /* Stacks the content and buttons vertically */
+    align-items: center; /* Centers all child elements horizontally */
+    gap: 40px; /* Space between the sections */
+    justify-content: center; /* Centers everything vertically */
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
