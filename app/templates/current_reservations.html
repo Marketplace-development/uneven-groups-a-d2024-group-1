@@ -145,7 +145,7 @@
                         <strong>Rate Your Experience:</strong>
                         {% for star in range(1, 6) %}
                             <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="location_rating" value="{{ star }}"
-                                   {% if reservation.location_rating >= star %}checked{% endif %}>
+                                   {% if reservation.location_rating == star %}checked{% endif %}>
                             <label for="star{{ star }}-{{ reservation.id }}">&#9733;</label>
                         {% endfor %}
                         <button type="submit" class="btn btn-transparant">Submit</button>
