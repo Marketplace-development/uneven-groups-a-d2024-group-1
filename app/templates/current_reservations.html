@@ -161,52 +161,67 @@
     {% endif %}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const stars = document.querySelectorAll('.rating-form label');
-            
-            // Highlight stars based on the checked rating (saved rating)
-            const checkedInput = document.querySelector('.rating-form input[type="radio"]:checked');
-            if (checkedInput) {
-                const checkedIndex = Array.from(stars).findIndex(label => label.htmlFor === checkedInput.id);
-                for (let i = 0; i <= checkedIndex; i++) {
-                    stars[i].style.color = '#FFD700'; // Gold color for selected stars
-                }
-            }
+            // Get all rating forms on the page
+            const ratingForms = document.querySelectorAll('.rating-form');
     
-            stars.forEach((star, index) => {
-                // Highlight all stars up to the hovered one
-                star.addEventListener('mouseover', () => {
-                    for (let i = 0; i <= index; i++) {
-                        stars[i].style.color = '#FFD700'; // Gold color for hovered stars
-                    }
-                });
+            ratingForms.forEach((form) => {
+                // Get all labels within this specific rating form
+                const stars = form.querySelectorAll('label');
     
-                // Remove highlight from stars when not hovered
-                star.addEventListener('mouseout', () => {
-                    stars.forEach(s => {
-                        s.style.color = 'lightgray'; // Reset to default color
-                    });
-                    // Retain the color for checked stars
-                    const checkedInput = document.querySelector('.rating-form input[type="radio"]:checked');
-                    if (checkedInput) {
-                        const checkedIndex = Array.from(stars).findIndex(label => label.htmlFor === checkedInput.id);
-                        for (let i = 0; i <= checkedIndex; i++) {
-                            stars[i].style.color = '#FFD700'; // Gold color for selected stars
+                // Function to highlight stars based on checked input
+                function highlightCheckedStars() {
+                    const checkedInput = form.querySelector('input[type="radio"]:checked');
+                    stars.forEach((s, i) => {
+                        if (checkedInput && i < checkedInput.value) {
+                            s.style.color = '#FFD700'; // Gold color for selected stars
+                        } else {
+                            s.style.color = 'lightgray'; // Default color for unselected stars
                         }
-                    }
+                    });
+                }
+    
+                // Initially highlight the stars based on the checked input
+                highlightCheckedStars();
+    
+                stars.forEach((star, index) => {
+                    // Highlight all stars up to the hovered one within this form
+                    star.addEventListener('mouseover', () => {
+                        stars.forEach((s, i) => {
+                            if (i <= index) {
+                                s.style.color = '#FFD700'; // Gold color for hovered stars
+                            } else {
+                                s.style.color = 'lightgray'; // Unselected stars stay gray
+                            }
+                        });
+                    });
+    
+                    // Remove highlight from stars when not hovered, but only for this form
+                    star.addEventListener('mouseout', () => {
+                        highlightCheckedStars(); // Retain the color for checked stars after hover ends
+                    });
+    
+                    // Set color when a star is clicked within this form
+                    star.addEventListener('click', () => {
+                        // Get the corresponding input element and set it to checked
+                        const relatedInput = document.getElementById(star.htmlFor);
+                        if (relatedInput) {
+                            relatedInput.checked = true; // Set the radio input as checked
+                        }
+                        highlightCheckedStars(); // Update the stars to reflect the clicked rating
+                    });
                 });
     
-                // Set color when a star is clicked
-                star.addEventListener('click', () => {
-                    stars.forEach(s => {
-                        s.style.color = 'lightgray'; // Reset all to default
-                    });
-                    for (let i = 0; i <= index; i++) {
-                        stars[i].style.color = '#FFD700'; // Gold color for selected stars
-                    }
+                // Handle the form submission to update the stars to reflect the submitted value
+                form.addEventListener('submit', () => {
+                    // Immediately update the stars to reflect the new checked value
+                    highlightCheckedStars();
                 });
             });
         });
     </script>
+    
+    
+    
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
