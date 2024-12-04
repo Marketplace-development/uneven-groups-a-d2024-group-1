@@ -43,16 +43,16 @@
     <div class="form-wrapper">
         <form method="POST" action="{{ url_for('main.select_location') }}">
             <div class="reservation-form-grid">
-                <!-- Username -->
-                <div class="form-field">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="{{ current_user.username }}" required readonly>
-                </div>
-        
                 <!-- Number of Guests -->
                 <div class="form-field">
                     <label for="number_of_guests">Number of Guests:</label>
                     <input type="number" id="number_of_guests" name="number_of_guests" placeholder="Enter the number of guests" min="1" required>
+                </div>
+
+                <!-- Study Time -->
+                <div class="form-field">
+                    <label for="study_time">Study Time (in minutes):</label>
+                    <input type="number" name="study_time" id="study_time" placeholder="Enter study time in minutes" min="30" required>
                 </div>
         
                 <!-- Reservation Time -->
@@ -60,12 +60,7 @@
                     <label for="reservation_time">Reservation Time:</label>
                     <input type="datetime-local" name="reservation_time" id="reservation_time" min="{{ current_time }}" required>
                 </div>
-        
-                <!-- Study Time -->
-                <div class="form-field">
-                    <label for="study_time">Study Time (in minutes):</label>
-                    <input type="number" name="study_time" id="study_time" placeholder="Enter study time in minutes" min="30" required>
-                </div>
+                
             </div>
     
             <div class="form-group">

@@ -42,13 +42,7 @@
             {% endif %}
         {% endwith %}
 
-        <div class="form-grid">
-            <!-- Username (pre-filled with logged in username) -->
-            <div class="form-field">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="{{ current_user.username }}" required readonly>
-            </div>
-        
+        <div class="form-grid">        
             <!-- Location Name -->
             <div class="form-field">
                 <label for="location_name">Location Name</label>

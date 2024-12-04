@@ -24,7 +24,6 @@ class Location(db.Model):
     __tablename__ = 'locations'  # Matches the table name in the database
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False)  # Location owner's username
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Foreign key to User
     location_name = db.Column(db.String(100), nullable=False)
     location_type = db.Column(db.String(50), nullable=False)  # e.g., cafe, library
@@ -68,7 +67,6 @@ class Reservation(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    username = db.Column(db.String(100), nullable=False)        # Student's username
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)
     date = db.Column(db.Date, nullable=False)
     time = db.Column(db.Time, nullable=False)

@@ -183,16 +183,7 @@ def main_page():
 
 
 def delete_target(user, target_type):
-    """
-    Deletes the specified target for a user.
-    
-    Parameters:
-        user (User): The user object whose target needs to be deleted.
-        target_type (str): The type of target to delete, either 'minutes' or 'sessions'.
-    
-    Returns:
-        str: A success or error message.
-    """
+    """ Deletes the specified target for a user. """
     try:
         if target_type == 'minutes':
             user.minutes_target = None
@@ -217,7 +208,6 @@ def all_locations():
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():
     if request.method == 'POST':
-        username = request.form.get("username")
         location_name = request.form.get("location_name")
         location_type = request.form.get("location_type")
         country = request.form.get("country")
@@ -262,12 +252,12 @@ def locations():
         location_picture = request.form.get("location_picture")
 
         # Check if the user already has a location
-        existing_location = Location.query.filter_by(username=username).first()
-        if existing_location:
+        existing_location = Location.query.filter_by(user_id=current_user.id).first()
+        if existing_location and existing_location.status == 'active':
             flash("You can only upload one location. You already uploaded a location.", "danger")
             return redirect(url_for('main.locations'))
 
-        new_location = Location(username=username, location_name=location_name, location_type=location_type,
+        new_location = Location(user_id=current_user.id, location_name=location_name, location_type=location_type,
                                 country=country, postal_code=postal_code, city=city, street=street, street_number=street_number,
                                 chairs=chairs, monday_open=monday_open, monday_close=monday_close, tuesday_open=tuesday_open, tuesday_close=tuesday_close,
                                 wednesday_open=wednesday_open, wednesday_close=wednesday_close, thursday_open=thursday_open, thursday_close=thursday_close,
@@ -286,17 +276,12 @@ def locations():
 @main.route('/reservations', methods=['GET', 'POST'])
 @login_required
 def reservations():
-    # Debugging current_user
-    print(f"Current User: {current_user}")
-    print(f"Is authenticated: {current_user.is_authenticated}")
-
     if not current_user.is_authenticated:
         print("User is not authenticated!")
         return redirect(url_for('main.login'))  # Optional: Just in case
 
     if request.method == 'POST':
         # Get reservation details from the form
-        username = request.form.get('username')
         reservation_time = request.form.get('reservation_time')
         number_of_guests = request.form.get('number_of_guests')
         study_time = request.form.get('study_time')
@@ -424,7 +409,6 @@ def confirm_reservation():
     # Create a new reservation
     new_reservation = Reservation(
         user_id=current_user.id,
-        username=current_user.username,
         location_id=location_id,
         reservation_time=reservation_datetime,
         number_of_guests=number_of_guests,
@@ -446,19 +430,29 @@ def filter_available_locations(reservation_datetime, study_time, number_of_guest
     This includes handling locations that are open past midnight (e.g., from 10 PM to 2 AM).
     It dynamically calculates available seats based on existing reservations.
     """
-    # Define the end time of the reservation based on the study time
-    reservation_end_time = reservation_datetime + timedelta(minutes=int(study_time))
+    # Ensure the study time is a valid positive integer
+    try:
+        study_time = int(study_time)
+        if study_time <= 0:
+            flash("Invalid study time.", "danger")
+            return []
+    except ValueError:
+        flash("Study time must be a valid number.", "danger")
+        return []
 
-    # Query all locations
-    all_locations = Location.query.all()
+    # Define the end time of the reservation based on the study time
+    reservation_end_time = reservation_datetime + timedelta(minutes=study_time)
+
+    # Query locations that are active and have seating
+    all_locations = Location.query.filter_by(status="active").all()
     available_locations = []
 
     for location in all_locations:
         # Calculate already reserved seats for this location and time slot
         existing_reservations = Reservation.query.filter(
             Reservation.location_id == location.id,
-            Reservation.reservation_time < reservation_end_time, # Reservation starts before end time
-            Reservation.reservation_time + timedelta(minutes=int(study_time)) > reservation_datetime # Reservation ends after the requested start time
+            Reservation.reservation_time < reservation_end_time,  # Reservation starts before end time
+            Reservation.reservation_time + timedelta(minutes=study_time) > reservation_datetime  # Reservation ends after the requested start time
         ).all()
 
         reserved_seats = sum(res.number_of_guests for res in existing_reservations)
@@ -542,9 +536,7 @@ def logout():
 
 @main.route('/upload_location', methods=['GET','POST'])
 def upload_location():
-    # Logic for uploading location data goes here
-    return render_template('upload_location.html')  # Redirect back to the locations page after the upload
-
+    return render_template('upload_location.html')
 
 @main.route('/reservation_successful', methods=['GET','POST'])
 def reservation_successful():
@@ -662,7 +654,7 @@ def location_bookings():
         return redirect(url_for('main.location_bookings'))
 
     # Fetch the active location of the current logged-in user
-    location = Location.query.filter_by(username=current_user.username, status='active').first()
+    location = Location.query.filter_by(user_id=current_user.id, status='active').first()
 
     if not location:
         flash('You do not own any active locations.', 'danger')
@@ -687,7 +679,7 @@ def location_bookings():
 def delete_location():
     # Get the location ID from the form
     location_id = request.form.get('location_id')
-    location = Location.query.filter_by(id=location_id, username=current_user.username, status="active").first()
+    location = Location.query.filter_by(id=location_id, user_id=current_user.id, status="active").first()
 
     if not location:
         flash("Location not found or unauthorized action.", "danger")
