@@ -798,16 +798,30 @@ button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"
     margin-top: 15px;
 }
 
-/* Styling for individual containers */
 #highlighted-location, #weekly-target {
-    width: 220px; /* Adjust width as needed */
+    width: 220px; /* Keep the width fixed */
     background-color: #f0f8ff;
     border: 1px solid #1e90ff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgb(25, 70, 202);
-    height: 330px;
+    margin-bottom: 20px; /* Optional: Add space between containers */
+    overflow: hidden; /* Prevent content from overflowing */
 }
+
+
+#weekly-target button, #highlighted-location button {
+    width: 100%; /* Ensure buttons fit the container's width without overflow */
+    padding: 15px; /* Spacing for buttons */
+    font-size: 1em; /* Readable button text size */
+    margin-top: 10px; /* Spacing between buttons and content */
+    box-sizing: border-box; /* Include padding in width calculation to avoid overflow */
+    display: block; /* Stack buttons vertically */
+}
+
+
+
+
 
 /* Parent container for the layout */
 .target-spotlight-container {

@@ -155,4 +155,22 @@
             <p style="font-size: 1.3em; color: grey; margin-top: 20px;">See who booked your location and at what time</p>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find the flash message by targeting common classes for alert messages
+            const flashMessages = document.querySelectorAll('.alert, .flash, .alert-success');
+            flashMessages.forEach(function(flashMessage) {
+                // Set a timeout to hide the message after 2 seconds
+                setTimeout(function() {
+                    flashMessage.style.transition = 'opacity 1s ease-out';
+                    flashMessage.style.opacity = '0'; // Gradually fade out
+                    
+                    // After fading out, set display to 'none' to remove it from the layout
+                    setTimeout(function() {
+                        flashMessage.style.display = 'none';
+                    }, 1000); // Matches the CSS transition time (1 second)
+                }, 2000); // Wait 2 seconds before starting the fade-out
+            });
+        });
+    </script>
 {% endblock %}
