@@ -7,7 +7,7 @@
 {% block body %}
 <div class="main-container" style="text-align: center; margin-top: 50px;">
 
-    <!--Logout button-->
+    <!-- Logout button -->
     <form action="{{ url_for('main.home') }}" method="get" class="inline-form" style="position: fixed; top: 20px; right: 20px;">
         <button type="submit" class="btn btn-black" style="width: 120px; font-size: 1em; padding: 10px 20px;">Log out</button>
     </form>
@@ -35,40 +35,57 @@
         {% endif %}
     </div>
 
+    {% if congratulations_message %}
+        <p class="congratulations">{{ congratulations_message }}</p>
+    {% endif %}
 
+    <!-- Spotlight and Target Container -->
     <div class="target-spotlight-container">
-        <!--the spotlighted location-->
-        <div id="highlighted-location">
-            <h2>This Week's Spotlight</h2>
-            <div class="location-card">
-                <h3 id="location-name">{{ highlighted_location }}</h3>
-                <p>Book a spot here to study!</p>
+        <!-- Spotlight Location Section -->
+        {% if highlighted_location %}
+            <div class="spotlight-location" id="highlighted-location">
+                <h3>This Week's Spotlight:</h3>
+                <h4 style="font-size: 16px; color: #333; text-align: center; margin-bottom: 0px;">{{ highlighted_location.location_name }}</h4>
+                
+                <!-- Display the average Location Rating (if available) -->
+                {% if highlighted_location.location_rating %}
+                    <div class="rating-container">
+                        {% for star in range(1, 6) %}
+                            {% if star <= highlighted_location.location_rating %}
+                                <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                            {% else %}
+                                <span style="color: white;">&#9733;</span>  <!-- Empty star -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                {% if highlighted_location.location_picture %}
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
+                    </div>
+                {% endif %}
+                <form action="{{ url_for('main.all_locations') }}" method="get" class="inline-form">
+                    <button type="submit" class="btn btn-transparant" style="width: 200px;">View All Locations</button>
+                </form>
             </div>
-        </div>
+        {% else %}
+            <p>No location has been highlighted this week.</p>
+        {% endif %}
 
-        <!-- Target container -->
-        <div id="weekly-target">
-            <h3>Your Weekly Targets!</h3>
-
-            <!-- This week's date range -->
-            <!-- <p>{{ week_range }}</p> -->
-
-            <!-- Display the congratulations message if the user reached their targets -->
-            {% if congratulations_message %}
-                <p class="congratulations">{{ congratulations_message }}</p>
-            {% endif %}
+        <!-- Weekly Targets Section -->
+        <div class="weekly-target" id="weekly-target">
+            <h3>Your Weekly Targets:</h3>
 
             <!-- Study Time Target Section -->
             <div id="minutes-target">
                 <h4>Study Time Target:</h4>
                 {% if user.minutes_target %}
-                    <!-- Display the target if set -->
-                    <p>{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
+                    <p style="margin-top: 27px;">{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
                     <form action="{{ url_for('main.main_page') }}" method="POST">
                         <button type="submit" name="delete_minutes_target">Delete Target</button>
                     </form>
                 {% else %}
-                    <!-- Show input if no target is set -->
                     <form action="{{ url_for('main.main_page') }}" method="POST" class="time-target-form">
                         <div class="time-select-group">
                             <select name="hours" id="hours-select">
@@ -76,14 +93,13 @@
                                 <option value="{{ hour }}">{{ hour }} hour{{ '' if hour == 1 else 's' }}</option>
                                 {% endfor %}
                             </select>
-
                             <select name="minutes" id="minutes-select">
                                 {% for minute in [0, 15, 30, 45] %}
                                 <option value="{{ minute }}">{{ minute }} minute{{ '' if minute == 1 else 's' }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <button class="btn btn-black" style="width: 100%;" type="submit">Set Study Time Target</button>
+                        <button class="btn btn-black" style="width: 100%; margin-top: -5px;" type="submit">Set Target</button>
                     </form>
                 {% endif %}
             </div>
@@ -92,26 +108,28 @@
             <div id="sessions-target">
                 <h4>Study Sessions Target:</h4>
                 {% if user.sessions_target %}
-                    <!-- Display the target if set -->
-                    <p>{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
+                    <p style="margin-top: 27px;">{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
                     <form action="{{ url_for('main.main_page') }}" method="POST">
                         <button type="submit" name="delete_sessions_target">Delete Target</button>
                     </form>
                 {% else %}
-                    <!-- Show input if no target is set -->
                     <form action="{{ url_for('main.main_page') }}" method="POST">
-                        <select name="sessions_target" id="sessions-select">
-                            {% for session in range(0, 29) %}
-                            <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
-                            {% endfor %}
-                        </select>
-                        <button class="btn btn-black" style="width: 100%;" type="submit">Set Study Sessions Target</button>
+                        <div class="time-select-group">
+                            <select name="sessions_target" id="sessions-select">
+                                {% for session in range(0, 29) %}
+                                <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class="btn btn-black" style="width: 100%; margin-top: -10px;" type="submit">Set Target</button>
                     </form>
                 {% endif %}
             </div>
         </div>
     </div>
-            
+
+
+
     <!--Buttons for Reservation and Uploading Locations-->
     <div style="display: flex; justify-content: center; gap: 50px; margin-top: 0px;">
 
@@ -155,22 +173,19 @@
             <p style="font-size: 1.3em; color: grey; margin-top: 20px;">See who booked your location and at what time</p>
         </div>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Find the flash message by targeting common classes for alert messages
-            const flashMessages = document.querySelectorAll('.alert, .flash, .alert-success');
-            flashMessages.forEach(function(flashMessage) {
-                // Set a timeout to hide the message after 2 seconds
+            const flashMessages = document.querySelectorAll('.alert, .flash, .message');
+
+            flashMessages.forEach(function(message) {
+                // Remove the flash message after 3 seconds
                 setTimeout(function() {
-                    flashMessage.style.transition = 'opacity 1s ease-out';
-                    flashMessage.style.opacity = '0'; // Gradually fade out
-                    
-                    // After fading out, set display to 'none' to remove it from the layout
-                    setTimeout(function() {
-                        flashMessage.style.display = 'none';
-                    }, 1000); // Matches the CSS transition time (1 second)
-                }, 2000); // Wait 2 seconds before starting the fade-out
+                    message.style.display = 'none';
+                }, 3000);
             });
         });
     </script>
+</div>
 {% endblock %}

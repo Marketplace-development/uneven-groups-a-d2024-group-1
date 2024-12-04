@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>All Locations</title>
+{% endblock %}
+
+{% block body %}
+<div class="locations-container">
+    <!-- Buttons in the right upper corner -->
+    <div class="button-container" style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0px; z-index: 999;">
+        <a href="{{ url_for('main.main_page') }}">
+            <button class="btn btn-transparant" style="width: 200px; font-size: 1em; padding: 10px 20px;">Main Page</button>
+        </a>
+        <a href="{{ url_for('main.home') }}">
+            <button class="btn btn-black" style="width: 200px; font-size: 1em; padding: 10px 20px;">Log out</button>
+        </a>
+    </div>
+
+    <!-- Logo -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+    </div>
+
+    <!-- Page title -->
+    <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">All Locations</h1>
+
+    {% if location_data|length == 0 %}
+        <p style="font-size: 1.5em; color: #888; text-align: center; margin-top: 20px;">
+            There are no locations available at the moment.
+        </p>
+    {% else %}
+        <!-- Book Reservation Button -->
+        <form action="{{ url_for('main.reservations') }}" method="get" style="text-align: center">
+            <button type="submit" class="btn btn-black" style="width: 220px;">Book a Reservation</button>
+        </form>
+        <p style="font-size: 1.5em; color: #888; text-align: center; margin-top: 20px;">
+            These are all the locations that are currently available.
+        </p>
+        <!-- Display Locations -->
+        <div class="location-grid">
+            {% for item in location_data %}
+                <div class="location-card" style="height: 530px;">
+                    <h3>{{ item.location_name }}</h3>
+                    <img src="{{ url_for('static', filename='images/' ~ item.location_picture ~ '.jpg') }}" 
+                        alt="Image of {{ item.location_name }}" style="width: 100%; object-fit: cover;">
+
+                    <!-- Location Rating Display -->
+                    {% if item.location_rating %}
+                        <div class="rating-stars">
+                            {% for star in range(5) %}
+                                {% if star < item.location_rating %}
+                                    <span class="star filled" style="font-size: 2em;">&#9733;</span>
+                                {% else %}
+                                    <span class="star empty" style="font-size: 2em;">&#9733;</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <span>No Rating Yet</span>
+                    {% endif %}
+
+                    <p><strong>Type:</strong> {{ item.location_type }}</p>
+                    <p><strong>Address:</strong> {{ item.street }} {{ item.street_number }},
+                        {{ item.postal_code }} {{ item.city }}, {{ item.country }}</p>
+                    <p><strong>Available Seats:</strong> {{ item.chairs }}</p>
+
+                    <p><strong>Opening Hours:</strong></p>
+                    <ul style="list-style-type: none; padding: 0; margin-top: 0px;">
+                        {% if item.monday_open and item.monday_close %}
+                            <li><strong>Monday:</strong> {{ item.monday_open }}h - {{ item.monday_close }}h</li>
+                        {% else %}
+                            <li><strong>Monday:</strong> Closed</li>
+                        {% endif %}
+                        {% if item.tuesday_open and item.tuesday_close %}
+                            <li><strong>Tuesday:</strong> {{ item.tuesday_open }}h - {{ item.tuesday_close }}h</li>
+                        {% else %}
+                            <li><strong>Tuesday:</strong> Closed</li>
+                        {% endif %}
+                        {% if item.wednesday_open and item.wednesday_close %}
+                            <li><strong>Wednesday:</strong> {{ item.wednesday_open }}h - {{ item.wednesday_close }}h</li>
+                        {% else %}
+                            <li><strong>Wednesday:</strong> Closed</li>
+                        {% endif %}
+                        {% if item.thursday_open and item.thursday_close %}
+                            <li><strong>Thursday:</strong> {{ item.thursday_open }}h - {{ item.thursday_close }}h</li>
+                        {% else %}
+                            <li><strong>Thursday:</strong> Closed</li>
+                        {% endif %}
+                        {% if item.friday_open and item.friday_close %}
+                            <li><strong>Friday:</strong> {{ item.friday_open }}h - {{ item.friday_close }}h</li>
+                        {% else %}
+                            <li><strong>Friday:</strong> Closed</li>
+                        {% endif %}
+                        {% if item.saturday_open and item.saturday_close %}
+                            <li><strong>Saturday:</strong> {{ item.saturday_open }}h - {{ item.saturday_close }}h</li>
+                        {% else %}
+                            <li><strong>Saturday:</strong> Closed</li>
+                        {% endif %}
+                        {% if item.sunday_open and item.sunday_close %}
+                            <li><strong>Sunday:</strong> {{ item.sunday_open }}h - {{ item.sunday_close }}h</li>
+                        {% else %}
+                            <li><strong>Sunday:</strong> Closed</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

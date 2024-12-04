@@ -88,6 +88,9 @@ def success():
 @main.route('/main_page', methods=['GET', 'POST'])
 @login_required
 def main_page():
+    # Highlighted location
+    highlighted_location = get_highlighted_location()
+
     # Get the current date
     today = datetime.today()
 
@@ -176,7 +179,7 @@ def main_page():
                            completed_study_time=completed_study_time, target_study_time=target_study_time,
                            completed_hours=completed_hours, completed_minutes=completed_minutes,
                            target_hours=target_hours, target_minutes=target_minutes,
-                           congratulations_message=congratulations_message)
+                           congratulations_message=congratulations_message, highlighted_location=highlighted_location)
 
 
 def delete_target(user, target_type):
@@ -205,6 +208,11 @@ def delete_target(user, target_type):
         db.session.rollback()
         return f"An error occurred while deleting the target: {str(e)}"
 
+@main.route('/all-locations', methods=['GET'])
+def all_locations():
+    # Fetch all locations from the database
+    location_data = Location.query.all()  # Get all locations from your Location model
+    return render_template('all_locations.html', location_data=location_data)
 
 @main.route('/locations', methods=['GET', 'POST'])
 def locations():
@@ -734,3 +742,24 @@ def update_location_rating(location_id):
         db.session.commit()
 
     return avg_rating
+
+
+def get_highlighted_location():
+    # Calculate the start and end of the previous week
+    now = datetime.now()
+    start_of_week = now - timedelta(days=now.weekday() + 7)  # Start of last week (Monday)
+    end_of_week = start_of_week + timedelta(days=7)  # End of last week (Sunday)
+
+    # Query to find the location with the highest average rating in the previous week
+    highest_rated_location = db.session.query(
+        Reservation.location_id,
+        func.avg(Reservation.location_rating).label('average_rating')
+    ).filter(
+        Reservation.reservation_time.between(start_of_week, end_of_week)  # Filter by reservation time during last week
+    ).group_by(Reservation.location_id).order_by(func.avg(Reservation.location_rating).desc()).first()
+
+    if highest_rated_location:
+        # Get the details of the location with the highest average rating
+        location = Location.query.get(highest_rated_location.location_id)
+        return location
+    return None

@@ -709,7 +709,32 @@ label {
     padding-bottom: 5px;
 }
 
-/* Styling for the location card */
+/* Parent container for the layout */
+.target-spotlight-container {
+    display: flex;
+    flex-direction: row; /* Align the elements horizontally */
+    justify-content: center; /* Centers the content horizontally */
+    gap: 30px; /* Space between the sections */
+    margin-top: 20px;
+    margin-bottom: 0px;
+    align-items: flex-start; /* Align the items at the top */
+    height: auto; /* Optional: Adjust height as needed */
+}
+
+/* No background or white container styles */
+#highlighted-location, #weekly-target {
+    width: 220px; /* Fixed width */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(25, 70, 202); /* Keep the shadow if needed */
+    overflow: hidden; /* Prevent content from overflowing */
+    text-align: center; /* Center text in the container */
+    background: none; /* Remove any background */
+    border: none; /* Remove border */
+    box-shadow: none; /* Remove box-shadow */
+}
+
+/* Styling for location card */
 .location-card {
     background-color: #fff;
     padding: 10px;
@@ -722,21 +747,76 @@ label {
     font-size: 18px;
     color: #333;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 #minutes-target h4, #sessions-target h4 {
     font-size: 16px;
     color: #333;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+/* Align elements inside target cards */
+#weekly-target h3, #highlighted-location h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* Buttons in the target container */
+#weekly-target button, #highlighted-location button {
+    width: 100%; /* Ensure buttons fit the container's width */
+    padding: 10px; /* Spacing for buttons */
+    font-size: 1em;
+    margin-top: 25px; /* Space between buttons and content */
+    display: block;
+    box-sizing: border-box;
+}
+
+button[name="delete_minutes_target"], button[name="delete_sessions_target"] {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"]:hover {
+    background-color: darkred;
+}
+
+/* Styling for the image container */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.image-container img {
+    width: 200px;
+    height: 145px;
+    object-fit: cover;
+}
+
+/* Styling for the rating container */
+.rating-container {
+    margin-top: 0px;
+}
+
+.rating-container span {
+    font-size: 2em;
+    color: gold;
+    text-shadow: 0 0 3px rgba(128, 128, 128, 0.4), 0 0 6px rgba(128, 128, 128, 0.4);
 }
 
 .time-select-group {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: -15px;
+    margin-top: 20px;
 }
 
 .time-select-group label {
@@ -745,7 +825,7 @@ label {
 }
 
 #hours-select, #minutes-select {
-    width: 45%;
+    width: 49%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -757,70 +837,11 @@ label {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     font-size: 14px;
     display: block;
-    margin: 0 auto;
 }
 
-button[name="delete_minutes_target"], button[name="delete_sessions_target"] {
-    background-color: red;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-}
-
-button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"]:hover {
-    background-color: darkred;
-}
-
-.congratulations {
-    font-size: 18px;
-    font-weight: bold;
-    color: green;
-    text-align: center;
-    margin-top: 15px;
-}
-
-#highlighted-location, #weekly-target {
-    width: 220px; /* Keep the width fixed */
-    background-color: #f0f8ff;
-    border: 1px solid #1e90ff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgb(25, 70, 202);
-    margin-bottom: 20px; /* Optional: Add space between containers */
-    overflow: hidden; /* Prevent content from overflowing */
-}
-
-
-#weekly-target button, #highlighted-location button {
-    width: 100%; /* Ensure buttons fit the container's width without overflow */
-    padding: 15px; /* Spacing for buttons */
-    font-size: 1em; /* Readable button text size */
-    margin-top: 10px; /* Spacing between buttons and content */
-    box-sizing: border-box; /* Include padding in width calculation to avoid overflow */
-    display: block; /* Stack buttons vertically */
-}
-
-
-
-
-
-/* Parent container for the layout */
-.target-spotlight-container {
-    display: flex;
-    flex-direction: row; /* Stacks the content and buttons vertically */
-    align-items: center; /* Centers all child elements horizontally */
-    gap: 40px; /* Space between the sections */
-    justify-content: center; /* Centers everything vertically */
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
 .alert, .flash, .alert-success {
     transition: opacity 1s ease-out; /* Smooth fade-out effect */
 }
