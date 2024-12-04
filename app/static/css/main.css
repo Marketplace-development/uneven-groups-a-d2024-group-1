@@ -22,37 +22,25 @@ p {
     font-size: 1.2em;
 }
 
-/* Styles for the rating form */
+/* Rating Form Styles */
 .rating-form {
     display: inline-block;
     margin-top: 10px;
+    text-align: center;
 }
 
-/* Hide the radio buttons */
+/* Hide radio buttons */
 .rating-form input[type="radio"] {
     display: none;
 }
 
-/* Style for the stars */
+/* Star label styles */
 .rating-form label {
     font-size: 1.5em;
-    color: lightgray; /* Default color for unselected stars */
+    color: lightgray; /* Default color */
     cursor: pointer;
-    transition: color 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out; /* Smooth transitions */
     display: inline-block;
-    margin: 0;
-}
-
-/* Removed hover effect CSS - now handled by JavaScript */
-
-
-
-/* Removed checked effect CSS - now handled by JavaScript */
-
-
-
-/* Add some space between the stars */
-.rating-form label {
     margin-right: 5px;
 }
 

@@ -153,18 +153,24 @@
                         <p><strong>Received Rating:</strong> No rating yet.</p>
                     {% endif %}
 
-                    <!-- Rate the student -->
+                    <!-- Star Rating Form -->
                     <form method="POST" class="rating-form">
                         <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
                         <strong>Rate the Student:</strong>
                         {% for star in range(1, 6) %}
-                            <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="student_rating" value="{{ star }}"
-                                   {% if reservation.student_rating == star %}checked{% endif %}>
+                            <!-- Radio Button (Hidden) -->
+                            <input
+                                type="radio"
+                                id="star{{ star }}-{{ reservation.id }}"
+                                name="student_rating"
+                                value="{{ star }}"
+                                {% if reservation.student_rating == star %}checked{% endif %}
+                            >
+                            <!-- Star Label -->
                             <label for="star{{ star }}-{{ reservation.id }}">&#9733;</label>
                         {% endfor %}
                         <button type="submit" class="btn btn-transparant">Submit</button>
                     </form>
-
                 </div>
             {% endfor %}  
         </div>
@@ -173,4 +179,47 @@
     {% endif %}
     </div>
 </div>
+
+<script>
+    // JavaScript for Star Rating System
+    const forms = document.querySelectorAll('.rating-form'); // All forms with class "rating-form"
+
+    forms.forEach(form => {
+        const stars = Array.from(form.querySelectorAll('label')); // Star labels within the form
+        const inputs = Array.from(form.querySelectorAll('input[type="radio"]')); // Radio buttons within the form
+
+        // Highlight stars based on the checked input (saved rating)
+        function highlightStars(index) {
+            stars.forEach((star, i) => {
+                star.style.color = i <= index ? '#FFD700' : 'lightgray'; // Highlight up to and including the index
+            });
+        }
+
+        // Get checked radio button on page load
+        const checkedInput = inputs.find(input => input.checked);
+        if (checkedInput) {
+            const checkedIndex = inputs.indexOf(checkedInput);
+            highlightStars(checkedIndex);
+        }
+
+        // Add hover effects to stars
+        stars.forEach((star, index) => {
+            star.addEventListener('mouseover', () => highlightStars(index)); // Highlight stars on hover
+
+            star.addEventListener('mouseout', () => {
+                // Reset to the checked state or default
+                const checkedInput = inputs.find(input => input.checked);
+                const checkedIndex = checkedInput ? inputs.indexOf(checkedInput) : -1;
+                highlightStars(checkedIndex);
+            });
+
+            star.addEventListener('click', () => {
+                // Set the clicked star as the new rating
+                inputs[index].checked = true; // Check corresponding radio
+                highlightStars(index); // Update star colors
+            });
+        });
+    });
+</script>
+
 {% endblock %}
