@@ -427,6 +427,11 @@ form input[type="datetime-local"] {
     color: #333;
 }
 
+.text-blue {
+    color: rgba(0, 123, 255, 1);
+}
+
+
 .location-card-input {
     display: none;
 }
