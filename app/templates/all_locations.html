@@ -25,7 +25,7 @@
     <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">All Locations</h1>
 
     {% if location_data|length == 0 %}
-        <p style="font-size: 1.5em; color: #888; text-align: center; margin-top: 20px;">
+        <p class="text-blue" style="font-size: 1.5em; text-align: center; margin-top: 20px;">
             There are no locations available at the moment.
         </p>
     {% else %}
@@ -33,7 +33,7 @@
         <form action="{{ url_for('main.reservations') }}" method="get" style="text-align: center">
             <button type="submit" class="btn btn-black" style="width: 220px;">Book a Reservation</button>
         </form>
-        <p style="font-size: 1.5em; color: #888; text-align: center; margin-top: 20px;">
+        <p class="text-blue" style="font-size: 1.5em; text-align: center; margin-top: 20px;">
             These are all the locations that are currently available.
         </p>
 
