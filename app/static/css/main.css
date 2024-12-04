@@ -1,50 +1,8 @@
 body, html {
-    margin: 0;  /* Remove default margins */
+    margin: 0;
     font-family: sans-serif;
-    height: 100%;
-    overflow-x: hidden; /* Avoid horizontal scrolling */
-    position: relative; /* Needed for positioning pseudo-element */
+    background-color: #d3d3d3;
 }
-* {
-    margin: 0;  /* Remove all default margins */
-    padding: 0; /* Remove all default paddings */
-    box-sizing: border-box;  /* Ensure consistent box sizing */
-}
-
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1; /* Places it behind everything else */
-    background: url('images/pexels-photo-2041540-1024x682.jpeg') no-repeat center center;
-    background-size: cover; /* Makes sure the image covers the entire background */
-    filter: brightness(0.8) blur(2px); /* Adds a slight blur and dims brightness for better text contrast */
-}
-
-/* Adding container shadow for depth (if not already added) */
-.main-container, .locations-container, .reservation-card, .location-card {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Creates depth effect on the content */
-    background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background to make the content readable */
-    border-radius: 10px; /* Smooth rounded corners */
-    padding: 20px; /* Add some internal spacing */
-}
-
-/* Optional: Smooth scrolling for a better experience */
-html {
-    scroll-behavior: smooth; /* Adds a nice smooth scrolling effect when moving through the page */
-}
-
-/* Add a slight parallax effect */
-@media (min-width: 768px) {
-    body::before {
-        background-attachment: fixed; /* Ensures that the background stays fixed for a parallax effect */
-    }
-}
-
 
 h1, h2, h3 {
     font-family: 'Arial', sans-serif;
