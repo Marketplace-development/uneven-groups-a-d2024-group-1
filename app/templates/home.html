@@ -5,71 +5,122 @@
 {% endblock %}
 
 {% block body %}
-<!-- Logo -->
-<div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
-    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo" style="width: 300px;">
-</div>
-
-<!--Sign Up and Log In buttons-->
-<div style="text-align: center; margin-top: 30px;">
-    <form action="{{ url_for('main.signup') }}" method="get" class="inline-form">
-        <button type="submit" class="btn btn-transparant" style="width: 120px; font-size: 1em; padding: 10px 20px;">Sign Up</button>
-    </form>
-
-    <form action="{{ url_for('main.login') }}" method="get" class="inline-form">
-        <button type="submit" class="btn btn-black" style="width: 120px; font-size: 1em; padding: 10px 20px;">Log in</button>
-    </form>
-</div>
-
-<!--Introductory text above image-->
-<div class="image-container" style="margin-top: 40px;">
-    <div class="overlay-text">
-        <p>Looking for the perfect place to study?</p>
-        <p>Chairing has you covered!</p>
-        <p>Pick a study location for the day and get to work!</p>
+<!-- Top white bar -->
+<div style="display: flex; justify-content: space-between; align-items: center; background-color: white; padding: 2vh 4vw; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000;">
+    <!-- Left Section: Logo -->
+    <div style="display: flex; align-items: center;">
+        <img src="{{ url_for('static', filename='images/logo_wit2.JPG') }}" alt="logo" style="height: 4vh; margin-left: 8vw; position: relative; top: -3px;">
+        <!-- Home Button -->
+        <form action="{{ url_for('main.home') }}" method="get" style="margin: 0; margin-left: 2vw;">
+            <button type="submit" style="background: none; border: none; font-size: 1vw; color: #333; cursor: pointer;">Home</button>
+        </form>
+        <!-- About Us Button -->
+        <form action="{{ url_for('main.home') }}" method="get" style="margin: 0; margin-left: 2vw;">
+            <button type="submit" style="background: none; border: none; font-size: 1vw; color: #333; cursor: pointer;">About Us</button>
+        </form>
     </div>
-    <img src="{{ url_for('static', filename='images/studylibrary.jpg') }}" alt="Chairing Image" class="image">
+    
+    <!-- Right Section: Authentication Buttons -->
+    <div style="display: flex; align-items: center; gap: 0.1vw; margin-right: 15vw;">
+        <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1vw; color: #333; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="rgb(25, 70, 202)" viewBox="0 0 24 24" width="25" height="25" style="margin-right: 5px;">
+                    <path d="M12 2a5 5 0 0 1 5 5v3h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v3h6V7a3 3 0 0 0-3-3zm-7 8a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H5z"/>
+                </svg>
+                Log in
+            </button>
+        </form>
+        <span style="color: #ccc;">|</span>
+        <form action="{{ url_for('main.signup') }}" method="get" style="margin: 0;">
+            <button type="submit" style="background: none; border: none; font-size: 1vw; color: #333; cursor: pointer;">Sign Up</button>
+        </form>
+    </div>
 </div>
 
-<!--Reviews-->
-<div style="margin-top: 50px; text-align: center;">
-    <h2 style="font-family: Arial, sans-serif; font-size: 1.8em; margin-bottom: 20px;">What other students think</h2>
-    <div class="Review" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 0 20px;">
+<!-- Main Section -->
+<div style="display: flex; align-items: center; justify-content: space-between; margin-top: 15vh; padding: 1vw 13vw; gap: 2vw;">
+    <!-- Left Section: Text and Buttons -->
+    <div style="max-width: 50%; margin-top: 1vh;">
+        <p style="font-size: 1.5vw; color: black; margin-bottom: 0px; text-align: left;">Looking for the perfect place to study?</p>
+        <p style="font-size: 3.8vw; font-weight: bold; color: black; margin-top: 0px; margin-bottom: 0px; text-align: left;">Chairing Has<br>You Covered!</p>
+        <p style="font-size: 1.2vw; color: grey; margin-top: 0px; margin-bottom: 3vh; text-align: left;">Pick a study location for the day and get to work!</p>
+        
+        <!-- Centered Buttons with flex-direction: row -->
+        <div style="display: flex; flex-direction: row; justify-content: center; gap: 2vw;">
+            <form action="{{ url_for('main.signup') }}" method="get">
+                <button type="submit" class="btn btn-transparant" style="width: 9vw;">Sign Up</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get">
+                <button type="submit" class="btn btn-black" style="width: 9vw;">Log in</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right Section: Image -->
+    <div>
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Chairing Logo" style="width: 25vw;">
+    </div>
+</div>
+
+<!-- Reviews -->
+<div style="margin-top: 10vh; text-align: center; background-color: white; padding: 30px 0;">
+    <h2 style="font-family: Arial, sans-serif; font-size: 1.8vw; margin-bottom: 2vh; margin-top: 15vh;">What other students think</h2>
+    <div class="Review" style="display: flex; justify-content: center; gap: 2vw; flex-wrap: wrap; margin: 2vw 10vw; margin-bottom: 15vh;">
         <!-- Review 1 -->
-        <div class="Review" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 300px;">
-            <p style="font-style: italic;">"Chairing helped me find the perfect study spot! I’ve been so much more productive lately."</p>
-            <p style="font-weight: bold; margin-top: 10px;">- Alex -</p>
+        <div class="Review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 15vw;">
+            <p style="font-style: italic; color: grey;">"Chairing helped me find the perfect study spot! I’ve been so much more productive lately."</p>
+            <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Alex -</p>
         </div>
         <!-- Review 2 -->
-        <div class="Review" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 300px;">
-            <p style="font-style: italic;">"I love being able to explore new libraries and cafés for studying. Highly recommend Chairing!"</p>
-            <p style="font-weight: bold; margin-top: 10px;">- Sarah -</p>
+        <div class="Review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 15vw;">
+            <p style="font-style: italic; color: grey;">"I love being able to explore new libraries and cafés for studying. Highly recommend Chairing!"</p>
+            <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Sarah -</p>
         </div>
         <!-- Review 3 -->
-        <div class="Review" style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 300px;">
-            <p style="font-style: italic;">"A game-changer for finding quiet, comfortable places to study near campus."</p>
-            <p style="font-weight: bold; margin-top: 10px;">- Jordan -</p>
+        <div class="Review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 15vw;">
+            <p style="font-style: italic; color: grey;">"A game-changer for finding quiet, comfortable places to study near campus."</p>
+            <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Jordan -</p>
         </div>
     </div>
 </div>
-<br>
-<br>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Find the flash message by targeting common classes for alert messages
-        const flashMessages = document.querySelectorAll('.alert, .flash, .alert-success');
-        flashMessages.forEach(function(flashMessage) {
-            // Set a timeout to hide the message after 2 seconds
-            setTimeout(function() {
-                flashMessage.style.transition = 'opacity 1s ease-out';
-                flashMessage.style.opacity = '0'; // Gradually fade out
-                
-                // After fading out, set display to 'none' to remove it from the layout
-                setTimeout(function() {
-                    flashMessage.style.display = 'none';
-                }, 1000); // Matches the CSS transition time (1 second)
-            }, 2000); // Wait 2 seconds before starting the fade-out
-        });
-    });
-</script>
+
+<!-- Footer Section with black background -->
+<div style="background-color: black; color: white; padding: 10vh 30vw;">
+    <div style="display: flex; justify-content: space-between; text-align: center; gap: 0vw;">
+        <!-- Locations Column -->
+        <div style="flex: 1; padding: 0 1vw; text-align: left;">
+            <p style="font-size: 1.2vw; font-weight: bold; text-align: left;">Locations</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 0.8vw; cursor: pointer; margin-bottom: 10px;">Locations</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 0.8vw; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
+            </form>
+        </div>
+
+        <!-- Reservations Column -->
+        <div style="flex: 1; padding: 0 1vw; text-align: left;">
+            <p style="font-size: 1.2vw; font-weight: bold; text-align: left;">Reservations</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 0.8vw; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 0.8vw; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 0.8vw; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
+            </form>
+        </div>
+
+        <!-- Community Column -->
+        <div style="flex: 1; padding: 0 1vw; text-align: left;">
+            <p style="font-size: 1.2vw; font-weight: bold; text-align: left;">Community</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 0.8vw; cursor: pointer; margin-bottom: 10px;">About Us</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}
