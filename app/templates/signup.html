@@ -5,9 +5,50 @@
 {% endblock %}
 
 {% block body %}
-<div class="login-signup-container {% if get_flashed_messages() %}flash-active{% endif %}" style="height: 650px">
-    <h1 style="text-align: left;">Create your account: </h1>
+<!-- Top white bar -->
+<div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
+    <!-- Left Section: Logo and Buttons -->
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <img src="{{ url_for('static', filename='images/logo_wit2.JPG') }}" alt="logo" style="height: 50px; margin-right: 20px; top: -3px;">
+        <!-- Home Button -->
+        <form action="{{ url_for('main.home') }}" method="get" style="margin-left: 30px;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Home</button>
+        </form>
+        <!-- About Us Button -->
+        <form action="{{ url_for('main.home') }}" method="get" style="margin-left: 30px; margin-right: 250px;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
+        </form>
+    </div>
 
+    <!-- Right Section: Authentication Buttons -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <form action="{{ url_for('main.login') }}" method="get" style="margin-left: 250px;">
+            <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="rgb(25, 70, 202)" viewBox="0 0 24 24" width="25" height="25" style="margin-right: 5px;">
+                    <path d="M12 2a5 5 0 0 1 5 5v3h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v3h6V7a3 3 0 0 0-3-3zm-7 8a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H5z"/>
+                </svg>
+                Log in
+            </button>
+        </form>
+        <span style="color: #ccc;">|</span>
+        <form action="{{ url_for('main.signup') }}" method="get" style="margin: 0;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Sign Up</button>
+        </form>
+    </div>
+</div>
+
+<!-- Title -->
+<h1 style="text-align: center; margin-top: 150px; font-size: 3em; font-weight: bold;">Create your Account<br>and Start Studying!</h1>
+<div style="text-align: center; margin-top: 20px;">
+    <span class="have-account">If you already have an account yet, log in</span>
+    <form action="{{ url_for('main.login') }}" method="get" style="display: inline; margin-left: -7px;">
+        <button type="submit" style="background: none; border: none; color: rgb(25, 70, 202); font-size: 1em; cursor: pointer;">
+            here.
+        </button>
+    </form>
+</div>
+
+<div class="login-signup-container {% if get_flashed_messages() %}flash-active{% endif %}" style="height: auto; margin-top: 20px; margin-bottom: 100px;">
      <!-- Display flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -21,26 +62,35 @@
 
     <form action="{{ url_for('main.signup') }}" method="post">
         <!--Username-->
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter Your Username" required>
 
         <!--Phonenumber-->
-        <label for="phonenumber">Phonenumber</label>
-        <input type="text" id="phonenumber" name="phonenumber" placeholder="Enter your phonenumber" required>
+        <label for="phonenumber">Phonenumber:</label>
+        <input type="text" id="phonenumber" name="phonenumber" placeholder="Enter Your Phonenumber" required>
 
-        <!--Password-->
-        <label for="password">Password</label> 
+        <!-- Password -->
+        <label for="password">Password:</label>
         <div style="position: relative;">
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 10px; top: 5px; background: none; border: none; cursor: pointer;">👁️</button>
+            <input type="password" id="password" name="password" placeholder="Enter Your Password" required style="padding-right: 40px;">
+            <button type="button" onclick="togglePassword('password')" style="position: absolute; right: 10px; top: 13px; background: none; border: none; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="grey" viewBox="0 0 24 24" width="25" height="25">
+                    <path d="M12 3C7.03 3 3 6.4 3 9c0 2.6 4.03 6 9 6s9-3.4 9-6c0-2.6-4.03-6-9-6zM12 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                </svg>
+            </button>
         </div>
 
-        <!--Confirm password-->
-        <label for="confirm_password">Confirm Password</label>
+        <!-- Confirm Password -->
+        <label for="confirm_password">Confirm Password:</label>
         <div style="position: relative;">
-            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
-            <button type="button" onclick="togglePassword('confirm_password')" style="position: absolute; right: 10px; top: 5px; background: none; border: none; cursor: pointer;">👁️</button>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Your Password" required style="padding-right: 40px;">
+            <button type="button" onclick="togglePassword('confirm_password')" style="position: absolute; right: 10px; top: 13px; background: none; border: none; cursor: pointer;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="grey" viewBox="0 0 24 24" width="25" height="25">
+                    <path d="M12 3C7.03 3 3 6.4 3 9c0 2.6 4.03 6 9 6s9-3.4 9-6c0-2.6-4.03-6-9-6zM12 14c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                </svg>
+            </button>
         </div>
+
 
         <script>
             function togglePassword(fieldId) {
@@ -51,17 +101,58 @@
         </script>
 
         <!--Sign Up button-->
-        <button type="submit" class="btn btn-black">Sign Up</button>
+        <button type="submit" class="btn btn-black" style="width: 100%;">Sign Up</button>
     </form>
 
     <!--Already have an account / Login-->
-    <div style="text-align: right; margin-top: 20px;">
+    <div style="text-align: center; margin-top: 20px;">
         <span class="have-account">Already have an account?</span>
-        <form action="{{ url_for('main.login') }}" method="get" style="display: inline;">
-            <button type="submit" class="btn btn-transparant">Log in</button>
+        <form action="{{ url_for('main.login') }}" method="get" style="display: inline; margin-left: -7px;">
+            <button type="submit" style="background: none; border: none; color: rgb(25, 70, 202); font-size: 1em; cursor: pointer;">
+                Login
+            </button>
         </form>
     </div>
 </div>
+
+<!-- Footer Section with black background -->
+<div style="background-color: black; color: white; padding: 50px;">
+    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto;">
+        <!-- Locations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
+            </form>
+        </div>
+
+        <!-- Reservations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
+            </form>
+        </div>
+
+        <!-- Community Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
+            <form action="{{ url_for('main.home') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">About Us</button>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Find the flash message by targeting common classes for alert messages

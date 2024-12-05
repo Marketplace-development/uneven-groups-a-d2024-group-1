@@ -72,7 +72,7 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
             flash('Account created successfully!', 'success')
-            return redirect(url_for('main.success'))
+            return redirect(url_for('main.login'))
         except:
             # Handle duplicate entries (e.g., unique phone number or username constraint)
             db.session.rollback()
@@ -80,10 +80,6 @@ def signup():
             return redirect(url_for('main.signup'))
 
     return render_template('signup.html')
-
-@main.route('/success')
-def success():
-    return render_template('success.html')
 
 @main.route('/main_page', methods=['GET', 'POST'])
 @login_required
