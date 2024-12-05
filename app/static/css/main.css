@@ -714,18 +714,6 @@ label {
     padding-bottom: 5px;
 }
 
-/* Parent container for the layout */
-.target-spotlight-container {
-    display: flex;
-    flex-direction: row; /* Align the elements horizontally */
-    justify-content: center; /* Centers the content horizontally */
-    gap: 10px; /* Space between the sections */
-    margin-top: 20px;
-    margin-bottom: 0px;
-    align-items: flex-start; /* Align the items at the top */
-    height: auto; /* Optional: Adjust height as needed */
-}
-
 /* No background or white container styles */
 #highlighted-location, #weekly-target {
     width: 220px; /* Fixed width */

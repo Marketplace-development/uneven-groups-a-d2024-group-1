@@ -86,7 +86,11 @@ def signup():
 def main_page():
     # Highlighted location
     highlighted_location = get_highlighted_location()
+    return render_template('main_page.html', user=current_user, highlighted_location=highlighted_location)
 
+@main.route('/your_account', methods=['GET', 'POST'])
+@login_required
+def your_account():
     # Get the current date
     today = datetime.today()
 
@@ -168,15 +172,14 @@ def main_page():
             db.session.rollback()
             flash(f"An error occurred while updating the target: {str(e)}", "error")
 
-        return redirect(url_for('main.main_page'))
+        return redirect(url_for('main.your_account'))
 
-    return render_template('main_page.html', user=current_user, week_range=week_range,
+    return render_template('your_account.html', user=current_user, week_range=week_range,
                            completed_sessions=completed_sessions, target_sessions=target_sessions,
                            completed_study_time=completed_study_time, target_study_time=target_study_time,
                            completed_hours=completed_hours, completed_minutes=completed_minutes,
                            target_hours=target_hours, target_minutes=target_minutes,
-                           congratulations_message=congratulations_message, highlighted_location=highlighted_location)
-
+                           congratulations_message=congratulations_message)
 
 def delete_target(user, target_type):
     """ Deletes the specified target for a user. """

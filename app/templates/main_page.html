@@ -42,7 +42,7 @@
     <!-- Right Section: Authentication Buttons -->
     <div style="display: flex; align-items: center; gap: 10px;">
         <!-- Your Account Button -->
-        <form action="{{ url_for('main.main_page') }}" method="get" style="margin-left: 150px;">
+        <form action="{{ url_for('main.your_account') }}" method="get" style="margin-left: 150px;">
             <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
                 <!-- User Image (replace with your image path) -->
                 <img src="{{ url_for('static', filename='images/user.jpg') }}" alt="User Avatar" width="25" height="25" style="margin-right: 10px; border-radius: 0; color: #1946ca;">
@@ -300,7 +300,7 @@
         <!-- Community Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
-            <form action="{{ url_for('main.main_page') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
             </form>
             <form action="{{ url_for('main.main_page') }}" method="get" style="margin: 0;">
@@ -308,101 +308,6 @@
             </form>
         </div>
     </div>
-</div>
-
-
-<!-- Dit zal uiteindelijk gekopieerd worden naar Your Account -->
-
-<div class="main-container" style="text-align: center; margin-top: 100px;">
-    <p>Dit staat hier gewoon nog zodat ik het later nog kan kopieren naar Your Account</p>
-    <!-- The Student's Average Rating -->
-    <div id="student-rating">
-        <h3>Your Rating:</h3>
-        {% if user.user_rating %}
-            <!-- Display stars for received location rating -->
-            {% for star in range(5) %}
-                {% if star < user.user_rating %}
-                    <span class="star filled">&#9733;</span>
-                {% else %}
-                    <span class="star empty">&#9733;</span>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <p>No rating yet.</p>
-        {% endif %}
-    </div>
-
-    {% if congratulations_message %}
-        <p class="congratulations">{{ congratulations_message }}</p>
-    {% endif %}
-
-    <!-- Weekly Targets Section -->
-    <div class="weekly-target" id="weekly-target">
-        <h3>Your Weekly Targets:</h3>
-
-        <!-- Study Time Target Section -->
-        <div id="minutes-target">
-            <h4>Study Time Target:</h4>
-            {% if user.minutes_target %}
-                <p style="margin-top: 27px;">{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
-                <form action="{{ url_for('main.main_page') }}" method="POST">
-                    <button type="submit" name="delete_minutes_target">Delete Target</button>
-                </form>
-            {% else %}
-                <form action="{{ url_for('main.main_page') }}" method="POST" class="time-target-form">
-                    <div class="time-select-group">
-                        <select name="hours" id="hours-select">
-                            {% for hour in range(0, 100) %}
-                            <option value="{{ hour }}">{{ hour }} hour{{ '' if hour == 1 else 's' }}</option>
-                            {% endfor %}
-                        </select>
-                        <select name="minutes" id="minutes-select">
-                            {% for minute in [0, 15, 30, 45] %}
-                            <option value="{{ minute }}">{{ minute }} minute{{ '' if minute == 1 else 's' }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button class="btn btn-black" style="width: 100%; margin-top: -5px;" type="submit">Set Target</button>
-                </form>
-            {% endif %}
-        </div>
-
-        <!-- Study Sessions Target Section -->
-        <div id="sessions-target">
-            <h4>Study Sessions Target:</h4>
-            {% if user.sessions_target %}
-                <p style="margin-top: 27px;">{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
-                <form action="{{ url_for('main.main_page') }}" method="POST">
-                    <button type="submit" name="delete_sessions_target">Delete Target</button>
-                </form>
-            {% else %}
-                <form action="{{ url_for('main.main_page') }}" method="POST">
-                    <div class="time-select-group">
-                        <select name="sessions_target" id="sessions-select">
-                            {% for session in range(0, 29) %}
-                            <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button class="btn btn-black" style="width: 100%; margin-top: -10px;" type="submit">Set Target</button>
-                </form>
-            {% endif %}
-        </div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Find the flash message by targeting common classes for alert messages
-            const flashMessages = document.querySelectorAll('.alert, .flash, .message');
-
-            flashMessages.forEach(function(message) {
-                // Remove the flash message after 3 seconds
-                setTimeout(function() {
-                    message.style.display = 'none';
-                }, 3000);
-            });
-        });
-    </script>
 </div>
 
 {% endblock %}
