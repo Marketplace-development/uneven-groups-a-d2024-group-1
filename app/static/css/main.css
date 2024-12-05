@@ -719,7 +719,7 @@ label {
     display: flex;
     flex-direction: row; /* Align the elements horizontally */
     justify-content: center; /* Centers the content horizontally */
-    gap: 30px; /* Space between the sections */
+    gap: 10px; /* Space between the sections */
     margin-top: 20px;
     margin-bottom: 0px;
     align-items: flex-start; /* Align the items at the top */
@@ -801,8 +801,8 @@ button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"
 }
 
 .image-container img {
-    width: 200px;
-    height: 145px;
+    width: 100%;
+    height: 180px;
     object-fit: cover;
 }
 
@@ -812,7 +812,7 @@ button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"
 }
 
 .rating-container span {
-    font-size: 2em;
+    font-size: 2.7em;
     color: gold;
     text-shadow: 0 0 3px rgba(128, 128, 128, 0.4), 0 0 6px rgba(128, 128, 128, 0.4);
 }

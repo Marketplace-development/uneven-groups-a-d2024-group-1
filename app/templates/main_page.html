@@ -5,19 +5,316 @@
 {% endblock %}
 
 {% block body %}
-<div class="main-container" style="text-align: center; margin-top: 50px;">
+<!-- Top white bar -->
+<div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
+    <!-- Left Section: Logo and Buttons -->
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <a href="{{ url_for('main.main_page') }}" style="display: inline-block;">
+            <img src="{{ url_for('static', filename='images/logo_wit2.JPG') }}" alt="logo" style="height: 50px; margin-right: 20px; top: -3px;">
+        </a>
+        <!-- Home Button -->
+        <form action="{{ url_for('main.main_page') }}" method="get" style="margin-left: 30px;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Home</button>
+        </form>
+        <!-- Locations Dropdown -->
+        <div style="position: relative; margin-left: 30px;">
+            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Locations ▼</button>
+            <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
+                <a href="{{ url_for('main.all_locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">All Locations</a>
+                <a href="{{ url_for('main.locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
+            </div>
+        </div>
+        <!-- Reservation Dropdown -->
+        <div style="position: relative; margin-left: 30px;">
+            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservation ▼</button>
+            <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
+                <a href="{{ url_for('main.reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
+                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservation</a>
+                <a href="{{ url_for('main.location_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
+            </div>
+        </div>
+        <!-- About Us Button -->
+        <form action="{{ url_for('main.home') }}" method="get" style="margin-left: 30px; margin-right: 150px;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
+        </form>
+    </div>
 
-    <!-- Logout button -->
-    <form action="{{ url_for('main.home') }}" method="get" class="inline-form" style="position: fixed; top: 20px; right: 20px;">
-        <button type="submit" class="btn btn-black" style="width: 120px; font-size: 1em; padding: 10px 20px;">Log out</button>
-    </form>
+    <!-- Right Section: Authentication Buttons -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- Your Account Button -->
+        <form action="{{ url_for('main.main_page') }}" method="get" style="margin-left: 150px;">
+            <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
+                <!-- User Image (replace with your image path) -->
+                <img src="{{ url_for('static', filename='images/user.jpg') }}" alt="User Avatar" width="25" height="25" style="margin-right: 10px; border-radius: 0; color: #1946ca;">
+                Your Account
+            </button>
+        </form>
 
-    <!-- Logo -->
-    <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="logo" style="width: 300px; margin-top: 20px;">
+        <span style="color: #ccc;">|</span>
+        <!-- Logout Button -->
+        <form action="{{ url_for('main.home') }}" method="get" style="margin: 0;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Logout</button>
+        </form>
+    </div>
+</div>
+
+<!-- Add dropdown functionality -->
+<style>
+    div[style*="position: relative;"] button:hover + .dropdown-menu,
+    div[style*="position: relative;"] .dropdown-menu:hover {
+        display: block !important;
+    }
+
+    .dropdown-menu {
+        transition: opacity 0.2s ease-in-out;
+    }
+</style>
+
+<!-- Main Section -->
+<div style="display: flex; align-items: center; justify-content: center; margin-top: 150px; padding: 10px 10px; gap: 150px;">
+    <!-- Left Section: Text and Buttons -->
+    <div style="max-width: 50%; margin-top: 10px;">
+        <p style="font-size: 1.5em; color: black; margin-bottom: 0px; text-align: left;">Welcome {{ user.username }},<br>are you looking for the perfect place to study?</p>
+        <p style="font-size: 4.5em; font-weight: bold; color: black; margin-top: 0px; margin-bottom: 0px; text-align: left;">Chairing Has<br>You Covered!</p>
+        <p style="font-size: 1.4em; color: grey; margin-top: 0px; margin-bottom: 20px; text-align: left;">Pick a study location for the day and get to work!<br>Or upload your own location!</p>
+        
+        <!-- Centered Buttons with flex-direction: row -->
+        <div style="display: flex; flex-direction: row; justify-content: center; gap: 20px;">
+            <form action="{{ url_for('main.reservations') }}" method="get">
+                <button type="submit" class="btn btn-transparant" style="width: 170px">Make Your Reservation</button>
+            </form>
+            <form action="{{ url_for('main.locations') }}" method="get">
+                <button type="submit" class="btn btn-black" style="width: 170px;">Upload Your Location</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right Section: Image -->
+    <div>
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Chairing Logo" style="width: 450px;">
+    </div>
+</div>
+
+<!-- Spotlight Locations -->
+<div style="justify-content: center; margin-top: 130px; text-align: center; background-color: white; padding: 30px 0;">
+    <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 100px;">This Weeks Highlighted Locations</h2>
+    <div class="Review" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;">      
+        <!-- Spotlight 1 -->
+        <div class="spotlight" style="background-color: #F5F5F5; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
+            {% if highlighted_location %}
+                <div class="spotlight-location" id="highlighted-location">
+                    <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ highlighted_location.location_name }}</h4>
+                    
+                    <!-- Display the average Location Rating (if available) -->
+                    {% if highlighted_location.location_rating %}
+                        <div class="rating-container">
+                            {% for star in range(1, 6) %}
+                                {% if star <= highlighted_location.location_rating %}
+                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                                {% else %}
+                                    <span style="color: white;">&#9733;</span>  <!-- Empty star -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if highlighted_location.location_picture %}
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>No location has been highlighted this week.</p>
+            {% endif %}
+        </div>
+
+        <!-- Spotlight 2 -->
+        <div class="spotlight" style="background-color: #F5F5F5; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
+            {% if highlighted_location %}
+                <div class="spotlight-location" id="highlighted-location">
+                    <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ highlighted_location.location_name }}</h4>
+                    
+                    <!-- Display the average Location Rating (if available) -->
+                    {% if highlighted_location.location_rating %}
+                        <div class="rating-container">
+                            {% for star in range(1, 6) %}
+                                {% if star <= highlighted_location.location_rating %}
+                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                                {% else %}
+                                    <span style="color: white;">&#9733;</span>  <!-- Empty star -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if highlighted_location.location_picture %}
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>No location has been highlighted this week.</p>
+            {% endif %}
+        </div>
     
-    <!-- Welcom Back -->
-    <h1 >Welcome,<br>{{ user.username }}</h1>
+        <!-- Spotlight 3 -->
+        <div class="spotlight" style="background-color: #F5F5F5; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
+            {% if highlighted_location %}
+                <div class="spotlight-location" id="highlighted-location">
+                    <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ highlighted_location.location_name }}</h4>
+                    
+                    <!-- Display the average Location Rating (if available) -->
+                    {% if highlighted_location.location_rating %}
+                        <div class="rating-container">
+                            {% for star in range(1, 6) %}
+                                {% if star <= highlighted_location.location_rating %}
+                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                                {% else %}
+                                    <span style="color: white;">&#9733;</span>  <!-- Empty star -->
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if highlighted_location.location_picture %}
+                        <div class="image-container">
+                            <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
+                        </div>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>No location has been highlighted this week.</p>
+            {% endif %}
+        </div>
+    </div>
+    <form action="{{ url_for('main.all_locations') }}" method="get" class="inline-form">
+        <button type="submit" class="btn btn-black" style="width: 200px; margin-bottom: 100px">View All Locations</button>
+    </form>
+</div>
 
+<!-- Main Options -->
+<div style="justify-content: center; margin-top: 100px; text-align: center; padding: 30px 0;">
+    <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 0px;">Get Started With Chairing!</h2>
+    <div class="Option" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 150px;">
+        <!-- Make Reservation -->
+        <form action="{{ url_for('main.reservations') }}" method="get" class="inline-form">
+            <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
+                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Make a Reservation -</p>
+                <a href="{{ url_for('main.reservations') }}" style="display: inline-block;">
+                    <img src="{{ url_for('static', filename='images/reservation_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
+                </a>
+                <p style="font-style: italic; color: grey;">Book a seat at a location<br>and time of your choice</p>
+                <button type="submit" class="btn btn-black" style="width: 100%;">Make Reservations</button>
+            </div>
+        </form>
+
+        <!-- Your Reservations -->
+        <form action="{{ url_for('main.current_reservations') }}" method="get" class="inline-form">
+            <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
+                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Your Reservations -</p>
+                <a href="{{ url_for('main.current_reservations') }}"style="display: inline-block;">
+                    <img src="{{ url_for('static', filename='images/check_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
+                </a>
+                <p style="font-style: italic; color: grey;">Consult, cancel or<br>rate your reservations</p>
+                <button type="submit" class="btn btn-black" style="width: 100%;">Your Reservations</button>
+            </div>
+        </form>
+
+        <!-- Upload Location -->
+        <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
+            <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
+                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Upload Your Location -</p>
+                <a href="{{ url_for('main.locations') }}"style="display: inline-block;">
+                    <img src="{{ url_for('static', filename='images/location_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
+                </a>
+                <p style="font-style: italic; color: grey;">Upload or delete your own<br>location for students to visit</p>
+                <button type="submit" class="btn btn-black" style="width: 100%;">Upload Location</button>
+            </div>
+        </form>
+
+        <!-- Your Bookings -->
+        <form action="{{ url_for('main.location_bookings') }}" method="get" class="inline-form">
+            <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
+                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Your Location Bookings -</p>
+                <a href="{{ url_for('main.location_bookings') }}" style="display: inline-block;">
+                    <img src="{{ url_for('static', filename='images/pin_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
+                </a>
+                <p style="font-style: italic; color: grey;">See who booked your<br>location and give ratings</p>
+                <button type="submit" class="btn btn-black" style="width: 100%;">Your Bookings</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add hover effects for spotlights -->
+<style>
+    .spotlight {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .spotlight:hover {
+        transform: scale(1.05); /* Slightly enlarge the element */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add blue shadow */
+    }
+
+    .option {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .option:hover {
+        transform: scale(1.05); /* Slightly enlarge the element */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add blue shadow */
+    }
+</style>
+
+<!-- Footer Section with black background -->
+<div style="background-color: black; color: white; padding: 50px;">
+    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto;">
+        <!-- Locations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
+            </form>
+        </div>
+
+        <!-- Reservations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
+            </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
+            </form>
+        </div>
+
+        <!-- Community Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
+            <form action="{{ url_for('main.main_page') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
+            </form>
+            <form action="{{ url_for('main.main_page') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">About Us</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Dit zal uiteindelijk gekopieerd worden naar Your Account -->
+
+<div class="main-container" style="text-align: center; margin-top: 100px;">
+    <p>Dit staat hier gewoon nog zodat ik het later nog kan kopieren naar Your Account</p>
     <!-- The Student's Average Rating -->
     <div id="student-rating">
         <h3>Your Rating:</h3>
@@ -39,138 +336,57 @@
         <p class="congratulations">{{ congratulations_message }}</p>
     {% endif %}
 
-    <!-- Spotlight and Target Container -->
-    <div class="target-spotlight-container">
-        <!-- Spotlight Location Section -->
-        {% if highlighted_location %}
-            <div class="spotlight-location" id="highlighted-location">
-                <h3>This Week's Spotlight:</h3>
-                <h4 style="font-size: 16px; color: #333; text-align: center; margin-bottom: 0px;">{{ highlighted_location.location_name }}</h4>
-                
-                <!-- Display the average Location Rating (if available) -->
-                {% if highlighted_location.location_rating %}
-                    <div class="rating-container">
-                        {% for star in range(1, 6) %}
-                            {% if star <= highlighted_location.location_rating %}
-                                <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                            {% else %}
-                                <span style="color: white;">&#9733;</span>  <!-- Empty star -->
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-                
-                {% if highlighted_location.location_picture %}
-                    <div class="image-container">
-                        <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
-                    </div>
-                {% endif %}
-                <form action="{{ url_for('main.all_locations') }}" method="get" class="inline-form">
-                    <button type="submit" class="btn btn-transparant" style="width: 200px;">View All Locations</button>
+    <!-- Weekly Targets Section -->
+    <div class="weekly-target" id="weekly-target">
+        <h3>Your Weekly Targets:</h3>
+
+        <!-- Study Time Target Section -->
+        <div id="minutes-target">
+            <h4>Study Time Target:</h4>
+            {% if user.minutes_target %}
+                <p style="margin-top: 27px;">{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
+                <form action="{{ url_for('main.main_page') }}" method="POST">
+                    <button type="submit" name="delete_minutes_target">Delete Target</button>
                 </form>
-            </div>
-        {% else %}
-            <p>No location has been highlighted this week.</p>
-        {% endif %}
-
-        <!-- Weekly Targets Section -->
-        <div class="weekly-target" id="weekly-target">
-            <h3>Your Weekly Targets:</h3>
-
-            <!-- Study Time Target Section -->
-            <div id="minutes-target">
-                <h4>Study Time Target:</h4>
-                {% if user.minutes_target %}
-                    <p style="margin-top: 27px;">{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
-                    <form action="{{ url_for('main.main_page') }}" method="POST">
-                        <button type="submit" name="delete_minutes_target">Delete Target</button>
-                    </form>
-                {% else %}
-                    <form action="{{ url_for('main.main_page') }}" method="POST" class="time-target-form">
-                        <div class="time-select-group">
-                            <select name="hours" id="hours-select">
-                                {% for hour in range(0, 100) %}
-                                <option value="{{ hour }}">{{ hour }} hour{{ '' if hour == 1 else 's' }}</option>
-                                {% endfor %}
-                            </select>
-                            <select name="minutes" id="minutes-select">
-                                {% for minute in [0, 15, 30, 45] %}
-                                <option value="{{ minute }}">{{ minute }} minute{{ '' if minute == 1 else 's' }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button class="btn btn-black" style="width: 100%; margin-top: -5px;" type="submit">Set Target</button>
-                    </form>
-                {% endif %}
-            </div>
-
-            <!-- Study Sessions Target Section -->
-            <div id="sessions-target">
-                <h4>Study Sessions Target:</h4>
-                {% if user.sessions_target %}
-                    <p style="margin-top: 27px;">{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
-                    <form action="{{ url_for('main.main_page') }}" method="POST">
-                        <button type="submit" name="delete_sessions_target">Delete Target</button>
-                    </form>
-                {% else %}
-                    <form action="{{ url_for('main.main_page') }}" method="POST">
-                        <div class="time-select-group">
-                            <select name="sessions_target" id="sessions-select">
-                                {% for session in range(0, 29) %}
-                                <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button class="btn btn-black" style="width: 100%; margin-top: -10px;" type="submit">Set Target</button>
-                    </form>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-
-
-    <!--Buttons for Reservation and Uploading Locations-->
-    <div style="display: flex; justify-content: center; gap: 50px; margin-top: 0px;">
-
-        <!--Make a Reservation-->
-        <div class="option-container" style="text-align: center; width: 250px;">
-            <form action="{{ url_for('main.reservations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Make a Reservation</button>
-            </form>
-            <img src="{{ url_for('static', filename='images/reservation.JPG') }}" alt="Reservation Image" style="width: 100%; margin-top: 20px;">
-            <p class="text-blue" style="font-size: 1.3em; margin-top: 5px;"> Book a seat at a<br>location of your choice</p>
+            {% else %}
+                <form action="{{ url_for('main.main_page') }}" method="POST" class="time-target-form">
+                    <div class="time-select-group">
+                        <select name="hours" id="hours-select">
+                            {% for hour in range(0, 100) %}
+                            <option value="{{ hour }}">{{ hour }} hour{{ '' if hour == 1 else 's' }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="minutes" id="minutes-select">
+                            {% for minute in [0, 15, 30, 45] %}
+                            <option value="{{ minute }}">{{ minute }} minute{{ '' if minute == 1 else 's' }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button class="btn btn-black" style="width: 100%; margin-top: -5px;" type="submit">Set Target</button>
+                </form>
+            {% endif %}
         </div>
 
-        <!--Upload Your Location-->
-        <div class="option-container" style="text-align: center; width: 250px;">
-            <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Upload Your<br>Location</button>
-            </form>
-            <img src="{{ url_for('static', filename='images/location.JPG') }}" alt="Location Image" style="width: 100%; margin-top: 20px">
-            <p class="text-blue" style="font-size: 1.3em; margin-top: 20px;">Upload your own location<br>for students to visit</p>
-        </div>
-    </div>
-
-    <!--Buttons for Reservation and Uploading Locations-->
-    <div style="display: flex; justify-content: center; gap: 50px; margin-top: 10px;">
-
-        <!-- Your Reservations -->
-        <div class="option-container" style="text-align: center; width: 250px;">
-            <form action="{{ url_for('main.current_reservations') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-transparant" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Your Reservations</button>
-            </form>
-            <img src="{{ url_for('static', filename='images/check.JPG') }}" alt="Current Reservation Image" style="height: 200px; margin-top: 20px;">
-            <p class="text-blue" style="font-size: 1.3em; margin-top: 20px;"> Consult, cancel or rate your reservation</p>
-        </div>
-
-        <!--Your Location Bookings-->
-        <div class="option-container" style="text-align: center; width: 250px;">
-            <form action="{{ url_for('main.location_bookings') }}" method="get" class="inline-form">
-                <button type="submit" class="btn btn-black" style="width: 200px; font-size: 1.2em; padding: 10px 20px">Your Location Bookings</button>
-            </form>
-            <img src="{{ url_for('static', filename='images/pin.JPG') }}" alt="Booking Image" style="height: 200px; margin-top: 20px">
-            <p class="text-blue" style="font-size: 1.3em;  margin-top: 20px;">See who booked your location and at what time</p>
+        <!-- Study Sessions Target Section -->
+        <div id="sessions-target">
+            <h4>Study Sessions Target:</h4>
+            {% if user.sessions_target %}
+                <p style="margin-top: 27px;">{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
+                <form action="{{ url_for('main.main_page') }}" method="POST">
+                    <button type="submit" name="delete_sessions_target">Delete Target</button>
+                </form>
+            {% else %}
+                <form action="{{ url_for('main.main_page') }}" method="POST">
+                    <div class="time-select-group">
+                        <select name="sessions_target" id="sessions-select">
+                            {% for session in range(0, 29) %}
+                            <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button class="btn btn-black" style="width: 100%; margin-top: -10px;" type="submit">Set Target</button>
+                </form>
+            {% endif %}
         </div>
     </div>
 
@@ -188,4 +404,5 @@
         });
     </script>
 </div>
+
 {% endblock %}

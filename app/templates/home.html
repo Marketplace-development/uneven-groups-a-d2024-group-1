@@ -9,7 +9,9 @@
 <div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
     <!-- Left Section: Logo and Buttons -->
     <div style="display: flex; align-items: center; justify-content: center;">
-        <img src="{{ url_for('static', filename='images/logo_wit2.JPG') }}" alt="logo" style="height: 50px; margin-right: 20px; top: -3px;">
+        <a href="{{ url_for('main.home') }}" style="display: inline-block;">
+            <img src="{{ url_for('static', filename='images/logo_wit2.JPG') }}" alt="logo" style="height: 50px; margin-right: 20px; top: -3px;">
+        </a>        
         <!-- Home Button -->
         <form action="{{ url_for('main.home') }}" method="get" style="margin-left: 30px;">
             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Home</button>
@@ -68,22 +70,34 @@
     <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 100px;">What Other Students Think</h2>
     <div class="Review" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 150px;">
         <!-- Review 1 -->
-        <div class="Review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
+        <div class="review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
             <p style="font-style: italic; color: grey;">"Chairing helped me find the perfect study spot! I’ve been so much more productive lately."</p>
             <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Alex -</p>
         </div>
         <!-- Review 2 -->
-        <div class="Review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
+        <div class="review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
             <p style="font-style: italic; color: grey;">"I love being able to explore new libraries and cafés for studying. Highly recommend Chairing!"</p>
             <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Sarah -</p>
         </div>
         <!-- Review 3 -->
-        <div class="Review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
+        <div class="review" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
             <p style="font-style: italic; color: grey;">"A game-changer for finding quiet, comfortable places to study near campus."</p>
             <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Jordan -</p>
         </div>
     </div>
 </div>
+
+<!-- Add hover effects for spotlights -->
+<style>
+    .review {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .review:hover {
+        transform: scale(1.05); /* Slightly enlarge the element */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add blue shadow */
+    }
+</style>
 
 <!-- Footer Section with black background -->
 <div style="background-color: black; color: white; padding: 50px;">
@@ -116,6 +130,9 @@
         <!-- Community Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
+            </form>
             <form action="{{ url_for('main.home') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">About Us</button>
             </form>
