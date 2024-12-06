@@ -1,8 +1,13 @@
 body, html {
     margin: 0;
     font-family: sans-serif;
-    background-color: #d3d3d3;
+    background-image: url('/static/images/pexels-photo-2041540-1024x682.jpeg'); /* Update the path to match your file location */
+    background-size: cover; /* Ensure the image covers the entire viewport */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Fix the image while scrolling */
+    background-position: center center; /* Center the image */
 }
+
 
 h1, h2, h3 {
     font-family: 'Arial', sans-serif;
