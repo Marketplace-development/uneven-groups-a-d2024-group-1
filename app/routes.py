@@ -505,7 +505,7 @@ def confirm_reservation():
     db.session.commit()
 
     flash('Your reservation has been successfully created!', 'success')
-    return redirect(url_for('main.reservation_successful'))
+    return redirect(url_for('main.main_page'))
 
 
 def filter_available_locations(reservation_datetime, study_time, number_of_guests):
@@ -621,11 +621,6 @@ def logout():
 @main.route('/upload_location', methods=['GET','POST'])
 def upload_location():
     return render_template('upload_location.html')
-
-@main.route('/reservation_successful', methods=['GET','POST'])
-def reservation_successful():
-    # Logic for uploading location data goes here
-    return render_template('reservation_successful.html')  # Redirect back to the locations page after the upload
 
 @main.route('/current_reservations', methods=['GET', 'POST'])
 @login_required
