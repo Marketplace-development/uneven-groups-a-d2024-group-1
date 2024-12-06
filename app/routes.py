@@ -129,8 +129,6 @@ def your_account():
     else:
         bookings = []  # No location or no active location found for the logged-in user
 
-
-
     # Fetch the active location of the current logged-in user
     location = Location.query.filter_by(user_id=current_user.id, status='active').first()
 
