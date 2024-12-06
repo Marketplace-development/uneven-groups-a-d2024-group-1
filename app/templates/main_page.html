@@ -79,7 +79,7 @@
         <p style="font-size: 1.4em; margin-top: 0px; margin-bottom: 20px; text-align: left;">Pick a study location for the day and get to work!<br>Or upload your own location!</p>
         
         <!-- Centered Buttons with flex-direction: row -->
-        <div style="display: flex; flex-direction: row; justify-content: center; gap: 20px;">
+        <div style="display: flex; flex-direction: row; justify-content: flex-start; gap: 20px; margin-left: 20px;">
             <form action="{{ url_for('main.reservations') }}" method="get">
                 <button type="submit" class="btn btn-transparant" style="width: 170px">Make Your Reservation</button>
             </form>
@@ -87,6 +87,7 @@
                 <button type="submit" class="btn btn-black" style="width: 170px;">Upload Your Location</button>
             </form>
         </div>
+        
     </div>
 
     <!-- Right Section: Image -->
