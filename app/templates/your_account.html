@@ -310,15 +310,15 @@
 </div>
 
 <!-- Footer Section with black background -->
-<div style="background-color: black; color: white; padding: 50px; height: 220px;">
-    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto;">
+<div style="background-color: black; color: white; padding: 50px; height: 130px;">
+    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto; margin-top: -50px;">
         <!-- Locations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
             </form>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
             </form>
         </div>
@@ -326,13 +326,13 @@
         <!-- Reservations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
             </form>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.current_reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
             </form>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
             </form>
         </div>
