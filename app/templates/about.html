@@ -61,7 +61,7 @@
 
 
 <!-- Main Content of About Us Page -->
-<div class="container" style="margin-top: 80px; padding: 20px;">
+<div class="container" style="margin-top: 80px; margin-bottom: 30px; padding: 20px;">
     <h1 class="text-modern">About Us</h1>
     
     <div class="section">
@@ -100,5 +100,47 @@
         <h2>What Makes Us Unique</h2>
         <p>We stand out in the industry because of our dedication to building meaningful connections between students and local businesses. Our platform enables students to easily find and reserve study spaces, while also helping cafes, restaurants, and other venues utilize their space more effectively during quieter hours.</p>
     </div>
+</div>
+
+<!-- Footer Section with black background -->
+<div style="background-color: black; color: white; padding: 50px; height: 130px;">
+    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto; margin-top: -50px;">
+        <!-- Locations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
+            <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
+            </form>
+            <form action="{{ url_for('main.locations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
+            </form>
+        </div>
+
+        <!-- Reservations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
+            <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
+            </form>
+            <form action="{{ url_for('main.current_reservations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
+            </form>
+            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
+            </form>
+        </div>
+
+        <!-- Community Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
+            <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
+            </form>
+            <form action="{{ url_for('main.about') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">About Us</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 

@@ -212,10 +212,10 @@
             </div>
         </form>
 
-        <!-- Upload Location -->
+        <!-- Your Location -->
         <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
             <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
-                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Upload Your Location -</p>
+                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Your Location -</p>
                 <a href="{{ url_for('main.locations') }}"style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/location_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
@@ -272,7 +272,7 @@
             <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
             </form>
-            <form action="{{ url_for('main.main_page') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.about') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">About Us</button>
             </form>
         </div>

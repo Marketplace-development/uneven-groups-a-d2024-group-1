@@ -352,7 +352,7 @@ def locations():
         db.session.commit()
 
         flash("Your location has been successfully added.", "success")
-        return redirect(url_for('main.upload_location'))
+        return redirect(url_for('main.main_page'))
 
     locations = Location.query.all()
     return render_template('locations.html')
@@ -617,10 +617,6 @@ def cancel_reservation():
 def logout():
     logout_user()
     return redirect(url_for('main.login'))  # Redirect to login after logout
-
-@main.route('/upload_location', methods=['GET','POST'])
-def upload_location():
-    return render_template('upload_location.html')
 
 @main.route('/current_reservations', methods=['GET', 'POST'])
 @login_required
