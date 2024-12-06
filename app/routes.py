@@ -91,6 +91,22 @@ def main_page():
 @main.route('/your_account', methods=['GET', 'POST'])
 @login_required
 def your_account():
+    # Get previous reservations made by the current user
+    reservations = Reservation.query.filter_by(user_id=current_user.id).order_by(Reservation.date.desc()).all()
+
+    # Get the location of the logged-in user
+    location = Location.query.filter_by(user_id=current_user.id, status="active").first()
+
+    # Query all bookings for this location (if the location exists)
+    if location:
+        bookings = Reservation.query.filter_by(location_id=location.id).order_by(Reservation.date.desc()).all()
+    else:
+        bookings = []  # No location or no active location found for the logged-in user
+
+
+    # Fetch the active location of the current logged-in user
+    location = Location.query.filter_by(user_id=current_user.id, status='active').first()
+
     # Get the current date
     today = datetime.today()
 
@@ -144,30 +160,31 @@ def your_account():
     # Combine the start and end of the week into one string
     week_range = f"{start_of_week_str} - {end_of_week_str}"
     if request.method == 'POST':
-        # Handle setting the study time target (minutes)
-        if 'hours' in request.form and 'minutes' in request.form:
-            hours = request.form['hours']
-            minutes = request.form['minutes']
-            total_minutes = int(hours) * 60 + int(minutes)
-            current_user.minutes_target = total_minutes
-
-        # Handle setting the study sessions target
-        if 'sessions_target' in request.form:
-            sessions_target = request.form['sessions_target']
-            current_user.sessions_target = int(sessions_target)
-
-        # Handle deleting the study time target (minutes)
-        if 'delete_minutes_target' in request.form:
-            delete_target(current_user, 'minutes')
-
-        # Handle deleting the study sessions target
-        if 'delete_sessions_target' in request.form:
-            delete_target(current_user, 'sessions')
-
-        # Commit changes to the database
         try:
+            # Handle setting the study time target (minutes)
+            if 'hours' in request.form and 'minutes' in request.form:
+                hours = request.form['hours']
+                minutes = request.form['minutes']
+                total_minutes = int(hours) * 60 + int(minutes)
+                current_user.minutes_target = total_minutes
+
+            # Handle setting the study sessions target
+            if 'sessions_target' in request.form:
+                sessions_target = request.form['sessions_target']
+                current_user.sessions_target = int(sessions_target)
+
+            # Handle deleting the study time target (minutes)
+            if 'delete_minutes_target' in request.form:
+                delete_target(current_user, 'minutes')
+
+            # Handle deleting the study sessions target
+            if 'delete_sessions_target' in request.form:
+                delete_target(current_user, 'sessions')
+
+            # Commit all changes in one transaction
             db.session.commit()
             flash("Targets updated successfully!", "success")
+
         except Exception as e:
             db.session.rollback()
             flash(f"An error occurred while updating the target: {str(e)}", "error")
@@ -179,7 +196,8 @@ def your_account():
                            completed_study_time=completed_study_time, target_study_time=target_study_time,
                            completed_hours=completed_hours, completed_minutes=completed_minutes,
                            target_hours=target_hours, target_minutes=target_minutes,
-                           congratulations_message=congratulations_message)
+                           congratulations_message=congratulations_message, 
+                           reservations=reservations, location=location, bookings=bookings)
 
 def delete_target(user, target_type):
     """ Deletes the specified target for a user. """
@@ -197,6 +215,31 @@ def delete_target(user, target_type):
     except Exception as e:
         db.session.rollback()
         return f"An error occurred while deleting the target: {str(e)}"
+
+@main.route('/delete_location', methods=['POST'])
+@login_required
+def delete_location():
+    # Get the location ID from the form
+    location_id = request.form.get('location_id')
+    location = Location.query.filter_by(id=location_id, user_id=current_user.id, status="active").first()
+
+    if not location:
+        flash("Location not found or unauthorized action.", "danger")
+        return redirect(url_for('main.your_account'))
+
+    # Update the location's status to 'deleted'
+    location.status = "deleted"
+
+    # Update the status of all associated reservations to 'loc_del'
+    reservations = Reservation.query.filter_by(location_id=location.id, status="active").all()
+    for reservation in reservations:
+        reservation.status = "loc_del"
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    flash(f"Location '{location.location_name}' has been deleted.", "success")
+    return redirect(url_for('main.your_account'))
     
 @main.route('/all-locations', methods=['GET'])
 @login_required
@@ -714,31 +757,6 @@ def location_bookings():
         reservations=reservations,
         expired_reservations=expired_reservations
         )
-
-@main.route('/delete_location', methods=['POST'])
-@login_required
-def delete_location():
-    # Get the location ID from the form
-    location_id = request.form.get('location_id')
-    location = Location.query.filter_by(id=location_id, user_id=current_user.id, status="active").first()
-
-    if not location:
-        flash("Location not found or unauthorized action.", "danger")
-        return redirect(url_for('main.location_bookings'))
-
-    # Update the location's status to 'deleted'
-    location.status = "deleted"
-
-    # Update the status of all associated reservations to 'loc_del'
-    reservations = Reservation.query.filter_by(location_id=location.id, status="active").all()
-    for reservation in reservations:
-        reservation.status = "loc_del"
-
-    # Commit the changes to the database
-    db.session.commit()
-
-    flash(f"Location '{location.location_name}' has been deleted.", "success")
-    return redirect(url_for('main.location_bookings'))
 
 def update_user_rating(user_id):
     """ Calculate and update the average rating for a user. """
