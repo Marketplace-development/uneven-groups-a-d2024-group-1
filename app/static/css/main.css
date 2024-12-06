@@ -66,6 +66,14 @@ body.about-page #reservation-count-container {
     margin: 0 auto;
     text-align: center;
 }
+#reservation-count-container p {
+    font-size: 1.5em;
+    margin-top: 20px;
+    color: #333; /* Text color */
+    font-family: 'Poppins', sans-serif; /* Font family */
+    font-weight: bold; /* Bold text */
+}
+
 
 
 

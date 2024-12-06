@@ -61,8 +61,8 @@
     </div>
 </div>
 
-<div id="reservation-count-container" style="text-align: center; font-size: 3em; margin-top: 20px;">
-    <h2> We already helped:</h2>
+<div id="reservation-count-container" style="font-size: 1.5em; margin-top: 10px; font-family: 'Poppins', sans-serif; font-weight: normal; color: black;">
+    <h2 style="font-weight: lighter; margin-bottom: 10px;">We already helped:</h2>
     <div id="reservation-count" class="flip-clock">
         <div id="first-digit" class="flip-container">
             <div class="flip-card">
@@ -89,7 +89,13 @@
             </div>
         </div>
     </div>
+    <p style="font-size: 1.5em; margin-top: 10px; font-family: 'Poppins', sans-serif; font-weight: normal; color: black;">
+        students finding a study-spot!
+    </p>
 </div>
+
+
+
 
 <!-- Main Content of About Us Page -->
 <div class="container" style="margin-top: 80px; margin-bottom: 30px; padding: 20px;">
@@ -181,8 +187,8 @@
 
     // Fetch total reservations
     async function fetchReservations() {
-        const { data, error } = await supabase
-            .from('reservation') // Assuming 'reservations' is your table name
+        const { data, error, count } = await supabase
+            .from('reservation') // Assuming 'reservation' is the name of your table
             .select('id', { count: 'exact' }); // Count all reservations
 
         if (error) {
@@ -190,18 +196,27 @@
             return;
         }
 
-        const totalReservations = data.length;
-        
+        console.log('Fetched reservation data:', data); // Log data to inspect it
+        console.log('Total reservations count:', count); // Log the count
+
+        // Set the counter
+        const totalReservations = count;
+
         // Update the flip clock number
-        const reservationCountElement = document.getElementById('reservation-count-container');
+        const reservationCountElement = document.getElementById('reservation-count');
         if (reservationCountElement) {
-            reservationCountElement.textContent = totalReservations.toString().padStart(3, '0'); // Pad with zeros
+            const paddedCount = totalReservations.toString().padStart(3, '0');
+            document.getElementById('first-digit').querySelector('.flip-card-front').textContent = paddedCount[0];
+            document.getElementById('second-digit').querySelector('.flip-card-front').textContent = paddedCount[1];
+            document.getElementById('third-digit').querySelector('.flip-card-front').textContent = paddedCount[2];
         }
     }
 
     // Call the function on page load
     fetchReservations();
 </script>
+
+
 
 
 {% endblock %}
