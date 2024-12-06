@@ -38,17 +38,6 @@
             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
         </form>
     </div>
-    <!-- Add dropdown functionality -->
-<style>
-    div[style*="position: relative;"] button:hover + .dropdown-menu,
-    div[style*="position: relative;"] .dropdown-menu:hover {
-        display: block !important;
-    }
-
-    .dropdown-menu {
-        transition: opacity 0.2s ease-in-out;
-    }
-</style>
 
     <!-- Right Section: Authentication Buttons -->
     <div style="display: flex; align-items: center; gap: 10px;">
@@ -68,7 +57,8 @@
         </form>
     </div>
 </div>
-<div class="locations-container">
+
+<div class="locations-container" style="margin-top: 100px; margin-bottom: 30px;">
     <!-- Logo -->
     <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
         <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
@@ -211,86 +201,130 @@
     {% else %}
         <p>You have no past reservations yet.</p>
     {% endif %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get all rating forms on the page
-            const ratingForms = document.querySelectorAll('.rating-form');
-    
-            ratingForms.forEach((form) => {
-                // Get all labels within this specific rating form
-                const stars = form.querySelectorAll('label');
-    
-                // Function to highlight stars based on checked input
-                function highlightCheckedStars() {
-                    const checkedInput = form.querySelector('input[type="radio"]:checked');
+</div>
+
+<!-- Footer Section with black background -->
+<div style="background-color: black; color: white; padding: 50px; height: 130px;">
+    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto; margin-top: -50px;">
+        <!-- Locations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
+            <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
+            </form>
+            <form action="{{ url_for('main.locations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
+            </form>
+        </div>
+
+        <!-- Reservations Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
+            <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
+            </form>
+            <form action="{{ url_for('main.current_reservations') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
+            </form>
+            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
+            </form>
+        </div>
+
+        <!-- Community Column -->
+        <div style="text-align: left;">
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
+            <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
+            </form>
+            <form action="{{ url_for('main.main_page') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">About Us</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get all rating forms on the page
+        const ratingForms = document.querySelectorAll('.rating-form');
+
+        ratingForms.forEach((form) => {
+            // Get all labels within this specific rating form
+            const stars = form.querySelectorAll('label');
+
+            // Function to highlight stars based on checked input
+            function highlightCheckedStars() {
+                const checkedInput = form.querySelector('input[type="radio"]:checked');
+                stars.forEach((s, i) => {
+                    if (checkedInput && i < checkedInput.value) {
+                        s.style.color = '#FFD700'; // Gold color for selected stars
+                    } else {
+                        s.style.color = 'lightgray'; // Default color for unselected stars
+                    }
+                });
+            }
+
+            // Initially highlight the stars based on the checked input
+            highlightCheckedStars();
+
+            stars.forEach((star, index) => {
+                // Highlight all stars up to the hovered one within this form
+                star.addEventListener('mouseover', () => {
                     stars.forEach((s, i) => {
-                        if (checkedInput && i < checkedInput.value) {
-                            s.style.color = '#FFD700'; // Gold color for selected stars
+                        if (i <= index) {
+                            s.style.color = '#FFD700'; // Gold color for hovered stars
                         } else {
-                            s.style.color = 'lightgray'; // Default color for unselected stars
+                            s.style.color = 'lightgray'; // Unselected stars stay gray
                         }
                     });
-                }
-    
-                // Initially highlight the stars based on the checked input
+                });
+
+                // Remove highlight from stars when not hovered, but only for this form
+                star.addEventListener('mouseout', () => {
+                    highlightCheckedStars(); // Retain the color for checked stars after hover ends
+                });
+
+                // Set color when a star is clicked within this form
+                star.addEventListener('click', () => {
+                    // Get the corresponding input element and set it to checked
+                    const relatedInput = document.getElementById(star.htmlFor);
+                    if (relatedInput) {
+                        relatedInput.checked = true; // Set the radio input as checked
+                    }
+                    highlightCheckedStars(); // Update the stars to reflect the clicked rating
+                });
+            });
+
+            // Handle the form submission to update the stars to reflect the submitted value
+            form.addEventListener('submit', () => {
+                // Immediately update the stars to reflect the new checked value
                 highlightCheckedStars();
-    
-                stars.forEach((star, index) => {
-                    // Highlight all stars up to the hovered one within this form
-                    star.addEventListener('mouseover', () => {
-                        stars.forEach((s, i) => {
-                            if (i <= index) {
-                                s.style.color = '#FFD700'; // Gold color for hovered stars
-                            } else {
-                                s.style.color = 'lightgray'; // Unselected stars stay gray
-                            }
-                        });
-                    });
-    
-                    // Remove highlight from stars when not hovered, but only for this form
-                    star.addEventListener('mouseout', () => {
-                        highlightCheckedStars(); // Retain the color for checked stars after hover ends
-                    });
-    
-                    // Set color when a star is clicked within this form
-                    star.addEventListener('click', () => {
-                        // Get the corresponding input element and set it to checked
-                        const relatedInput = document.getElementById(star.htmlFor);
-                        if (relatedInput) {
-                            relatedInput.checked = true; // Set the radio input as checked
-                        }
-                        highlightCheckedStars(); // Update the stars to reflect the clicked rating
-                    });
-                });
-    
-                // Handle the form submission to update the stars to reflect the submitted value
-                form.addEventListener('submit', () => {
-                    // Immediately update the stars to reflect the new checked value
-                    highlightCheckedStars();
-                });
             });
         });
-    </script>
-    
-    
-    
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Find the flash message by targeting common classes for alert messages
-            const flashMessages = document.querySelectorAll('.alert, .flash, .alert-success');
-            flashMessages.forEach(function(flashMessage) {
-                // Set a timeout to hide the message after 2 seconds
+    });
+</script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find the flash message by targeting common classes for alert messages
+        const flashMessages = document.querySelectorAll('.alert, .flash, .alert-success');
+        flashMessages.forEach(function(flashMessage) {
+            // Set a timeout to hide the message after 2 seconds
+            setTimeout(function() {
+                flashMessage.style.transition = 'opacity 1s ease-out';
+                flashMessage.style.opacity = '0'; // Gradually fade out
+                
+                // After fading out, set display to 'none' to remove it from the layout
                 setTimeout(function() {
-                    flashMessage.style.transition = 'opacity 1s ease-out';
-                    flashMessage.style.opacity = '0'; // Gradually fade out
-                    
-                    // After fading out, set display to 'none' to remove it from the layout
-                    setTimeout(function() {
-                        flashMessage.style.display = 'none';
-                    }, 1000); // Matches the CSS transition time (1 second)
-                }, 2000); // Wait 2 seconds before starting the fade-out
-            });
+                    flashMessage.style.display = 'none';
+                }, 1000); // Matches the CSS transition time (1 second)
+            }, 2000); // Wait 2 seconds before starting the fade-out
         });
-    </script>
+    });
+</script>
+
 {% endblock %}

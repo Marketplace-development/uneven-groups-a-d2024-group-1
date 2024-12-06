@@ -59,18 +59,6 @@
     </div>
 </div>
 
-<!-- Add dropdown functionality -->
-<style>
-    div[style*="position: relative;"] button:hover + .dropdown-menu,
-    div[style*="position: relative;"] .dropdown-menu:hover {
-        display: block !important;
-    }
-
-    .dropdown-menu {
-        transition: opacity 0.2s ease-in-out;
-    }
-</style>
-
 <!-- Main Section -->
 <div style="display: flex; align-items: center; justify-content: center; margin-top: 150px; padding: 10px 10px; gap: 150px;">
     <!-- Left Section: Text and Buttons -->
@@ -207,7 +195,7 @@
                 <a href="{{ url_for('main.reservations') }}" style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/reservation_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
-                <p style="font-style: italic; color:">Book a seat at a location<br>and time of your choice</p>
+                <p style="font-style: italic;">Book a seat at a location<br>and time of your choice</p>
                 <button type="submit" class="btn btn-black" style="width: 100%;">Make Reservations</button>
             </div>
         </form>
@@ -231,7 +219,7 @@
                 <a href="{{ url_for('main.locations') }}"style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/location_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
-                <p style="font-style: italic;">Upload or delete your own<br>location for students to visit</p>
+                <p style="font-style: italic;">Upload or delete<br>your own location</p>
                 <button type="submit" class="btn btn-black" style="width: 100%;">Upload Location</button>
             </div>
         </form>
@@ -250,37 +238,16 @@
     </div>
 </div>
 
-<!-- Add hover effects for spotlights -->
-<style>
-    .spotlight {
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-
-    .spotlight:hover {
-        transform: scale(1.05); /* Slightly enlarge the element */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add blue shadow */
-    }
-
-    .option {
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    }
-
-    .option:hover {
-        transform: scale(1.05); /* Slightly enlarge the element */
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add blue shadow */
-    }
-</style>
-
 <!-- Footer Section with black background -->
 <div style="background-color: black; color: white; padding: 50px; height: 220px;">
     <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto;">
         <!-- Locations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
             </form>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
             </form>
         </div>
@@ -288,13 +255,13 @@
         <!-- Reservations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
             </form>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.current_reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
             </form>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
             </form>
         </div>

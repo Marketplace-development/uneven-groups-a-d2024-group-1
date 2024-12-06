@@ -56,12 +56,6 @@ p, span, li, div {
     color: black;
 }
 
-
-
-
-
-
-
 h1, h2, h3 {
     font-family: 'Arial', sans-serif;
     color: black;
@@ -78,6 +72,33 @@ p {
     text-align: center;
     color: black;
     font-size: 1.2em;
+}
+
+div[style*="position: relative;"] button:hover + .dropdown-menu,
+    div[style*="position: relative;"] .dropdown-menu:hover {
+        display: block !important;
+    }
+
+    .dropdown-menu {
+        transition: opacity 0.2s ease-in-out;
+    }
+
+.spotlight {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.spotlight:hover {
+    transform: scale(1.05); /* Slightly enlarge the element */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add blue shadow */
+}
+
+.option {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.option:hover {
+    transform: scale(1.05); /* Slightly enlarge the element */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Add blue shadow */
 }
 
 /* Rating Form Styles */
@@ -145,7 +166,6 @@ p {
     color: white;
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 223, 0, 0.8);
 }
-
 
 .btn {
     padding: 10px 30px;
