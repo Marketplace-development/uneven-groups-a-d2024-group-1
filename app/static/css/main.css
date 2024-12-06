@@ -47,7 +47,7 @@ h1, h2, h3 {
 
 p {
     text-align: center;
-    color: grey;
+    color: black;
     font-size: 1.2em;
 }
 
@@ -258,7 +258,7 @@ form input[type="datetime-local"] {
     border-radius: 5px;
     border: 1px solid #ccc;
     background-color: #f0f0f0;
-    color: grey;
+    color: black;
     box-sizing: border-box;
     outline: none;
 }
