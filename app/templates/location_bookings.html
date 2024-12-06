@@ -30,54 +30,6 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Location Details -->
-    <div class="location-details" style="margin-top: 30px;">
-        <h2 style="text-align: center;">Your Location</h2>
-
-        <div class="location-info" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-            <!-- Location Picture -->
-            <div class="location-picture">
-                {% if location.location_picture %}
-                    <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Location Image" style="width: 300px; height: 200px; object-fit: cover; margin-right: 20px; margin-top: 0px;">
-                {% else %}
-                    <span>No Picture</span>
-                {% endif %}
-            </div>
-
-            <!-- Location Info -->
-            <div class="location-text">
-                <p style="text-align: left;"><strong>Location Name:</strong> {{ location.location_name }}</p>
-                <p style="text-align: left;"><strong>Location Type:</strong> {{ location.location_type }}</p>
-                <p style="text-align: left;"><strong>Address:</strong> {{ location.street }} {{ location.street_number }}, {{ location.postal_code }} {{ location.city }}, {{ location.country }}</p>
-                <p style="text-align: left;"><strong>Number of Chairs:</strong> {{ location.chairs }}</p>
-                
-                <!-- Display the average Location Rating (if available) -->
-                {% if location.location_rating %}
-                    <p style="text-align: left;"><strong>Location's Rating:</strong>
-                        <!-- Display stars for received location rating -->
-                        {% for star in range(1, 6) %}
-                            {% if star <= location.location_rating %}
-                                <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                            {% else %}
-                                <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
-                            {% endif %}
-                        {% endfor %}
-                    </p>
-                {% else %}
-                    <p style="text-align: left;"><strong>Location's Rating:</strong> No rating yet.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Location Button -->
-    <div class="delete-location" style="text-align: center; margin-top: 30px;">
-        <form action="{{ url_for('main.delete_location') }}" method="post">
-            <input type="hidden" name="location_id" value="{{ location.id }}">
-            <button type="submit" class="btn-cancel" style="font-size: 1.2em; padding: 10px 20px; width: 200px;">Delete Location</button>
-        </form>
-    </div>
-
     <!-- Bookings Details -->
     <div class="bookings-details">
     <h3>Your location is booked by the following people:</h3>

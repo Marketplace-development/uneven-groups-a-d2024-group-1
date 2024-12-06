@@ -761,6 +761,30 @@ form-change {
     margin-bottom: 10px;
 }
 
+table {
+    width: auto;
+    margin: 20px auto;
+    border-collapse: collapse; 
+    table-layout: auto;
+}
+
+th, td {
+    padding: 15px 30px;
+    text-align: left;
+    border: none; /* Remove the borders for cells */
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
 
 /* Style for labels */
 label {
@@ -771,8 +795,23 @@ label {
     padding-bottom: 5px;
 }
 
+.tab-button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    color: #333;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-button:hover, .tab-button.active {
+    color: #1946ca;
+    font-weight: bold;
+}
+
 /* No background or white container styles */
-#highlighted-location, #weekly-target {
+#highlighted-location {
     width: 220px; /* Fixed width */
     padding: 20px;
     border-radius: 10px;
@@ -784,13 +823,22 @@ label {
     box-shadow: none; /* Remove box-shadow */
 }
 
-/* Styling for location card */
-.location-card {
-    background-color: #fff;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgb(25, 70, 202);
+#weekly-target {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto; /* Ensure the div itself is centered in the parent */
+}
+
+#minutes-target, #sessions-target {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto; /* Center align within parent */
+    text-align: center;
 }
 
 #weekly-target h3 {
@@ -798,6 +846,10 @@ label {
     color: #333;
     text-align: center;
     margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers children horizontally */
+    text-align: center;
 }
 
 #minutes-target h4, #sessions-target h4 {
@@ -811,12 +863,12 @@ label {
 #weekly-target h3, #highlighted-location h3 {
     font-size: 18px;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 
 /* Buttons in the target container */
 #weekly-target button, #highlighted-location button {
-    width: 100%; /* Ensure buttons fit the container's width */
+    width: 40%; /* Ensure buttons fit the container's width */
     padding: 10px; /* Spacing for buttons */
     font-size: 1em;
     margin-top: 25px; /* Space between buttons and content */
@@ -824,18 +876,36 @@ label {
     box-sizing: border-box;
 }
 
-button[name="delete_minutes_target"], button[name="delete_sessions_target"] {
-    background-color: red;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100%;
+.delete-text {
+    background: none; /* Remove default button styles */
+    border: none; /* Remove border */
+    color: red; /* Make text red */
+    cursor: pointer; /* Make it look clickable */
+    padding: 0; /* Remove extra padding */
+    font-size: 16px; /* Adjust font size as needed */
+    text-align: center; /* Center text inside the element */
+    display: inline-block; /* Align text properly */
 }
 
-button[name="delete_minutes_target"]:hover, button[name="delete_sessions_target"]:hover {
-    background-color: darkred;
+.delete-text:hover {
+    text-decoration: underline; /* Add underline on hover for interactivity */
+}
+
+.congratulations {
+    font-size: 18px;
+    font-weight: bold;
+    color: green;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* Styling for location card */
+.location-card {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgb(25, 70, 202);
 }
 
 /* Styling for the image container */
