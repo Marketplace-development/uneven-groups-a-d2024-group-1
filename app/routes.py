@@ -84,24 +84,51 @@ def signup():
 @main.route('/main_page', methods=['GET', 'POST'])
 @login_required
 def main_page():
-    # Highlighted location
-    highlighted_location = get_highlighted_location()
-    return render_template('main_page.html', user=current_user, highlighted_location=highlighted_location)
+    # Highlighted locations
+    highlighted_locations = get_highlighted_locations()
+    return render_template('main_page.html', user=current_user, highlighted_locations=highlighted_locations)
+
+def get_highlighted_locations():
+    # Calculate the start and end of the previous week
+    now = datetime.now()
+    start_of_week = now - timedelta(days=now.weekday() + 7)  # Start of last week (Monday)
+    end_of_week = start_of_week + timedelta(days=7)  # End of last week (Sunday)
+
+    # Query to find the top 3 location with the highest average rating in the previous week
+    highest_rated_locations = db.session.query(
+        Reservation.location_id,
+        func.avg(Reservation.location_rating).label('average_rating')
+    ).filter(
+        Reservation.reservation_time.between(start_of_week, end_of_week)  # Filter by reservation time during last week
+    ).group_by(Reservation.location_id).order_by(func.avg(Reservation.location_rating).desc()).limit(3).all()
+
+    # Get the details of the locations with the highest average ratings
+    locations = [Location.query.get(location.location_id) for location in highest_rated_locations]
+    return locations
+
 
 @main.route('/your_account', methods=['GET', 'POST'])
 @login_required
 def your_account():
     # Get previous reservations made by the current user
-    reservations = Reservation.query.filter_by(user_id=current_user.id).order_by(Reservation.date.desc()).all()
+    reservations = Reservation.query.filter(
+        Reservation.user_id == current_user.id,
+        Reservation.status == "expired"
+    ).order_by(Reservation.date.desc()).all()
+
 
     # Get the location of the logged-in user
     location = Location.query.filter_by(user_id=current_user.id, status="active").first()
 
-    # Query all bookings for this location (if the location exists)
+    # Query all bookings for this location (only expired ones, if the location exists)
     if location:
-        bookings = Reservation.query.filter_by(location_id=location.id).order_by(Reservation.date.desc()).all()
+        bookings = Reservation.query.filter(
+            Reservation.location_id == location.id,
+            Reservation.status == "expired"
+        ).order_by(Reservation.date.desc()).all()
     else:
         bookings = []  # No location or no active location found for the logged-in user
+
 
 
     # Fetch the active location of the current logged-in user
@@ -315,7 +342,6 @@ def locations():
             except ValueError:
                 pass  # If conversion fails, return None
             return None
-
         
         # Use helper function to format times
         monday_open = format_time(request.form.get('monday_open'), request.form.get('monday_open_min'))
@@ -335,12 +361,6 @@ def locations():
 
         location_picture = request.form.get("location_picture")
 
-        # Check if the user already has a location
-        existing_location = Location.query.filter_by(user_id=current_user.id).first()
-        if existing_location and existing_location.status == 'active':
-            flash("You can only upload one location. You already uploaded a location.", "danger")
-            return redirect(url_for('main.locations'))
-
         new_location = Location(user_id=current_user.id, location_name=location_name, location_type=location_type,
                                 country=country, postal_code=postal_code, city=city, street=street, street_number=street_number,
                                 chairs=chairs, monday_open=monday_open, monday_close=monday_close, tuesday_open=tuesday_open, tuesday_close=tuesday_close,
@@ -354,8 +374,10 @@ def locations():
         flash("Your location has been successfully added.", "success")
         return redirect(url_for('main.main_page'))
 
+    # Pass existing_location to the template
+    existing_location = Location.query.filter_by(user_id=current_user.id).first()
     locations = Location.query.all()
-    return render_template('locations.html')
+    return render_template('locations.html', locations=locations, existing_location=existing_location)
 
 @main.route('/reservations', methods=['GET', 'POST'])
 @login_required
@@ -785,28 +807,6 @@ def update_location_rating(location_id):
 
     return avg_rating
 
-
-def get_highlighted_location():
-    # Calculate the start and end of the previous week
-    now = datetime.now()
-    start_of_week = now - timedelta(days=now.weekday() + 7)  # Start of last week (Monday)
-    end_of_week = start_of_week + timedelta(days=7)  # End of last week (Sunday)
-
-    # Query to find the location with the highest average rating in the previous week
-    highest_rated_location = db.session.query(
-        Reservation.location_id,
-        func.avg(Reservation.location_rating).label('average_rating')
-    ).filter(
-        Reservation.reservation_time.between(start_of_week, end_of_week)  # Filter by reservation time during last week
-    ).group_by(Reservation.location_id).order_by(func.avg(Reservation.location_rating).desc()).first()
-
-    if highest_rated_location:
-        # Get the details of the location with the highest average rating
-        location = Location.query.get(highest_rated_location.location_id)
-        return location
-    return None
-
 @main.route('/about')
 def about():
     return render_template('about.html')
-

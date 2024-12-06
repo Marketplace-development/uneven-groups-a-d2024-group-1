@@ -71,7 +71,7 @@
     }
 </style>
 
-<div style="text-align: center; margin-top: 100px; padding: 20px; min-height: 850px;">
+<div style="text-align: center; margin-top: 100px; min-height: 850px;">
 
     <!-- User Profile Image -->
     <img src="{{ url_for('static', filename='images/user grey.jpg') }}" alt="User Picture" style="width: 200px; height: 200px; border-radius: 50%; margin-bottom: 20px;">
@@ -87,206 +87,116 @@
         <button class="tab-button" onclick="showTab('location-owner')" style="margin: 0 15px; padding: 10px 20px; background-color: #f5f5f5; border: none; cursor: pointer; transition: background-color 0.3s;">Location Owner</button>
     </div>
 
-    <!-- Tab Contents -->
-    
-    <!-- Personal Information -->
-    <div id="personal-info" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
-        <h1>Personal Information</h1>
-        <p><strong>Username:</strong> {{ user.username }}</p>
-        <p><strong>Phonenumber:</strong> {{ user.phonenumber }}</p>
-    </div>
-
-    <!-- Weekly Targets -->
-    <div id="study-targets" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <h1>Your Weekly Study Targets</h1>
-        {% if congratulations_message %}
-            <p class="congratulations" style="text-align: center; margin-bottom: 20px;">{{ congratulations_message }}</p>
-        {% endif %}
-        <p style="margin-bottom: 0px;">{{ week_range }}</p>
-
-        <!-- Weekly Targets Section -->
-        <div class="weekly-target" id="weekly-target">
-
-            <!-- Study Time Target Section -->
-            <div id="minutes-target" style="margin-bottom: 20px; width: 100%;">
-                <h4>Study Time Target:</h4>
-                {% if user.minutes_target %}
-                    <p style="margin-top: 27px;">{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
-                    <form action="{{ url_for('main.your_account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
-                        <button type="submit" name="delete_minutes_target" value="true" class="delete-text">Delete Target</button>
-                    </form>                    
-                {% else %}
-                    <form action="{{ url_for('main.your_account') }}" method="POST" class="time-target-form" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-                        <div class="time-select-group" style="margin-bottom: 10px; display: flex; justify-content: center;">
-                            <select name="hours" id="hours-select" style="margin-right: 10px;">
-                                {% for hour in range(0, 100) %}
-                                    <option value="{{ hour }}">{{ hour }} hour{{ '' if hour == 1 else 's' }}</option>
-                                {% endfor %}
-                            </select>
-                            <select name="minutes" id="minutes-select">
-                                {% for minute in [0, 15, 30, 45] %}
-                                    <option value="{{ minute }}">{{ minute }} minute{{ '' if minute == 1 else 's' }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button class="btn btn-black" style="width: 28%; margin-top: -5px;" type="submit">Set Target</button>
-                    </form>
-                {% endif %}
-            </div>
-
-            <!-- Study Sessions Target Section -->
-            <div id="sessions-target" style="width: 100%;">
-                <h4>Study Sessions Target:</h4>
-                {% if user.sessions_target %}
-                    <p style="margin-top: 27px;">{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
-                    <form action="{{ url_for('main.your_account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
-                        <button type="submit" name="delete_sessions_target" value="true" class="delete-text">Delete Target</button>
-                    </form>                    
-                {% else %}
-                    <form action="{{ url_for('main.your_account') }}" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-                        <div class="time-select-group" style="margin-bottom: 10px; display: flex; justify-content: center;">
-                            <select name="sessions_target" id="sessions-select" style="width: 220px;">
-                                {% for session in range(0, 29) %}
-                                    <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button class="btn btn-black" style="width: 28%; margin-top: -10px;" type="submit">Set Target</button>
-                    </form>
-                {% endif %}
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Student -->
-    <div id="student" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
-        <h1 style="margin-bottom: 0px;">Your Average Rating</h1>
-        <div>
-            {% for star in range(5) %}
-                {% if star < user.user_rating %}
-                    <span class="star filled">&#9733;</span>
-                {% else %}
-                    <span class="star empty">&#9733;</span>
-                {% endif %}
-            {% endfor %}
-        </div>
-
-        <!-- Your Previous Reservations -->
-        <h1 style="margin-top: 50px;">Your Previous Reservations</h1>
-        {% if reservations %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Location</th>
-                        <th>Date</th>
-                        <th>Host</th>
-                        <th>Received Rating</th>
-                        <th>Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for reservation in reservations|sort(attribute='date', reverse=true) %}
-                    <tr>
-                        <td>{{ reservation.location.location_name }}</td>
-                        <td>{{ reservation.date.strftime('%d %B %Y') }}</td>
-                        <td>{{ reservation.location.user.username }}</td>
-                        <td>
-                            {% if reservation.student_rating %}
-                                {% for star in range(1, 6) %}
-                                    {% if star <= reservation.student_rating %}
-                                        <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                                    {% else %}
-                                        <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
-                                    {% endif %}
-                                {% endfor %}
-                            {% else %}
-                                No Rating Yet
-                            {% endif %}
-                        </td>
-                        <td><!-- Message Field (empty for now) --></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>                
-            </table>
-        {% else %}
-            <p>You have no previous reservations yet.</p>
-        {% endif %}
-    </div>
-
-    <!-- Location Owner -->
-    <div id="location-owner" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
-        <!-- Display the average Location Rating (if available) -->
-        <h1 style="margin-bottom: 0px;">Your Average Location Rating</h1>
-        {% if location.location_rating %}
-            <!-- Display stars for received location rating -->
-            {% for star in range(1, 6) %}
-                {% if star <= location.location_rating %}
-                    <span class="star filled">&#9733;</span>  <!-- Filled star -->
-                {% else %}
-                    <span class="star empty">&#9733;</span>  <!-- Empty star -->
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <p>No rating yet.</p>
-        {% endif %}
-
-        <!-- Location Details -->
-        <div class="location-details" style="margin-top: 0px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
-            <h1 style="margin-bottom: 20px; margin-top: 50px;">Your Location</h1>
+    <!-- Content Below the White Line -->
+    <div style="background-color: #F5F5F5; min-height: 515px">
+        <!-- Tab Contents -->
         
-            <div class="location-info" style="display: flex; justify-content: left; align-items: left; gap: 20px; width: 40%; margin: 0 auto;">
-                <!-- Location Picture -->
-                <div class="location-picture">
-                    {% if location.location_picture %}
-                        <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Location Image" style="width: auto; height: 175px; object-fit: cover; margin-right: 20px; margin-top: 0px;">
+        <!-- Personal Information -->
+        <div id="personal-info" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
+            <h1>Personal Information</h1>
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Phonenumber:</strong> {{ user.phonenumber }}</p>
+        </div>
+
+        <!-- Weekly Targets -->
+        <div id="study-targets" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <h1>Your Weekly Study Targets</h1>
+            {% if congratulations_message %}
+                <p class="congratulations" style="text-align: center; margin-bottom: 20px;">{{ congratulations_message }}</p>
+            {% endif %}
+            <p style="margin-bottom: 0px;">{{ week_range }}</p>
+
+            <!-- Weekly Targets Section -->
+            <div class="weekly-target" id="weekly-target">
+
+                <!-- Study Time Target Section -->
+                <div id="minutes-target" style="margin-bottom: 20px; width: 100%;">
+                    <h4>Study Time Target:</h4>
+                    {% if user.minutes_target %}
+                        <p style="margin-top: 27px;">{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
+                        <form action="{{ url_for('main.your_account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
+                            <button type="submit" name="delete_minutes_target" value="true" class="delete-text">Delete Target</button>
+                        </form>                    
                     {% else %}
-                        <span>No Picture</span>
+                        <form action="{{ url_for('main.your_account') }}" method="POST" class="time-target-form" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                            <div class="time-select-group" style="margin-bottom: 10px; display: flex; justify-content: center;">
+                                <select name="hours" id="hours-select" style="margin-right: 10px;">
+                                    {% for hour in range(0, 100) %}
+                                        <option value="{{ hour }}">{{ hour }} hour{{ '' if hour == 1 else 's' }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="minutes" id="minutes-select">
+                                    {% for minute in [0, 15, 30, 45] %}
+                                        <option value="{{ minute }}">{{ minute }} minute{{ '' if minute == 1 else 's' }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button class="btn btn-black" style="width: 28%; margin-top: -5px;" type="submit">Set Target</button>
+                        </form>
                     {% endif %}
                 </div>
-        
-                <!-- Location Info -->
-                <div class="location-text">
-                    <p style="text-align: left;"><strong>Location Name:</strong> {{ location.location_name }}</p>
-                    <p style="text-align: left;"><strong>Location Type:</strong> {{ location.location_type }}</p>
-                    <p style="text-align: left;"><strong>Address:</strong> {{ location.street }} {{ location.street_number }}, {{ location.postal_code }} {{ location.city }}, {{ location.country }}</p>
-                    <p style="text-align: left;"><strong>Number of Chairs:</strong> {{ location.chairs }}</p>
+
+                <!-- Study Sessions Target Section -->
+                <div id="sessions-target" style="width: 100%;">
+                    <h4>Study Sessions Target:</h4>
+                    {% if user.sessions_target %}
+                        <p style="margin-top: 27px;">{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
+                        <form action="{{ url_for('main.your_account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
+                            <button type="submit" name="delete_sessions_target" value="true" class="delete-text">Delete Target</button>
+                        </form>                    
+                    {% else %}
+                        <form action="{{ url_for('main.your_account') }}" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                            <div class="time-select-group" style="margin-bottom: 10px; display: flex; justify-content: center;">
+                                <select name="sessions_target" id="sessions-select" style="width: 220px;">
+                                    {% for session in range(0, 29) %}
+                                        <option value="{{ session }}">{{ session }} session{{ '' if session == 1 else 's' }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button class="btn btn-black" style="width: 28%; margin-top: -10px;" type="submit">Set Target</button>
+                        </form>
+                    {% endif %}
                 </div>
+
             </div>
         </div>
 
-        <!-- Delete Location Button -->
-        <div class="delete-location" style="text-align: center; margin-top: 30px;">
-            <!-- Form to delete location -->
-            <form action="{{ url_for('main.delete_location') }}" method="post" onsubmit="return confirm('Are you sure you want to delete this location? This action cannot be undone.');">
-                <input type="hidden" name="location_id" value="{{ location.id }}">
-                <button type="submit" class="btn-cancel" style="font-size: 1.2em; padding: 10px 20px; width: 200px;">Delete Location</button>
-            </form>
-        </div>
+        <!-- Student -->
+        <div id="student" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
+            <h1 style="margin-bottom: 0px;">Your Average Rating</h1>
+            <div>
+                {% for star in range(5) %}
+                    {% if star < user.user_rating %}
+                        <span class="star filled">&#9733;</span>
+                    {% else %}
+                        <span class="star empty">&#9733;</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
 
-        <!-- Your Previous Location Bookings -->
-        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 50px;">
-            <h1 style="text-align: center;">Your Previous Location Bookings</h1>
-            
-            {% if bookings %}
+            <!-- Your Previous Reservations -->
+            <h1 style="margin-top: 50px;">Your Previous Reservations</h1>
+            {% if reservations %}
                 <table>
                     <thead>
                         <tr>
-                            <th>Student</th>
+                            <th>Location</th>
                             <th>Date</th>
+                            <th>Host</th>
                             <th>Received Rating</th>
                             <th>Message</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for booking in bookings|sort(attribute='date', reverse=true) %}
+                        {% for reservation in reservations|sort(attribute='date', reverse=true) %}
                         <tr>
-                            <td>{{ booking.user.username }}</td>  <!-- Student who booked -->
-                            <td>{{ booking.date.strftime('%d %B %Y') }}</td>
+                            <td>{{ reservation.location.location_name }}</td>
+                            <td>{{ reservation.date.strftime('%d %B %Y') }}</td>
+                            <td>{{ reservation.location.user.username }}</td>
                             <td>
-                                {% if booking.location_rating %}
+                                {% if reservation.student_rating %}
                                     {% for star in range(1, 6) %}
-                                        {% if star <= booking.location_rating %}
+                                        {% if star <= reservation.student_rating %}
                                             <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
                                         {% else %}
                                             <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
@@ -296,16 +206,108 @@
                                     No Rating Yet
                                 {% endif %}
                             </td>
-                            <td><!-- Leave empty for now --></td>
+                            <td><!-- Message Field (empty for now) --></td>
                         </tr>
                         {% endfor %}
-                    </tbody>
+                    </tbody>                
                 </table>
             {% else %}
-                <p style="text-align: center;">You have no previous bookings yet.</p>
+                <p>You have no previous reservations yet.</p>
             {% endif %}
         </div>
 
+        <!-- Location Owner -->
+        <div id="location-owner" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
+            <!-- Display the average Location Rating (if available) -->
+            <h1 style="margin-bottom: 0px;">Your Average Location Rating</h1>
+            {% if location.location_rating %}
+                <!-- Display stars for received location rating -->
+                {% for star in range(1, 6) %}
+                    {% if star <= location.location_rating %}
+                        <span class="star filled">&#9733;</span>  <!-- Filled star -->
+                    {% else %}
+                        <span class="star empty">&#9733;</span>  <!-- Empty star -->
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>No rating yet.</p>
+            {% endif %}
+
+            <!-- Location Details -->
+            <div class="location-details" style="margin-top: 0px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                <h1 style="margin-bottom: 20px; margin-top: 50px;">Your Location</h1>
+            
+                <div class="location-info" style="display: flex; justify-content: left; align-items: left; gap: 20px; width: 40%; margin: 0 auto;">
+                    <!-- Location Picture -->
+                    <div class="location-picture">
+                        {% if location.location_picture %}
+                            <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Location Image" style="width: auto; height: 175px; object-fit: cover; margin-right: 20px; margin-top: 0px;">
+                        {% else %}
+                            <span>No Picture</span>
+                        {% endif %}
+                    </div>
+            
+                    <!-- Location Info -->
+                    <div class="location-text">
+                        <p style="text-align: left;"><strong>Location Name:</strong> {{ location.location_name }}</p>
+                        <p style="text-align: left;"><strong>Location Type:</strong> {{ location.location_type }}</p>
+                        <p style="text-align: left;"><strong>Address:</strong> {{ location.street }} {{ location.street_number }}, {{ location.postal_code }} {{ location.city }}, {{ location.country }}</p>
+                        <p style="text-align: left;"><strong>Number of Chairs:</strong> {{ location.chairs }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Location Button -->
+            <div class="delete-location" style="text-align: center; margin-top: 30px;">
+                <!-- Form to delete location -->
+                <form action="{{ url_for('main.delete_location') }}" method="post" onsubmit="return confirm('Are you sure you want to delete this location? This action cannot be undone.');">
+                    <input type="hidden" name="location_id" value="{{ location.id }}">
+                    <button type="submit" class="btn-cancel" style="font-size: 1.2em; padding: 10px 20px; width: 200px;">Delete Location</button>
+                </form>
+            </div>
+
+            <!-- Your Previous Location Bookings -->
+            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 50px;">
+                <h1 style="text-align: center;">Your Previous Location Bookings</h1>
+                
+                {% if bookings %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Date</th>
+                                <th>Received Rating</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings|sort(attribute='date', reverse=true) %}
+                            <tr>
+                                <td>{{ booking.user.username }}</td>  <!-- Student who booked -->
+                                <td>{{ booking.date.strftime('%d %B %Y') }}</td>
+                                <td>
+                                    {% if booking.location_rating %}
+                                        {% for star in range(1, 6) %}
+                                            {% if star <= booking.location_rating %}
+                                                <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                                            {% else %}
+                                                <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        No Rating Yet
+                                    {% endif %}
+                                </td>
+                                <td><!-- Leave empty for now --></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p style="text-align: center;">You have no previous bookings yet.</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 
