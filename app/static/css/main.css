@@ -20,9 +20,6 @@ body.about-page .container li {
     text-align: left !important;  /* Apply left alignment to all text elements */
 }
 
-
-
-
 /* Apply background image for all pages except About Us */
 body:not(.about-page) {
     background-image: url('/static/images/pexels-photo-2041540-1024x682.jpeg'); /* Background image */

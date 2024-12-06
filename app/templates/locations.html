@@ -58,488 +58,508 @@
     </div>
 </div>
 
-<div class="locations-container" style="margin-top: 100px; margin-bottom: 30px;">
-    <!-- Logo -->
-    <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
-        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
-    </div>
-     
-      <!-- Page title and subtitle -->
-      <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Upload Your Location</h1>
-      <p style="text-align: center; font-size: 1.5em;">Quick and Easy</p>
-
-      <!-- Questionnaire title -->
-     <h2 style="text-align: center; margin-top: 30px; font-size: 2em;">Please fill out the following questions</h2>
-     <br>
-
-     <!-- Form for submitting location data -->
-     <form action="{{ url_for('main.locations') }}" method="post" enctype="multipart/form-data">
-        <!-- Flash messages for errors -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="flash-messages" style="text-align: center;">
-                    {% for category, message in messages %}
-                        <div class="flash {{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-
-        <div class="form-grid">        
-            <!-- Location Name -->
-            <div class="form-field">
-                <label for="location_name">Location Name</label>
-                <input type="text" id="location_name" name="location_name" placeholder="Enter the location name" required>
-            </div>
-        
-            <!-- Type of Location -->
-            <div class="form-field">
-                <label for="location_type">Type of Location</label>
-                <select id="location_type" name="location_type" required>
-                    <option value="" disabled selected>Choose your type of location</option>
-                    <option value="Library">Library</option>
-                    <option value="Cafe">Cafe</option>
-                    <option value="Coffeehouse">Coffeehouse</option>
-                    <option value="Tearoom">Tearoom</option>
-                    <option value="Restaurant">Restaurant</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-
-            <!-- Number of Chairs Available -->
-            <div class="form-field">
-                <label for="chairs">Number of Chairs Available</label>
-                <input type="number" id="chairs" name="chairs" placeholder="Enter the number of chairs" min="1" required>
+<div style="margin: 20px;">
+    {% if existing_location and existing_location.status == "active" %}
+        <!-- Message for users who already uploaded a location -->
+        <div class="locations-container" style="margin-top: 100px; margin-bottom: 30px; text-align: center; min-height: 450px;">
+            <!-- Logo -->
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+                <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
             </div>
             
-        </div>
-        
-
-        <!-- Address -->
-        <h3 style="text-align: center; font-size: 1.5em;">Address</h3>
-        <p style="text-align: center;  font-size: 1.2em;">Please fill in the parts of the address</p>
-        
-        <div class="address-grid">
-        
-            <!-- Country -->
-            <div class="form-field">
-                <label for="country">Country</label>
-                <input type="text" id="country" name="country" placeholder="Enter your country" required>
-            </div>
-        
-            <!-- Postal Code -->
-            <div class="form-field">
-                <label for="postal_code">Postal Code</label>
-                <input type="text" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
-            </div>
-        
-            <!-- City -->
-            <div class="form-field">
-                <label for="city">City</label>
-                <input type="text" id="city" name="city" placeholder="Enter your city" required>
-            </div>
-        
-            <!-- Street -->
-            <div class="form-field">
-                <label for="street">Street</label>
-                <input type="text" id="street" name="street" placeholder="Enter your street" required>
-            </div>
-
-            <!-- Street Number -->
-            <div class="form-field">
-                <label for="street_number">Street Number</label>
-                <input type="text" id="street_number" name="street_number" placeholder="Enter your street number" required>
-            </div>
-
-        </div>
-        
-
-        <!-- Opening hours for each day -->
-        <h3 style="text-align: center; font-size: 1.5em;">Opening Hours</h3>
-        <p style="text-align: center; font-size: 1.2em;">Select the opening and closing times for each day,<br>or the days your location is closed.</p>
-        <p style="text-align: center; color: black; font-size: 1em; font-weight: bold;">
-            <span style="margin-right: 60px;">Opening Times:</span>
-            <span>Closing Times:</span>
-        </p>
-
-            <div class="hours-grid">
-                <!-- Monday Row -->
-                <div class="day-label">Monday:</div>
-                
-                <!-- Opening Time -->
-                <div class="time-select" style="margin-right: 20px;">
-                    <select id="monday_open" name="monday_open" {% if monday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="monday_open_min" name="monday_open_min" {% if monday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-                
-                <!-- Closing Time -->
-                <div class="time-select" style="margin-left: 20px;">
-                    <select id="monday_close" name="monday_close" {% if monday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="monday_close_min" name="monday_close_min" {% if monday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-            
-                <!-- Closed Checkbox -->
-                <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                    <label for="monday_closed" style="font-size: 1em;">Closed:</label>
-                    <input type="checkbox" id="monday_closed" name="monday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                </div>
-    
-                <!-- Tuesday Row -->
-                <div class="day-label">Tuesday:</div>
-                
-                <!-- Opening Time -->
-                <div class="time-select" style="margin-right: 20px;">
-                    <select id="tuesday_open" name="tuesday_open" {% if tuesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="tuesday_open_min" name="tuesday_open_min" {% if tuesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-                
-                <!-- Closing Time -->
-                <div class="time-select" style="margin-left: 20px;">
-                    <select id="tuesday_close" name="tuesday_close" {% if tuesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="tuesday_close_min" name="tuesday_close_min" {% if tuesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-            
-                <!-- Closed Checkbox -->
-                <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                    <label for="tuesday_closed" style="font-size: 1em;">Closed:</label>
-                    <input type="checkbox" id="tuesday_closed" name="tuesday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                </div>
-    
-                <!-- Wednesday Row -->
-                <div class="day-label">Wednesday:</div>
-                
-                <!-- Opening Time -->
-                <div class="time-select" style="margin-right: 20px;">
-                    <select id="wednesday_open" name="wednesday_open" {% if wednesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="wednesday_open_min" name="wednesday_open_min" {% if wednesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-                
-                <!-- Closing Time -->
-                <div class="time-select" style="margin-left: 20px;">
-                    <select id="wednesday_close" name="wednesday_close" {% if wednesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="wednesday_close_min" name="wednesday_close_min" {% if wednesday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-            
-                <!-- Closed Checkbox -->
-                <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                    <label for="wednesday_closed" style="font-size: 1em;">Closed:</label>
-                    <input type="checkbox" id="wednesday_closed" name="wednesday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                </div>
-    
-                <!-- Thursday Row -->
-                <div class="day-label">Thursday:</div>
-                
-                <!-- Opening Time -->
-                <div class="time-select" style="margin-right: 20px;">
-                    <select id="thursday_open" name="thursday_open" {% if thursday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="thursday_open_min" name="thursday_open_min" {% if thursday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-                
-                <!-- Closing Time -->
-                <div class="time-select" style="margin-left: 20px;">
-                    <select id="thursday_close" name="thursday_close" {% if thursday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="thursday_close_min" name="thursday_close_min" {% if thursday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-            
-                <!-- Closed Checkbox -->
-                <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                    <label for="thursday_closed" style="font-size: 1em;">Closed:</label>
-                    <input type="checkbox" id="thursday_closed" name="thursday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                </div>
-    
-                <!-- Friday Row -->
-                <div class="day-label">Friday:</div>
-                
-                <!-- Opening Time -->
-                <div class="time-select" style="margin-right: 20px;">
-                    <select id="friday_open" name="friday_open" {% if friday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="friday_open_min" name="friday_open_min" {% if friday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-                
-                <!-- Closing Time -->
-                <div class="time-select" style="margin-left: 20px;">
-                    <select id="friday_close" name="friday_close" {% if friday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="friday_close_min" name="friday_close_min" {% if friday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-            
-                <!-- Closed Checkbox -->
-                <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                    <label for="friday_closed" style="font-size: 1em;">Closed:</label>
-                    <input type="checkbox" id="friday_closed" name="friday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                </div>
-    
-                <!-- Saturday Row -->
-                <div class="day-label">Saturday:</div>
-                
-                <!-- Opening Time -->
-                <div class="time-select" style="margin-right: 20px;">
-                    <select id="saturday_open" name="saturday_open" {% if saturday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="saturday_open_min" name="saturday_open_min" {% if saturday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-                
-                <!-- Closing Time -->
-                <div class="time-select" style="margin-left: 20px;">
-                    <select id="saturday_close" name="saturday_close" {% if saturday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="saturday_close_min" name="saturday_close_min" {% if saturday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-            
-                <!-- Closed Checkbox -->
-                <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                    <label for="saturday_closed" style="font-size: 1em;">Closed:</label>
-                    <input type="checkbox" id="saturday_closed" name="saturday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                </div>
-    
-                <!-- Sunday Row -->
-                <div class="day-label">Sunday:</div>
-                
-                <!-- Opening Time -->
-                <div class="time-select" style="margin-right: 20px;">
-                    <select id="sunday_open" name="sunday_open" {% if sunday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="sunday_open_min" name="sunday_open_min" {% if sunday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-                
-                <!-- Closing Time -->
-                <div class="time-select" style="margin-left: 20px;">
-                    <select id="sunday_close" name="sunday_close" {% if sunday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>hh</option>
-                        {% for hour in range(0, 24) %}
-                        <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                        {% endfor %}
-                    </select>
-                    <span style="font-weight: bold; font-size: 1.5em">:</span>
-                    <select id="sunday_close_min" name="sunday_close_min" {% if sunday_closed %} disabled {% endif %}>
-                        <option value="" disabled selected>mm</option>
-                        <option value="00">00</option>
-                        <option value="15">15</option>
-                        <option value="30">30</option>
-                        <option value="45">45</option>
-                    </select>
-                </div>
-            
-                <!-- Closed Checkbox -->
-                <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                    <label for="sunday_closed" style="font-size: 1em;">Closed:</label>
-                    <input type="checkbox" id="sunday_closed" name="sunday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                </div>
-            </div>
-
-        <br>
-
-        <!-- Picture selection -->
-        <h3 style="text-align: center; font-size: 1.5em;">Pick a picture that represents your location best</h3>
-        <p style="text-align: center; font-size: 1.2em;">This picture will be shown to the student</p>
-
-        <label for="location_picture"></label>
-        <div class="picture-selection">
-            <div class="picture-item">
-                <input type="radio" id="library" name="location_picture" value="library" required>
-                <label for="library">
-                    <img src="{{ url_for('static', filename='images/studylibrary.jpg') }}" alt="Library" class="picture-option">
-                </label>
-            </div>
-            <div class="picture-item">
-                <input type="radio" id="cafe" name="location_picture" value="cafe">
-                <label for="cafe">
-                    <img src="{{ url_for('static', filename='images/cafe.jpg') }}" alt="Cafe" class="picture-option">
-                </label>
-            </div>
-            <div class="picture-item">
-                <input type="radio" id="coffeehouse" name="location_picture" value="coffeehouse">
-                <label for="coffeehouse">
-                    <img src="{{ url_for('static', filename='images/coffeehouse.jpg') }}" alt="Coffeehouse" class="picture-option">
-                </label>
-            </div>
-            <div class="picture-item">
-                <input type="radio" id="tearoom" name="location_picture" value="tearoom">
-                <label for="tearoom">
-                    <img src="{{ url_for('static', filename='images/tearoom.jpg') }}" alt="Tearoom" class="picture-option">
-                </label>
-            </div>
-            <div class="picture-item">
-                <input type="radio" id="restaurant" name="location_picture" value="restaurant">
-                <label for="restaurant">
-                    <img src="{{ url_for('static', filename='images/restaurant.jpg') }}" alt="Restaurant" class="picture-option">
-                </label>
-            </div>
-            <div class="picture-item">
-                <input type="radio" id="studyroom" name="location_picture" value="studyroom">
-                <label for="studyroom">
-                    <img src="{{ url_for('static', filename='images/studyroom.jpg') }}" alt="Studyroom" class="picture-option">
-                </label>
-            </div>
+            <!-- Page title and subtitle -->
+            <h1 style="text-align: center; color: black; font-size: 2em; font-weight: bold; margin-top: 50px;">You already uploaded a location!</h1>
+            <p style="text-align: center; font-size: 1.5em; margin-top: 50px; margin-bottom: 50px;">If you want to upload a new location,<br>you first need to delete your current location.</p>
+            <a href="{{ url_for('main.your_account') }}" style="text-decoration: underline; color: blue;">Your Account > Location Owner > Delete Location</a>.
         </div>
 
-        <br>
+    {% else %}
 
-        <!-- Submit button -->
-         <div class="form-group">
-            <button type="submit" class="btn btn-black">Submit</button>
-         </div>
-     </form>
+        <!-- Upload Location Form -->
+        <div class="locations-container" style="margin-top: 100px; margin-bottom: 30px;">
+            <!-- Logo -->
+            <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top: 20px;">
+                <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+            </div>
+            
+            <!-- Page title and subtitle -->
+            <h1 style="text-align: center; color: black; font-size: 2.5em; font-weight: bold;">Upload Your Location</h1>
+            <p style="text-align: center; font-size: 1.5em;">Quick and Easy</p>
+
+            <!-- Questionnaire title -->
+            <h2 style="text-align: center; margin-top: 30px; font-size: 2em;">Please fill out the following questions</h2>
+            <br>
+
+            <!-- Form for submitting location data -->
+            <form action="{{ url_for('main.locations') }}" method="post" enctype="multipart/form-data">
+                <!-- Flash messages for errors -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-messages" style="text-align: center;">
+                            {% for category, message in messages %}
+                                <div class="flash {{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+                <div class="form-grid">        
+                    <!-- Location Name -->
+                    <div class="form-field">
+                        <label for="location_name">Location Name</label>
+                        <input type="text" id="location_name" name="location_name" placeholder="Enter the location name" required>
+                    </div>
+                
+                    <!-- Type of Location -->
+                    <div class="form-field">
+                        <label for="location_type">Type of Location</label>
+                        <select id="location_type" name="location_type" required>
+                            <option value="" disabled selected>Choose your type of location</option>
+                            <option value="Library">Library</option>
+                            <option value="Cafe">Cafe</option>
+                            <option value="Coffeehouse">Coffeehouse</option>
+                            <option value="Tearoom">Tearoom</option>
+                            <option value="Restaurant">Restaurant</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Number of Chairs Available -->
+                    <div class="form-field">
+                        <label for="chairs">Number of Chairs Available</label>
+                        <input type="number" id="chairs" name="chairs" placeholder="Enter the number of chairs" min="1" required>
+                    </div>
+                    
+                </div>
+                
+
+                <!-- Address -->
+                <h3 style="text-align: center; font-size: 1.5em;">Address</h3>
+                <p style="text-align: center;  font-size: 1.2em;">Please fill in the parts of the address</p>
+                
+                <div class="address-grid">
+                
+                    <!-- Country -->
+                    <div class="form-field">
+                        <label for="country">Country</label>
+                        <input type="text" id="country" name="country" placeholder="Enter your country" required>
+                    </div>
+                
+                    <!-- Postal Code -->
+                    <div class="form-field">
+                        <label for="postal_code">Postal Code</label>
+                        <input type="text" id="postal_code" name="postal_code" placeholder="Enter your postal code" required>
+                    </div>
+                
+                    <!-- City -->
+                    <div class="form-field">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" placeholder="Enter your city" required>
+                    </div>
+                
+                    <!-- Street -->
+                    <div class="form-field">
+                        <label for="street">Street</label>
+                        <input type="text" id="street" name="street" placeholder="Enter your street" required>
+                    </div>
+
+                    <!-- Street Number -->
+                    <div class="form-field">
+                        <label for="street_number">Street Number</label>
+                        <input type="text" id="street_number" name="street_number" placeholder="Enter your street number" required>
+                    </div>
+
+                </div>
+                
+
+                <!-- Opening hours for each day -->
+                <h3 style="text-align: center; font-size: 1.5em;">Opening Hours</h3>
+                <p style="text-align: center; font-size: 1.2em;">Select the opening and closing times for each day,<br>or the days your location is closed.</p>
+                <p style="text-align: center; color: black; font-size: 1em; font-weight: bold;">
+                    <span style="margin-right: 60px;">Opening Times:</span>
+                    <span>Closing Times:</span>
+                </p>
+
+                    <div class="hours-grid">
+                        <!-- Monday Row -->
+                        <div class="day-label">Monday:</div>
+                        
+                        <!-- Opening Time -->
+                        <div class="time-select" style="margin-right: 20px;">
+                            <select id="monday_open" name="monday_open" {% if monday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="monday_open_min" name="monday_open_min" {% if monday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Closing Time -->
+                        <div class="time-select" style="margin-left: 20px;">
+                            <select id="monday_close" name="monday_close" {% if monday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="monday_close_min" name="monday_close_min" {% if monday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Closed Checkbox -->
+                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <label for="monday_closed" style="font-size: 1em;">Closed:</label>
+                            <input type="checkbox" id="monday_closed" name="monday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        </div>
+            
+                        <!-- Tuesday Row -->
+                        <div class="day-label">Tuesday:</div>
+                        
+                        <!-- Opening Time -->
+                        <div class="time-select" style="margin-right: 20px;">
+                            <select id="tuesday_open" name="tuesday_open" {% if tuesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="tuesday_open_min" name="tuesday_open_min" {% if tuesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Closing Time -->
+                        <div class="time-select" style="margin-left: 20px;">
+                            <select id="tuesday_close" name="tuesday_close" {% if tuesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="tuesday_close_min" name="tuesday_close_min" {% if tuesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Closed Checkbox -->
+                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <label for="tuesday_closed" style="font-size: 1em;">Closed:</label>
+                            <input type="checkbox" id="tuesday_closed" name="tuesday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        </div>
+            
+                        <!-- Wednesday Row -->
+                        <div class="day-label">Wednesday:</div>
+                        
+                        <!-- Opening Time -->
+                        <div class="time-select" style="margin-right: 20px;">
+                            <select id="wednesday_open" name="wednesday_open" {% if wednesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="wednesday_open_min" name="wednesday_open_min" {% if wednesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Closing Time -->
+                        <div class="time-select" style="margin-left: 20px;">
+                            <select id="wednesday_close" name="wednesday_close" {% if wednesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="wednesday_close_min" name="wednesday_close_min" {% if wednesday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Closed Checkbox -->
+                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <label for="wednesday_closed" style="font-size: 1em;">Closed:</label>
+                            <input type="checkbox" id="wednesday_closed" name="wednesday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        </div>
+            
+                        <!-- Thursday Row -->
+                        <div class="day-label">Thursday:</div>
+                        
+                        <!-- Opening Time -->
+                        <div class="time-select" style="margin-right: 20px;">
+                            <select id="thursday_open" name="thursday_open" {% if thursday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="thursday_open_min" name="thursday_open_min" {% if thursday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Closing Time -->
+                        <div class="time-select" style="margin-left: 20px;">
+                            <select id="thursday_close" name="thursday_close" {% if thursday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="thursday_close_min" name="thursday_close_min" {% if thursday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Closed Checkbox -->
+                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <label for="thursday_closed" style="font-size: 1em;">Closed:</label>
+                            <input type="checkbox" id="thursday_closed" name="thursday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        </div>
+            
+                        <!-- Friday Row -->
+                        <div class="day-label">Friday:</div>
+                        
+                        <!-- Opening Time -->
+                        <div class="time-select" style="margin-right: 20px;">
+                            <select id="friday_open" name="friday_open" {% if friday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="friday_open_min" name="friday_open_min" {% if friday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Closing Time -->
+                        <div class="time-select" style="margin-left: 20px;">
+                            <select id="friday_close" name="friday_close" {% if friday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="friday_close_min" name="friday_close_min" {% if friday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Closed Checkbox -->
+                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <label for="friday_closed" style="font-size: 1em;">Closed:</label>
+                            <input type="checkbox" id="friday_closed" name="friday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        </div>
+            
+                        <!-- Saturday Row -->
+                        <div class="day-label">Saturday:</div>
+                        
+                        <!-- Opening Time -->
+                        <div class="time-select" style="margin-right: 20px;">
+                            <select id="saturday_open" name="saturday_open" {% if saturday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="saturday_open_min" name="saturday_open_min" {% if saturday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Closing Time -->
+                        <div class="time-select" style="margin-left: 20px;">
+                            <select id="saturday_close" name="saturday_close" {% if saturday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="saturday_close_min" name="saturday_close_min" {% if saturday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Closed Checkbox -->
+                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <label for="saturday_closed" style="font-size: 1em;">Closed:</label>
+                            <input type="checkbox" id="saturday_closed" name="saturday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        </div>
+            
+                        <!-- Sunday Row -->
+                        <div class="day-label">Sunday:</div>
+                        
+                        <!-- Opening Time -->
+                        <div class="time-select" style="margin-right: 20px;">
+                            <select id="sunday_open" name="sunday_open" {% if sunday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="sunday_open_min" name="sunday_open_min" {% if sunday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Closing Time -->
+                        <div class="time-select" style="margin-left: 20px;">
+                            <select id="sunday_close" name="sunday_close" {% if sunday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>hh</option>
+                                {% for hour in range(0, 24) %}
+                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                                {% endfor %}
+                            </select>
+                            <span style="font-weight: bold; font-size: 1.5em">:</span>
+                            <select id="sunday_close_min" name="sunday_close_min" {% if sunday_closed %} disabled {% endif %}>
+                                <option value="" disabled selected>mm</option>
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                        </div>
+                    
+                        <!-- Closed Checkbox -->
+                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
+                            <label for="sunday_closed" style="font-size: 1em;">Closed:</label>
+                            <input type="checkbox" id="sunday_closed" name="sunday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        </div>
+                    </div>
+
+                <br>
+
+                <!-- Picture selection -->
+                <h3 style="text-align: center; font-size: 1.5em;">Pick a picture that represents your location best</h3>
+                <p style="text-align: center; font-size: 1.2em;">This picture will be shown to the student</p>
+
+                <label for="location_picture"></label>
+                <div class="picture-selection">
+                    <div class="picture-item">
+                        <input type="radio" id="library" name="location_picture" value="library" required>
+                        <label for="library">
+                            <img src="{{ url_for('static', filename='images/studylibrary.jpg') }}" alt="Library" class="picture-option">
+                        </label>
+                    </div>
+                    <div class="picture-item">
+                        <input type="radio" id="cafe" name="location_picture" value="cafe">
+                        <label for="cafe">
+                            <img src="{{ url_for('static', filename='images/cafe.jpg') }}" alt="Cafe" class="picture-option">
+                        </label>
+                    </div>
+                    <div class="picture-item">
+                        <input type="radio" id="coffeehouse" name="location_picture" value="coffeehouse">
+                        <label for="coffeehouse">
+                            <img src="{{ url_for('static', filename='images/coffeehouse.jpg') }}" alt="Coffeehouse" class="picture-option">
+                        </label>
+                    </div>
+                    <div class="picture-item">
+                        <input type="radio" id="tearoom" name="location_picture" value="tearoom">
+                        <label for="tearoom">
+                            <img src="{{ url_for('static', filename='images/tearoom.jpg') }}" alt="Tearoom" class="picture-option">
+                        </label>
+                    </div>
+                    <div class="picture-item">
+                        <input type="radio" id="restaurant" name="location_picture" value="restaurant">
+                        <label for="restaurant">
+                            <img src="{{ url_for('static', filename='images/restaurant.jpg') }}" alt="Restaurant" class="picture-option">
+                        </label>
+                    </div>
+                    <div class="picture-item">
+                        <input type="radio" id="studyroom" name="location_picture" value="studyroom">
+                        <label for="studyroom">
+                            <img src="{{ url_for('static', filename='images/studyroom.jpg') }}" alt="Studyroom" class="picture-option">
+                        </label>
+                    </div>
+                </div>
+
+                <br>
+
+                <!-- Submit button -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-black">Submit</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
 </div>
 
 <!-- Footer Section with black background -->
-<div style="background-color: black; color: white; padding: 50px; height: 130px;">
+<div style="background-color: black; color: white; padding: 75px; height: 100px;">
     <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto; margin-top: -50px;">
         <!-- Locations Column -->
         <div style="text-align: left;">
-            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Locations</p>
             <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
             </form>
@@ -550,7 +570,7 @@
 
         <!-- Reservations Column -->
         <div style="text-align: left;">
-            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Reservations</p>
             <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
             </form>
@@ -564,7 +584,7 @@
 
         <!-- Community Column -->
         <div style="text-align: left;">
-            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Community</p>
             <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
             </form>

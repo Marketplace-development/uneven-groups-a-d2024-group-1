@@ -87,97 +87,78 @@
 
 <!-- Spotlight Locations -->
 <div style="justify-content: center; margin-top: 130px; text-align: center; background-color: white; padding: 30px 0;">
-    <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 100px;">This Weeks Highlighted Locations</h2>
-    <div class="Review" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 50px;">      
-        <!-- Spotlight 1 -->
-        <div class="spotlight" style="background-color: #F5F5F5; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
-            {% if highlighted_location %}
-                <div class="spotlight-location" id="highlighted-location">
-                    <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ highlighted_location.location_name }}</h4>
-                    
-                    <!-- Display the average Location Rating (if available) -->
-                    {% if highlighted_location.location_rating %}
-                        <div class="rating-container">
-                            {% for star in range(1, 6) %}
-                                {% if star <= highlighted_location.location_rating %}
-                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                                {% else %}
-                                    <span style="color: white;">&#9733;</span>  <!-- Empty star -->
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    
-                    {% if highlighted_location.location_picture %}
-                        <div class="image-container">
-                            <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
-                        </div>
-                    {% endif %}
+    <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 100px;">This Week's Highlighted Locations</h2>
+    <div class="Review" style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 40px; margin-bottom: 50px;">
+        {% for location in highlighted_locations %}
+        <div class="spotlight" style="background-color: #F5F5F5; padding: 10px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px; text-align: center;">
+            <div class="spotlight-location" id="highlighted-location" style="width: 250px;">
+                <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ location.location_name }}</h4>
+                
+                <!-- Rating -->
+                {% if location.location_rating %}
+                <div class="rating-container" style="text-align: center; margin: 10px auto;">
+                    {% for star in range(1, 6) %}
+                        {% if star <= location.location_rating %}
+                            <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                        {% else %}
+                            <span style="color: white;">&#9733;</span>  <!-- Empty star -->
+                        {% endif %}
+                    {% endfor %}
                 </div>
-            {% else %}
-                <p>No location has been highlighted this week.</p>
-            {% endif %}
-        </div>
+                {% endif %}
+                
+                {% if location.location_picture %}
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Location Image">
+                </div>
+                {% endif %}
 
-        <!-- Spotlight 2 -->
-        <div class="spotlight" style="background-color: #F5F5F5; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
-            {% if highlighted_location %}
-                <div class="spotlight-location" id="highlighted-location">
-                    <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ highlighted_location.location_name }}</h4>
-                    
-                    <!-- Display the average Location Rating (if available) -->
-                    {% if highlighted_location.location_rating %}
-                        <div class="rating-container">
-                            {% for star in range(1, 6) %}
-                                {% if star <= highlighted_location.location_rating %}
-                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                                {% else %}
-                                    <span style="color: white;">&#9733;</span>  <!-- Empty star -->
-                                {% endif %}
-                            {% endfor %}
-                        </div>
+                <!-- Address -->
+                <p><strong>Address:</strong> {{ location.street }} {{ location.street_number }},
+                    {{ location.postal_code }} {{ location.city }}, {{ location.country }}</p>
+                
+                <!-- Opening Hours Section -->
+                <p><strong>Opening Hours:</strong></p>
+                <ul style="list-style-type: none; padding: 0; margin-top: 0px;">
+                    {% if location.monday_open and location.monday_close %}
+                        <li><strong>Monday:</strong> {{ location.monday_open }}h - {{ location.monday_close }}h</li>
+                    {% else %}
+                        <li><strong>Monday:</strong> Closed</li>
                     {% endif %}
-                    
-                    {% if highlighted_location.location_picture %}
-                        <div class="image-container">
-                            <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
-                        </div>
+                    {% if location.tuesday_open and location.tuesday_close %}
+                        <li><strong>Tuesday:</strong> {{ location.tuesday_open }}h - {{ location.tuesday_close }}h</li>
+                    {% else %}
+                        <li><strong>Tuesday:</strong> Closed</li>
                     {% endif %}
-                </div>
-            {% else %}
-                <p>No location has been highlighted this week.</p>
-            {% endif %}
+                    {% if location.wednesday_open and location.wednesday_close %}
+                        <li><strong>Wednesday:</strong> {{ location.wednesday_open }}h - {{ location.wednesday_close }}h</li>
+                    {% else %}
+                        <li><strong>Wednesday:</strong> Closed</li>
+                    {% endif %}
+                    {% if location.thursday_open and location.thursday_close %}
+                        <li><strong>Thursday:</strong> {{ location.thursday_open }}h - {{ location.thursday_close }}h</li>
+                    {% else %}
+                        <li><strong>Thursday:</strong> Closed</li>
+                    {% endif %}
+                    {% if location.friday_open and location.friday_close %}
+                        <li><strong>Friday:</strong> {{ location.friday_open }}h - {{ location.friday_close }}h</li>
+                    {% else %}
+                        <li><strong>Friday:</strong> Closed</li>
+                    {% endif %}
+                    {% if location.saturday_open and location.saturday_close %}
+                        <li><strong>Saturday:</strong> {{ location.saturday_open }}h - {{ location.saturday_close }}h</li>
+                    {% else %}
+                        <li><strong>Saturday:</strong> Closed</li>
+                    {% endif %}
+                    {% if location.sunday_open and location.sunday_close %}
+                        <li><strong>Sunday:</strong> {{ location.sunday_open }}h - {{ location.sunday_close }}h</li>
+                    {% else %}
+                        <li><strong>Sunday:</strong> Closed</li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    
-        <!-- Spotlight 3 -->
-        <div class="spotlight" style="background-color: #F5F5F5; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px;">
-            {% if highlighted_location %}
-                <div class="spotlight-location" id="highlighted-location">
-                    <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ highlighted_location.location_name }}</h4>
-                    
-                    <!-- Display the average Location Rating (if available) -->
-                    {% if highlighted_location.location_rating %}
-                        <div class="rating-container">
-                            {% for star in range(1, 6) %}
-                                {% if star <= highlighted_location.location_rating %}
-                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                                {% else %}
-                                    <span style="color: white;">&#9733;</span>  <!-- Empty star -->
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    
-                    {% if highlighted_location.location_picture %}
-                        <div class="image-container">
-                            <img src="{{ url_for('static', filename='images/' ~ highlighted_location.location_picture ~ '.jpg') }}" alt="Location Image">
-                        </div>
-                    {% endif %}
-                </div>
-            {% else %}
-                <p>No location has been highlighted this week.</p>
-            {% endif %}
-        </div>
+        {% endfor %}
     </div>
     <form action="{{ url_for('main.all_locations') }}" method="get" class="inline-form">
         <button type="submit" class="btn btn-black" style="width: 200px; margin-bottom: 100px">View All Locations</button>
@@ -215,11 +196,11 @@
         <!-- Your Location -->
         <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
             <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
-                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Your Location -</p>
+                <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Upload Your Location -</p>
                 <a href="{{ url_for('main.locations') }}"style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/location_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
-                <p style="font-style: italic;">Upload or delete<br>your own location</p>
+                <p style="font-style: italic;">Upload your own location for students to visit</p>
                 <button type="submit" class="btn btn-black" style="width: 100%;">Upload Location</button>
             </div>
         </form>
@@ -239,11 +220,11 @@
 </div>
 
 <!-- Footer Section with black background -->
-<div style="background-color: black; color: white; padding: 50px; height: 220px;">
-    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto;">
+<div style="background-color: black; color: white; padding: 75px; height: 100px;">
+    <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto; margin-top: -50px;">
         <!-- Locations Column -->
         <div style="text-align: left;">
-            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Locations</p>
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Locations</p>
             <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
             </form>
@@ -254,7 +235,7 @@
 
         <!-- Reservations Column -->
         <div style="text-align: left;">
-            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Reservations</p>
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Reservations</p>
             <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
             </form>
@@ -268,7 +249,7 @@
 
         <!-- Community Column -->
         <div style="text-align: left;">
-            <p style="font-size: 1.5em; font-weight: bold; text-align: left;">Community</p>
+            <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Community</p>
             <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
             </form>
