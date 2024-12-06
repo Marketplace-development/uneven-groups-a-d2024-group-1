@@ -75,11 +75,11 @@
     <!-- Left Section: Text and Buttons -->
     <div style="max-width: 50%; margin-top: 10px;">
         <p style="font-size: 1.5em; color: black; margin-bottom: 0px; text-align: left;">Welcome {{ user.username }},<br>are you looking for the perfect place to study?</p>
-        <p style="font-size: 4.5em; font-weight: bold; color: black; margin-top: 0px; margin-bottom: 0px; text-align: left;">Chairing Has<br>You Covered!</p>
-        <p style="font-size: 1.4em; color: grey; margin-top: 0px; margin-bottom: 20px; text-align: left;">Pick a study location for the day and get to work!<br>Or upload your own location!</p>
+        <p class="text-modern" style="font-size: 4.5em; font-weight: bold;  margin-top: 0px; margin-bottom: 0px; text-align: left;">Chairing Has<br>You Covered!</p>
+        <p style="font-size: 1.4em; margin-top: 0px; margin-bottom: 20px; text-align: left;">Pick a study location for the day and get to work!<br>Or upload your own location!</p>
         
         <!-- Centered Buttons with flex-direction: row -->
-        <div style="display: flex; flex-direction: row; justify-content: center; gap: 20px;">
+        <div style="display: flex; flex-direction: row; justify-content: flex-start; gap: 20px; margin-left: 20px;">
             <form action="{{ url_for('main.reservations') }}" method="get">
                 <button type="submit" class="btn btn-transparant" style="width: 170px">Make Your Reservation</button>
             </form>
@@ -87,6 +87,7 @@
                 <button type="submit" class="btn btn-black" style="width: 170px;">Upload Your Location</button>
             </form>
         </div>
+        
     </div>
 
     <!-- Right Section: Image -->
@@ -205,7 +206,7 @@
                 <a href="{{ url_for('main.reservations') }}" style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/reservation_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
-                <p style="font-style: italic; color: grey;">Book a seat at a location<br>and time of your choice</p>
+                <p style="font-style: italic; color:">Book a seat at a location<br>and time of your choice</p>
                 <button type="submit" class="btn btn-black" style="width: 100%;">Make Reservations</button>
             </div>
         </form>
@@ -217,7 +218,7 @@
                 <a href="{{ url_for('main.current_reservations') }}"style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/check_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
-                <p style="font-style: italic; color: grey;">Consult, cancel or<br>rate your reservations</p>
+                <p style="font-style: italic; ">Consult, cancel or<br>rate your reservations</p>
                 <button type="submit" class="btn btn-black" style="width: 100%;">Your Reservations</button>
             </div>
         </form>
@@ -229,7 +230,7 @@
                 <a href="{{ url_for('main.locations') }}"style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/location_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
-                <p style="font-style: italic; color: grey;">Upload or delete your own<br>location for students to visit</p>
+                <p style="font-style: italic;">Upload or delete your own<br>location for students to visit</p>
                 <button type="submit" class="btn btn-black" style="width: 100%;">Upload Location</button>
             </div>
         </form>
@@ -241,7 +242,7 @@
                 <a href="{{ url_for('main.location_bookings') }}" style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/pin_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
-                <p style="font-style: italic; color: grey;">See who booked your<br>location and give ratings</p>
+                <p style="font-style: italic; ">See who booked your<br>location and give ratings</p>
                 <button type="submit" class="btn btn-black" style="width: 100%;">Your Bookings</button>
             </div>
         </form>

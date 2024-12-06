@@ -1,8 +1,37 @@
 body, html {
     margin: 0;
-    font-family: sans-serif;
-    background-color: #d3d3d3;
+    font-family: 'Poppins', sans-serif; /* Use Poppins or a fallback sans-serif font */
+    font-size: 0.9em; /* Reduce the font size to 90% of the default */
+    background-image: url('/static/images/pexels-photo-2041540-1024x682.jpeg'); /* Background image */
+    background-size: cover; /* Ensure the image covers the entire viewport */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    background-attachment: fixed; /* Fix the image while scrolling */
+    background-position: center center; /* Center the image */
+    color: black; /* Default text color */
+    line-height: 1.4; /* Maintain readability with proper line spacing */
 }
+
+.text-modern {
+    color: black; /* Text color */
+    font-family: 'Poppins', 'Arial', sans-serif; /* Modern sans-serif font */
+    font-size: 2em; /* Font size */
+    font-weight: 200; /* Very light weight for thinner text */
+    text-transform: uppercase; /* Uppercase letters */
+    letter-spacing: 0.02em; /* Minimal spacing between letters */
+    text-align: center; /* Center-align text */
+}
+p, span, li, div {
+    font-family: 'Poppins', 'Arial', sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: black;
+}
+
+
+
+
+
+
 
 h1, h2, h3 {
     font-family: 'Arial', sans-serif;
@@ -18,7 +47,7 @@ h1, h2, h3 {
 
 p {
     text-align: center;
-    color: grey;
+    color: black;
     font-size: 1.2em;
 }
 
@@ -229,7 +258,7 @@ form input[type="datetime-local"] {
     border-radius: 5px;
     border: 1px solid #ccc;
     background-color: #f0f0f0;
-    color: grey;
+    color: black;
     box-sizing: border-box;
     outline: none;
 }

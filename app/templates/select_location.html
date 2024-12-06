@@ -50,7 +50,7 @@
                 </p>
             {% else %}
                 <div class="location-grid">
-                    <p style="text-align: center; color: grey; font-size: 1.5em;">These locations are still available at your selected moment!</p>
+                    <p style="text-align: center;  font-size: 1.5em;">These locations are still available at your selected moment!</p>
                     {% for item in location_data %}
                     <label>
                         <input type="radio" name="location_id" value="{{ item.location.id }}" class="location-card-input" required>
