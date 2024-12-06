@@ -9,6 +9,85 @@ body, html {
 body.about-page .container {
     text-align: left !important;  /* Force left alignment */
 }
+.flip-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.flip-container {
+    width: 60px;
+    height: 80px;
+    perspective: 600px; /* Add depth for the 3D flip effect */
+}
+
+.flip-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.flip-card-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: rotateX(0deg);
+    transition: transform 0.5s;
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    font-family: 'Courier New', Courier, monospace; /* Digital clock font */
+    font-size: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+/* Only apply padding to the About Us page */
+body.about-page {
+    padding-top: 120px; /* Adjust based on your navbar height */
+}
+
+/* Ensure the flip clock is visible and on top of other content */
+body.about-page #reservation-count-container {
+    position: relative;
+    z-index: 10; /* Ensure the flip clock stays on top */
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+
+/* Flip clock specific styles */
+body.about-page .flip-clock {
+    z-index: 15; /* Higher z-index to ensure it stays on top */
+    position: relative;
+}
+
+
+.flip-card-back {
+    transform: rotateX(180deg);
+    background: #1946ca;
+    color: white;
+}
+
+.flip-card-inner.flip {
+    transform: rotateX(180deg);
+}
+
+
+
 
 
 /* Optional: Ensure no elements within .container have conflicting styles */
