@@ -10,6 +10,7 @@ body.about-page .container {
     text-align: left !important;  /* Force left alignment */
 }
 
+
 /* Optional: Ensure no elements within .container have conflicting styles */
 body.about-page .container p,
 body.about-page .container h1,
