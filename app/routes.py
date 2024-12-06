@@ -796,3 +796,8 @@ def get_highlighted_location():
         location = Location.query.get(highest_rated_location.location_id)
         return location
     return None
+
+@main.route('/about')
+def about():
+    return render_template('about.html')
+

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block body_class %}about-page{% endblock %}
+
+{% block head %}
+<title>About Us</title>
+{% endblock %}
+
+{% block body %}
+<!-- Top white bar -->
+<div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
+    <!-- Left Section: Logo and Buttons -->
+    <div style="display: flex; align-items: center; justify-content: center;">
+        <a href="{{ url_for('main.main_page') }}" style="display: inline-block;">
+            <img src="{{ url_for('static', filename='images/logo_wit2.JPG') }}" alt="logo" style="height: 50px; margin-right: 20px; top: -3px;">
+        </a>
+        <!-- Home Button -->
+        <form action="{{ url_for('main.main_page') }}" method="get" style="margin-left: 30px;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Home</button>
+        </form>
+        <!-- Locations Dropdown -->
+        <div style="position: relative; margin-left: 30px;">
+            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Locations ▼</button>
+            <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
+                <a href="{{ url_for('main.all_locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">All Locations</a>
+                <a href="{{ url_for('main.locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
+            </div>
+        </div>
+        <!-- Reservation Dropdown -->
+        <div style="position: relative; margin-left: 30px;">
+            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservation ▼</button>
+            <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
+                <a href="{{ url_for('main.reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
+                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservation</a>
+                <a href="{{ url_for('main.location_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
+            </div>
+        </div>
+        <!-- About Us Button -->
+        <form action="{{ url_for('main.about') }}" method="get" style="margin-left: 30px; margin-right: 150px;">
+             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
+        </form>
+    </div>
+
+    <!-- Right Section: Authentication Buttons -->
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <!-- Your Account Button -->
+        <form action="{{ url_for('main.your_account') }}" method="get" style="margin-left: 150px;">
+            <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
+                <img src="{{ url_for('static', filename='images/user.jpg') }}" alt="User Avatar" width="25" height="25" style="margin-right: 10px; border-radius: 0; color: #1946ca;">
+                Your Account
+            </button>
+        </form>
+
+        <span style="color: #ccc;">|</span>
+        <!-- Logout Button -->
+        <form action="{{ url_for('main.home') }}" method="get" style="margin: 0;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Logout</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- Main Content of About Us Page -->
+<div class="container" style="margin-top: 80px; padding: 20px;">
+    <h1 class="text-modern">About Us</h1>
+    
+    <div class="section">
+        <h2>Our Story</h2>
+        <p>Founded in 2024, Chairing began with a simple goal: to make it easier for students to find comfortable and inspiring places to study. Since then, we've grown from a small initiative into a platform connecting students with study spots across a variety of locations. We are passionate about helping students succeed by providing access to suitable study environments and committed to building strong partnerships with local businesses.</p>
+    </div>
+
+    <div class="section">
+        <h2>Mission and Vision</h2>
+        <p><strong>Mission:</strong> Our mission is to connect students with the ideal study environment by partnering with restaurants, cafes, and other locations where they can reserve a space to study effectively.</p>
+        <p><strong>Vision:</strong> We envision a future where students have easy access to comfortable and welcoming study spaces everywhere, empowering them to achieve their academic goals.</p>
+    </div>
+
+    <div class="section">
+        <h2>Our Values</h2>
+        <p>At Chairing, our core values are the foundation of everything we do. We believe in:</p>
+        <ul>
+            <li><strong>Integrity:</strong> Always being honest and transparent in our dealings.</li>
+            <li><strong>Student-Centered Approach:</strong> Ensuring students' needs come first, providing a great experience every time.</li>
+            <li><strong>Community Collaboration:</strong> Creating partnerships that benefit both students and local businesses, fostering community growth.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Meet Our Team</h2>
+        <ul class="team-list">
+            <li><strong>Milan Van Nuffel:</strong> Developer/Programmer</li>
+            <li><strong>Vic Vereecke:</strong> Developer/Programmer</li>
+            <li><strong>Aline:</strong> Database & Visual Paradigm</li>
+            <li><strong>Jullie:</strong> Database & Visual Paradigm</li>
+            <li><strong>Morgane:</strong> Database & Visual Paradigm</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>What Makes Us Unique</h2>
+        <p>We stand out in the industry because of our dedication to building meaningful connections between students and local businesses. Our platform enables students to easily find and reserve study spaces, while also helping cafes, restaurants, and other venues utilize their space more effectively during quieter hours.</p>
+    </div>
+{% endblock %}
+

@@ -2,14 +2,42 @@ body, html {
     margin: 0;
     font-family: 'Poppins', sans-serif; /* Use Poppins or a fallback sans-serif font */
     font-size: 0.9em; /* Reduce the font size to 90% of the default */
+    color: black; /* Default text color */
+    line-height: 1.4; /* Maintain readability with proper line spacing */
+}
+/* Force text alignment to the left only on the About Us page */
+body.about-page .container {
+    text-align: left !important;  /* Force left alignment */
+}
+
+/* Optional: Ensure no elements within .container have conflicting styles */
+body.about-page .container p,
+body.about-page .container h1,
+body.about-page .container h2,
+body.about-page .container ul,
+body.about-page .container li {
+    text-align: left !important;  /* Apply left alignment to all text elements */
+}
+
+
+
+
+/* Apply background image for all pages except About Us */
+body:not(.about-page) {
     background-image: url('/static/images/pexels-photo-2041540-1024x682.jpeg'); /* Background image */
     background-size: cover; /* Ensure the image covers the entire viewport */
     background-repeat: no-repeat; /* Prevent the image from repeating */
     background-attachment: fixed; /* Fix the image while scrolling */
     background-position: center center; /* Center the image */
-    color: black; /* Default text color */
-    line-height: 1.4; /* Maintain readability with proper line spacing */
 }
+
+/* Immediately apply white background to About Us page */
+body.about-page {
+    background-color: white !important; /* Set white background with !important */
+    background-image: none !important; /* Remove any background image */
+}
+
+
 
 .text-modern {
     color: black; /* Text color */

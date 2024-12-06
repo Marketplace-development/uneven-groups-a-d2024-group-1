@@ -9,7 +9,8 @@
 
     {% block head %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}default-page{% endblock %}">
+
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
