@@ -59,18 +59,6 @@
     </div>
 </div>
 
-<!-- Add dropdown functionality -->
-<style>
-    div[style*="position: relative;"] button:hover + .dropdown-menu,
-    div[style*="position: relative;"] .dropdown-menu:hover {
-        display: block !important;
-    }
-
-    .dropdown-menu {
-        transition: opacity 0.2s ease-in-out;
-    }
-</style>
-
 <div style="text-align: center; margin-top: 100px; min-height: 850px;">
 
     <!-- User Profile Image -->
@@ -400,5 +388,17 @@
         }
     }    
 </script>
+
+<!-- Add dropdown functionality -->
+<style>
+    div[style*="position: relative;"] button:hover + .dropdown-menu,
+    div[style*="position: relative;"] .dropdown-menu:hover {
+        display: block !important;
+    }
+
+    .dropdown-menu {
+        transition: opacity 0.2s ease-in-out;
+    }
+</style>
 
 {% endblock %}

@@ -94,9 +94,26 @@ body.about-page .flip-clock {
     transform: rotateX(180deg);
 }
 
+/* Style for the dropdown button inside the question box */
+.faq-question {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
 
+.faq-question:hover {
+    color: #1946ca;
+}
 
-
+.faq-answer {
+    padding-left: 30px;
+    font-size: 14px;
+    color: #333;
+    display: none; /* Initially hidden */
+}
 
 /* Optional: Ensure no elements within .container have conflicting styles */
 body.about-page .container p,

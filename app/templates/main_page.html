@@ -6,7 +6,7 @@
 
 {% block body %}
 <!-- Top white bar -->
-<div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
+<div style="display: flex; justify-content: center; align-items: center; background-color: #f9f9f9; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
     <!-- Left Section: Logo and Buttons -->
     <div style="display: flex; align-items: center; justify-content: center;">
         <a href="{{ url_for('main.main_page') }}" style="display: inline-block;">
@@ -86,7 +86,7 @@
 </div>
 
 <!-- Spotlight Locations -->
-<div style="justify-content: center; margin-top: 130px; text-align: center; background-color: white; padding: 30px 0;">
+<div style="justify-content: center; margin-top: 130px; text-align: center; background-color: #f9f9f9; padding: 30px 0;">
     <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 100px;">This Week's Highlighted Locations</h2>
     <div class="Review" style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 40px; margin-bottom: 50px;">
         {% for location in highlighted_locations %}
@@ -219,6 +219,184 @@
     </div>
 </div>
 
+<!-- FAQ Section -->
+<div class="faq-section" style="padding: 40px 0; background-color: #f9f9f9;">
+    <h1 style="text-align: center; font-size: 36px; margin-bottom: 75px;">Frequently Asked Questions</h1>
+    <div class="container" style="max-width: 1200px; margin: 0 auto; display: flex; margin-bottom: 50px;">
+
+        <!-- Tabs (left side) -->
+        <div class="tabs" style="width: 200px; padding-right: 20px; border-right: 2px solid #ddd; display: flex; flex-direction: column;">
+            <button class="tab-button" style="text-align: right; padding: 10px 20px; font-size: 18px; color: #1946ca; border: none; cursor: pointer; background-color: transparent; margin-bottom: 15px;">Locations</button>
+            <button class="tab-button" style="text-align: right; padding: 10px 20px; font-size: 18px; color: #1946ca; border: none; cursor: pointer; background-color: transparent; margin-bottom: 15px;">Reservations</button>
+            <button class="tab-button" style="text-align: right; padding: 10px 20px; font-size: 18px; color: #1946ca; border: none; cursor: pointer; background-color: transparent; margin-bottom: 15px;">Weekly Targets</button>
+            <button class="tab-button" style="text-align: right; padding: 10px 20px; font-size: 18px; color: #1946ca; border: none; cursor: pointer; background-color: transparent;">Ratings</button>
+        </div>
+
+        <!-- Q&A Content (right side) -->
+        <div class="tab-content" style="flex: 1; padding-left: 20px;">
+            <!-- Content Location Tab -->
+            <div class="tab-pane" id="tab-1" style="display: block;">
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How much does it cost to upload my location?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How many locations can I upload?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What details are required to upload my location?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can I see who booked my location?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Reservations Tab -->
+            <div class="tab-pane" id="tab-2" style="display: none;">
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How much does it cost to make a reservation?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How many reservations can I make?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can I make a reservation for someone else?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can I make a reservation for a group of people?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Target Tab -->
+            <div class="tab-pane" id="tab-3" style="display: none;">
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What is the purpose of the weekly study targets?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Where can I view and edit my targets?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What targets can I set?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can I win something when I achieve my targets?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Review Tab -->
+            <div class="tab-pane" id="tab-4" style="display: none;">
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How can I give a rating to a person who made a reservation in my location?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How can I give a rating to a location where I made a reservation?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can other people see my average rating as a student?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can other people see the average rating of my location?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Footer Section with black background -->
 <div style="background-color: black; color: white; padding: 75px; height: 100px;">
     <div style="display: flex; justify-content: center; align-items: flex-start; text-align: center; gap: 100px; max-width: 1200px; margin: 0 auto; margin-top: -50px;">
@@ -259,5 +437,81 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Tab Switching
+    document.querySelectorAll('.tab-button').forEach(function(tabButton, index) {
+        tabButton.addEventListener('click', function() {
+            document.querySelectorAll('.tab-button').forEach(function(button) {
+                button.style.color = '#6c63ff'; // Reset tab color
+                button.style.fontWeight = 'normal'; // Reset font weight
+            });
+            tabButton.style.color = '#1946ca'; // Active tab color
+            tabButton.style.fontWeight = 'bold'; // Set active tab to bold
+
+            document.querySelectorAll('.tab-pane').forEach(function(tabPane) {
+                tabPane.style.display = 'none'; // Hide all tabs
+            });
+            document.getElementById('tab-' + (index + 1)).style.display = 'block'; // Show clicked tab
+        });
+
+        tabButton.addEventListener('mouseenter', function() {
+            if (tabButton.style.fontWeight !== 'bold') {
+                tabButton.style.fontWeight = 'bold'; // Bold effect on hover
+            }
+        });
+
+        tabButton.addEventListener('mouseleave', function() {
+            if (tabButton.style.color !== 'rgb(25, 70, 202)') {  // If the tab is not active
+                tabButton.style.fontWeight = 'normal'; // Reset to normal weight after hover
+            }
+        });
+    });
+
+    // FAQ Accordion with Dropdown Button
+    document.querySelectorAll('.faq-question').forEach(function(faqQuestion) {
+        faqQuestion.addEventListener('click', function() {
+            // Toggle the dropdown icon
+            const dropdownButton = faqQuestion.querySelector('.dropdown-button');
+            const answer = faqQuestion.nextElementSibling;
+            if (answer.style.display === 'none' || answer.style.display === '') {
+                answer.style.display = 'block'; // Show answer
+                dropdownButton.innerHTML = '&#9650;'; // Change to up arrow
+            } else {
+                answer.style.display = 'none'; // Hide answer
+                dropdownButton.innerHTML = '&#9660;'; // Change to down arrow
+            }
+        });
+    });
+
+    // Initially hide all answers and make sure no tab is selected
+    window.addEventListener('load', function() {
+        document.querySelectorAll('.faq-answer').forEach(function(answer) {
+            answer.style.display = 'none'; // Hide all answers initially
+        });
+
+        // Reset tab selection
+        document.querySelectorAll('.tab-button').forEach(function(button) {
+            button.style.color = '#6c63ff'; // Reset tab color
+            button.style.fontWeight = 'normal'; // Reset font weight
+        });
+
+        // Hide all tab panes initially
+        document.querySelectorAll('.tab-pane').forEach(function(tabPane) {
+            tabPane.style.display = 'none'; // Hide all tab panes
+        });
+
+        // Select and display the first tab and question by default
+        const firstTabButton = document.querySelector('.tab-button'); // First tab button
+        const firstTabPane = document.getElementById('tab-1'); // First tab pane
+        
+        // Set the first tab as active
+        firstTabButton.style.color = '#1946ca';
+        firstTabButton.style.fontWeight = 'bold';
+
+        // Show the first tab content
+        firstTabPane.style.display = 'block';
+    });
+</script>
 
 {% endblock %}
