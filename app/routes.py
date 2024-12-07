@@ -298,7 +298,8 @@ def all_locations():
     city_filter = request.args.get('city', '')
     location_type = request.args.get('location_type', '')
 
-    query = Location.query
+    # Start with filtering only "active" locations
+    query = Location.query.filter_by(status="active")
 
     # Apply filters
     if opening_day:
