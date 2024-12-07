@@ -224,6 +224,29 @@ def your_account():
                            congratulations_message=congratulations_message, 
                            reservations=reservations, location=location, bookings=bookings)
 
+@main.route('/update_user_info', methods=['POST'])
+@login_required
+def update_user_info():
+    try:
+        # Get the form data
+        username = request.form.get('username')
+        phonenumber = request.form.get('phonenumber')
+
+        # Update user information
+        if username:
+            current_user.username = username
+        if phonenumber:
+            current_user.phonenumber = phonenumber
+
+        db.session.commit()
+        flash("Your information was updated successfully.", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred: {str(e)}", "error")
+
+    # Redirect back to the account page
+    return redirect(url_for('main.your_account'))
+
 def delete_target(user, target_type):
     """ Deletes the specified target for a user. """
     try:

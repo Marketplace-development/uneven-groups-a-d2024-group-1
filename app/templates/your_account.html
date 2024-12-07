@@ -82,8 +82,34 @@
         <!-- Personal Information -->
         <div id="personal-info" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
             <h1>Personal Information</h1>
-            <p><strong>Username:</strong> {{ user.username }}</p>
-            <p><strong>Phonenumber:</strong> {{ user.phonenumber }}</p>
+
+            <!-- Username Section -->
+            <p>
+                <strong>Username:</strong>
+                {% if request.args.get('edit') == 'username' %}
+                    <form method="POST" action="{{ url_for('main.update_user_info') }}" style="display: inline-block;">
+                        <input type="text" name="username" value="{{ user.username }}" style="width: 200px;" required />
+                        <button type="submit" style="color: blue; text-decoration: underline; border: none; background: none; cursor: pointer;">Save</button>
+                    </form>
+                {% else %}
+                    {{ user.username }}
+                    <a href="{{ url_for('main.your_account', edit='username') }}" style="color: blue; text-decoration: underline; margin-left: 20px;">edit</a>
+                {% endif %}
+            </p>            
+
+            <!-- Phone Number Section -->
+            <p>
+                <strong>Phonenumber:</strong>
+                {% if request.args.get('edit') == 'phonenumber' %}
+                    <form method="POST" action="{{ url_for('main.update_user_info') }}" style="display: inline;">
+                        <input type="text" name="phonenumber" value="{{ user.phonenumber }}" style="width: 200px;" required />
+                        <button type="submit" style="color: blue; text-decoration: underline; border: none; background: none; cursor: pointer;">Save</button>
+                    </form>
+                {% else %}
+                    {{ user.phonenumber }}
+                    <a href="{{ url_for('main.your_account', edit='phonenumber') }}" style="color: blue; text-decoration: underline;  margin-left: 20px;">edit</a>
+                {% endif %}
+            </p>
         </div>
 
         <!-- Weekly Targets -->
