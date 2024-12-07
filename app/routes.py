@@ -807,4 +807,8 @@ def update_location_rating(location_id):
 
 @main.route('/about')
 def about():
-    return render_template('about.html')
+    # Query the database to count expired reservations
+    expired_reservations_count = Reservation.query.filter_by(status="expired").count()
+
+    # Pass the count to the template
+    return render_template('about.html', expired_reservations_count=expired_reservations_count)
