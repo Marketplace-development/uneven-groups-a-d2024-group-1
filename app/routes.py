@@ -810,5 +810,8 @@ def about():
     # Query the database to count expired reservations
     expired_reservations_count = Reservation.query.filter_by(status="expired").count()
 
-    # Pass the count to the template
-    return render_template('about.html', expired_reservations_count=expired_reservations_count)
+    # Query the database to count locations
+    location_count = Location.query.count()  # This assumes you have a Location model
+
+    # Pass the counts to the template
+    return render_template('about.html', expired_reservations_count=expired_reservations_count, location_count=location_count)

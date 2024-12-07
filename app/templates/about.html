@@ -61,10 +61,26 @@
     </div>
 </div>
 
+<!-- Main Content of About Us Page -->
+<div class="container" style="margin-top: 0px; margin-bottom: 30px; padding: 20px;">
+    <!-- Logo and Title -->
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; margin-top: 0px;">
+        <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
+        <h1 class="text-modern" style="text-align: center; margin-top: 40px;">About Us</h1>
+    </div>
+    
+    <!-- Our Story -->
+    <div class="section">
+        <h2>Our Story</h2>
+        <p>Founded in 2024, Chairing began with a simple goal: to make it easier for students to find comfortable and inspiring places to study. Since then, we've grown from a small initiative into a platform connecting students with study spots across a variety of locations. We are passionate about helping students succeed by providing access to suitable study environments and committed to building strong partnerships with local businesses.</p>
+    </div>
+</div>
+
+<!-- Counters -->
 <div id="reservation-count-container" style="font-size: 1.5em; margin-top: 10px; font-family: 'Poppins', sans-serif; font-weight: normal; color: black;">
-    <h2 style="font-weight: lighter; margin-bottom: 10px;">We already helped:</h2>
+    <h2 style="font-weight: lighter; margin-bottom: 10px;">We already<br>helped students make</h2>
     <div id="reservation-count" class="flip-clock">
-        <div id="first-digit" class="flip-container">
+        <div id="reservation-count-first-digit" class="flip-container">
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">0</div>
@@ -72,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <div id="second-digit" class="flip-container">
+        <div id="reservation-count-second-digit" class="flip-container">
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">0</div>
@@ -80,7 +96,7 @@
                 </div>
             </div>
         </div>
-        <div id="third-digit" class="flip-container">
+        <div id="reservation-count-third-digit" class="flip-container">
             <div class="flip-card">
                 <div class="flip-card-inner">
                     <div class="flip-card-front">0</div>
@@ -90,47 +106,49 @@
         </div>
     </div>
     <p style="font-size: 1.5em; margin-top: 10px; font-family: 'Poppins', sans-serif; font-weight: normal; color: black;">
-        students finding a study-spot!
+        different reservations in
+    </p>
+
+    <div id="location-count" class="flip-clock">
+        <div id="location-count-first-digit" class="flip-container">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">0</div>
+                    <div class="flip-card-back">0</div>
+                </div>
+            </div>
+        </div>
+        <div id="location-count-second-digit" class="flip-container">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">0</div>
+                    <div class="flip-card-back">0</div>
+                </div>
+            </div>
+        </div>
+        <div id="location-count-third-digit" class="flip-container">
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">0</div>
+                    <div class="flip-card-back">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p style="font-size: 1.5em; margin-top: 10px; font-family: 'Poppins', sans-serif; font-weight: normal; color: black;">
+        different study-spots!
     </p>
 </div>
 
-<script>
-    // Function to update the flip clock UI with the count
-    function updateFlipClock(count) {
-        // Ensure count is at least 3 digits (add leading zeros if necessary)
-        const countStr = count.toString().padStart(3, '0');
-
-        // Split the count into individual digits
-        const digits = countStr.split('');
-
-        // Update each digit in the flip clock
-        document.querySelector('#first-digit .flip-card-front').textContent = digits[0];
-        document.querySelector('#second-digit .flip-card-front').textContent = digits[1];
-        document.querySelector('#third-digit .flip-card-front').textContent = digits[2];
-    }
-
-    // Get the expired reservation count from the Flask context
-    const expiredReservationsCount = {{ expired_reservations_count }};
-    
-    // Update the flip clock with the count of expired reservations
-    updateFlipClock(expiredReservationsCount);
-</script>
-
-<!-- Main Content of About Us Page -->
-<div class="container" style="margin-top: 80px; margin-bottom: 30px; padding: 20px;">
-    <h1 class="text-modern">About Us</h1>
-    
-    <div class="section">
-        <h2>Our Story</h2>
-        <p>Founded in 2024, Chairing began with a simple goal: to make it easier for students to find comfortable and inspiring places to study. Since then, we've grown from a small initiative into a platform connecting students with study spots across a variety of locations. We are passionate about helping students succeed by providing access to suitable study environments and committed to building strong partnerships with local businesses.</p>
-    </div>
-
+<div class="container" style="margin-top: 0px; margin-bottom: 30px; padding: 20px;">
+    <!-- Mission and Vision -->
     <div class="section">
         <h2>Mission and Vision</h2>
         <p><strong>Mission:</strong> Our mission is to connect students with the ideal study environment by partnering with restaurants, cafes, and other locations where they can reserve a space to study effectively.</p>
         <p><strong>Vision:</strong> We envision a future where students have easy access to comfortable and welcoming study spaces everywhere, empowering them to achieve their academic goals.</p>
     </div>
 
+    <!-- Our Values -->
     <div class="section">
         <h2>Our Values</h2>
         <p>At Chairing, our core values are the foundation of everything we do. We believe in:</p>
@@ -141,6 +159,7 @@
         </ul>
     </div>
 
+    <!-- Our Team -->
     <div class="section">
         <h2>Meet Our Team</h2>
         <ul class="team-list">
@@ -153,6 +172,7 @@
         </ul>
     </div>
 
+    <!-- What makes us unique-->
     <div class="section">
         <h2>What Makes Us Unique</h2>
         <p>We stand out in the industry because of our dedication to building meaningful connections between students and local businesses. Our platform enables students to easily find and reserve study spaces, while also helping cafes, restaurants, and other venues utilize their space more effectively during quieter hours.</p>
@@ -199,5 +219,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Function to update the flip clock UI with the count
+    function updateFlipClock(count, idPrefix) {
+        // Ensure count is at least 3 digits (add leading zeros if necessary)
+        const countStr = count.toString().padStart(3, '0');
+
+        // Split the count into individual digits
+        const digits = countStr.split('');
+
+        // Update each digit in the flip clock
+        document.querySelector(`#${idPrefix}-first-digit .flip-card-front`).textContent = digits[0];
+        document.querySelector(`#${idPrefix}-second-digit .flip-card-front`).textContent = digits[1];
+        document.querySelector(`#${idPrefix}-third-digit .flip-card-front`).textContent = digits[2];
+    }
+
+    // Get the expired reservation count from the Flask context
+    const expiredReservationsCount = {{ expired_reservations_count }};
+    
+    // Update the flip clock with the expired reservation count
+    updateFlipClock(expiredReservationsCount, 'reservation-count');
+
+    // Get the location count from the Flask context
+    const locationCount = {{ location_count }};
+    
+    // Update the flip clock with the location count
+    updateFlipClock(locationCount, 'location-count');
+</script>
 
 {% endblock %}
