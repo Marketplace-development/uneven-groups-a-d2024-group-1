@@ -3,8 +3,6 @@
 {% block body_class %}about-page{% endblock %}
 
 {% block head %}
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
 <title>About Us</title>
 {% endblock %}
 
@@ -62,7 +60,7 @@
 </div>
 
 <!-- Main Content of About Us Page -->
-<div class="container" style="margin-top: 0px; margin-bottom: 30px; padding: 20px;">
+<div class="container" style="margin-top: 0px; margin-bottom: 30px; padding-left: 200px; padding-right: 200px;">
     <!-- Logo and Title -->
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; margin-top: 0px;">
         <img src="{{ url_for('static', filename='images/logo_wit.jpg') }}" alt="logo" style="width: 150px;">
@@ -140,7 +138,7 @@
     </p>
 </div>
 
-<div class="container" style="margin-top: 0px; margin-bottom: 30px; padding: 20px;">
+<div class="container" style="margin-top: 0px; margin-bottom: 100px; padding-left: 200px; padding-right: 200px;">
     <!-- Mission and Vision -->
     <div class="section">
         <h2>Mission and Vision</h2>
