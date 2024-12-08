@@ -220,7 +220,7 @@
                                     No Rating Yet
                                 {% endif %}
                             </td>
-                            <td><!-- Message Field (empty for now) --></td>
+                            <td>{{ reservation.student_message or '' }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>                
@@ -315,7 +315,7 @@
                                             No Rating Yet
                                         {% endif %}
                                     </td>
-                                    <td><!-- Leave empty for now --></td>
+                                    <td>{{ booking.host_message or '' }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -327,7 +327,7 @@
             {% else %}
                 <!-- Message for users without a location -->
                 <h1>You have not uploaded a location yet</h1>
-                <p>You can do upload your location <a href="{{ url_for('main.locations') }}" style="color: blue; text-decoration: underline; cursor: pointer;">here</a>.</p>
+                <p>You can upload your location <a href="{{ url_for('main.locations') }}" style="color: blue; text-decoration: underline; cursor: pointer;">here</a>.</p>
             {% endif %}
         </div>
     </div>

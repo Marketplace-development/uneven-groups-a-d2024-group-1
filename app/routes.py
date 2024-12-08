@@ -669,6 +669,7 @@ def current_reservations():
         # Process location rating submission
         reservation_id = request.form.get('reservation_id')
         location_rating = request.form.get('location_rating')
+        host_message = request.form.get('host_message')
 
         if reservation_id and location_rating:
             reservation = Reservation.query.get_or_404(reservation_id)
@@ -679,6 +680,11 @@ def current_reservations():
                     location_rating = int(location_rating)
                     if 1 <= location_rating <= 5:
                         reservation.location_rating = location_rating
+
+                        # Save the host message if provided
+                        if host_message:
+                            reservation.host_message = host_message
+
                         db.session.commit()
 
                         # Update the location's average rating
@@ -742,6 +748,7 @@ def location_bookings():
         # Process location rating submission
         reservation_id = request.form.get('reservation_id')
         student_rating = request.form.get('student_rating')
+        student_message = request.form.get('student_message')
 
         if reservation_id and student_rating:
             reservation = Reservation.query.get_or_404(reservation_id)
@@ -752,6 +759,11 @@ def location_bookings():
                     student_rating = int(student_rating)
                     if 1 <= student_rating <= 5:
                         reservation.student_rating = student_rating
+
+                        # Save the host message if provided
+                        if student_message:
+                            reservation.student_message = student_message
+
                         db.session.commit()
 
                         # Update the student's average rating

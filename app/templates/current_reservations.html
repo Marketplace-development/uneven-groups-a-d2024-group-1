@@ -165,36 +165,24 @@
                     <!-- Number of Guests -->
                     <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
 
-                    <!-- Display the Rating from Location Owner (if available) -->
-                    {% if reservation.student_rating %}
-                        <p><strong>Received Rating:</strong>
-                            <!-- Display stars for received location rating -->
-                            {% for star in range(1, 6) %}
-                                {% if star <= reservation.student_rating %}
-                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                                {% else %}
-                                    <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
-                                {% endif %}
-                            {% endfor %}
-                        </p>
-                    {% else %}
-                        <p><strong>Received Rating:</strong> No rating yet.</p>
-                    {% endif %}
-
-                    <!-- Rate the location -->
-                    <form method="POST" class="rating-form">
-                        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
-                        <strong>Rate Your Experience:</strong>
-                        {% for star in range(1, 6) %}
-                            <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="location_rating" value="{{ star }}"
-                                   {% if reservation.location_rating == star %}checked{% endif %}>
-                            <label for="star{{ star }}-{{ reservation.id }}">&#9733;</label>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-transparant">Submit</button>
-                    </form>
-                    
-                    
-
+                    <!-- Rate the location and write a message to the host -->
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; margin: 20px auto;">
+                        <form method="POST" class="rating-form" style="display: flex; flex-direction: column; align-items: center;">
+                            <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                            <strong>Rate Your Experience:</strong>
+                            <div style="display: flex; justify-content: center; margin: 10px 0;">
+                                {% for star in range(1, 6) %}
+                                    <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="location_rating" value="{{ star }}"
+                                        {% if reservation.location_rating == star %}checked{% endif %}>
+                                    <label for="star{{ star }}-{{ reservation.id }}" style="cursor: pointer; margin: 0 5px;">&#9733;</label>
+                                {% endfor %}
+                            </div>
+                            <strong>Message to the Host:</strong>
+                            <textarea name="host_message" rows="4" cols="50" placeholder="Write your message here..."
+                                    style="margin: 10px 0; width: 80%; max-width: 500px; text-align: left;">{{ reservation.host_message or '' }}</textarea>
+                            <button type="submit" class="btn btn-transparant" style="margin-top: 10px;">Submit</button>
+                        </form>
+                    </div>
                 </div>
             {% endfor %}
         </div>
