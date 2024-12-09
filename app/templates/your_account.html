@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block body %} 
-
 <!-- Top white bar -->
 <div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
     <!-- Left Section: Logo and Buttons -->
@@ -28,16 +27,17 @@
         </div>
         <!-- Reservation Dropdown -->
         <div style="position: relative; margin-left: 30px;">
-            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservation ▼</button>
+            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservations ▼</button>
             <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
                 <a href="{{ url_for('main.reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
-                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservation</a>
+                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservations</a>
             </div>
         </div>
         <!-- About Us Button -->
         <form action="{{ url_for('main.about') }}" method="get" style="margin-left: 30px; margin-right: 150px;">
-            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
+             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
         </form>
+
     </div>
 
     <!-- Right Section: Authentication Buttons -->
