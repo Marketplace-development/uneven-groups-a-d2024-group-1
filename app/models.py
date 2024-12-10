@@ -76,6 +76,8 @@ class Reservation(db.Model):
     status = db.Column(db.String(10), nullable=False, default="active")
     location_rating = db.Column(db.Integer, nullable=True)
     student_rating = db.Column(db.Integer, nullable=True)
+    host_message = db.Column(db.Text, nullable=True)
+    student_message = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     # Relationships

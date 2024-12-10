@@ -22,21 +22,22 @@
             <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
                 <a href="{{ url_for('main.all_locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">All Locations</a>
                 <a href="{{ url_for('main.locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
+                <a href="{{ url_for('main.location_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
             </div>
         </div>
         <!-- Reservation Dropdown -->
         <div style="position: relative; margin-left: 30px;">
-            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservation ▼</button>
+            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservations ▼</button>
             <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
                 <a href="{{ url_for('main.reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
-                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservation</a>
-                <a href="{{ url_for('main.location_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
+                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservations</a>
             </div>
         </div>
         <!-- About Us Button -->
         <form action="{{ url_for('main.about') }}" method="get" style="margin-left: 30px; margin-right: 150px;">
-            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
-       </form>
+             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
+        </form>
+
     </div>
 
     <!-- Right Section: Authentication Buttons -->
@@ -165,36 +166,24 @@
                     <!-- Number of Guests -->
                     <p><strong>Number of Guests:</strong> {{ reservation.number_of_guests }}</p>
 
-                    <!-- Display the Rating from Location Owner (if available) -->
-                    {% if reservation.student_rating %}
-                        <p><strong>Received Rating:</strong>
-                            <!-- Display stars for received location rating -->
-                            {% for star in range(1, 6) %}
-                                {% if star <= reservation.student_rating %}
-                                    <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                                {% else %}
-                                    <span style="color: lightgray;">&#9733;</span>  <!-- Empty star -->
-                                {% endif %}
-                            {% endfor %}
-                        </p>
-                    {% else %}
-                        <p><strong>Received Rating:</strong> No rating yet.</p>
-                    {% endif %}
-
-                    <!-- Rate the location -->
-                    <form method="POST" class="rating-form">
-                        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
-                        <strong>Rate Your Experience:</strong>
-                        {% for star in range(1, 6) %}
-                            <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="location_rating" value="{{ star }}"
-                                   {% if reservation.location_rating == star %}checked{% endif %}>
-                            <label for="star{{ star }}-{{ reservation.id }}">&#9733;</label>
-                        {% endfor %}
-                        <button type="submit" class="btn btn-transparant">Submit</button>
-                    </form>
-                    
-                    
-
+                    <!-- Rate the location and write a message to the host -->
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 100%; margin: 20px auto;">
+                        <form method="POST" class="rating-form" style="display: flex; flex-direction: column; align-items: center;">
+                            <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                            <strong>Rate Your Experience:</strong>
+                            <div style="display: flex; justify-content: center; margin: 10px 0;">
+                                {% for star in range(1, 6) %}
+                                    <input type="radio" id="star{{ star }}-{{ reservation.id }}" name="location_rating" value="{{ star }}"
+                                        {% if reservation.location_rating == star %}checked{% endif %}>
+                                    <label for="star{{ star }}-{{ reservation.id }}" style="cursor: pointer; margin: 0 5px;">&#9733;</label>
+                                {% endfor %}
+                            </div>
+                            <strong>Message to the Host:</strong>
+                            <textarea name="host_message" rows="4" cols="50" placeholder="Write your message here..."
+                                    style="margin: 10px 0; width: 80%; max-width: 500px; text-align: left;">{{ reservation.host_message or '' }}</textarea>
+                            <button type="submit" class="btn btn-transparant" style="margin-top: 10px;">Submit</button>
+                        </form>
+                    </div>
                 </div>
             {% endfor %}
         </div>
@@ -215,6 +204,9 @@
             <form action="{{ url_for('main.locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
             </form>
+            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
+            </form>
         </div>
 
         <!-- Reservations Column -->
@@ -225,9 +217,6 @@
             </form>
             <form action="{{ url_for('main.current_reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
-            </form>
-            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
-                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
             </form>
         </div>
 

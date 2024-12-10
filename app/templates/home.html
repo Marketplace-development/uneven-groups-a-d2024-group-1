@@ -6,7 +6,7 @@
 
 {% block body %}
 <!-- Top white bar -->
-<div style="display: flex; justify-content: center; align-items: center; background-color: #f9f9f9; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
+<div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
     <!-- Left Section: Logo and Buttons -->
     <div style="display: flex; align-items: center; justify-content: center;">
         <a href="{{ url_for('main.home') }}" style="display: inline-block;">
@@ -111,7 +111,11 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Uploading your location is <strong>free for now</strong>. 
+                            Our aim is to attract traffic and grow our user base. 
+                            In the future, we plan to implement a <strong>degressive pricing model</strong>: 
+                            the cost will depend on the number of available seats at your location. 
+                            Larger venues with more seats will have a higher price tier when uploading their location.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -120,7 +124,8 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Currently, you can upload <strong>one location</strong> at a time. 
+                            If needed, you can delete your existing location and upload a new one.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -129,7 +134,12 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">To upload your location, we need the following:<br>
+                            <strong>- Location Name<br>
+                                - Type of Location</strong> (e.g., library, cafe, coffeehouse, tearoom, restaurant, or other)<br>
+                                <strong>- Number of Chairs Available<br>
+                                - Address<br>
+                                - Opening Hours</strong></p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -138,7 +148,41 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Yes, you can! Once someone books your location, you’ll have access to the following details:<br>
+                            - Their <strong>name</strong> and <strong>phone number</strong><br>
+                            - <strong>Booking time</strong> and <strong>duration</strong><br>
+                            - <strong>Number of people</strong> in the reservation<br>
+                            - The <strong>student’s rating</strong> (based on reviews from other hosts)</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can I update my location details after uploading it?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Unfortunately, updates are <strong>not allowed</strong> after a location is uploaded. 
+                            If you need to make changes, you’ll need to <strong>delete your location</strong> and upload it again with the updated details.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How do I handle cancellations or no-shows?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">If a booking is canceled or the guest doesn’t show up, you’ll be <strong>notified</strong>. 
+                            We encourage you to reach out to the student for clarification.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Is there a way to promote my location?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Each week, we <strong>highlight the top-rated locations</strong> based on reviews from the previous week. 
+                            This means offering great service and maintaining excellent reviews can help your location get featured and attract more visitors.</p>
                     </div>
                 </div>
             </div>
@@ -151,7 +195,7 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Making a reservation is <strong>free</strong>, but it is expected that you order something while at the location to support the business.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -160,7 +204,7 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">You can make <strong>as many reservations as you like</strong>, provided the locations have availability.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -169,7 +213,8 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Yes, you can! If you won’t be attending the reservation yourself, 
+                            make sure the people who are attending inform the location about your <strong>Chairing username</strong> when they arrive.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -178,7 +223,69 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Absolutely! When making your reservation, simply select the <strong>number of people</strong> in your group, 
+                            and the system will ensure enough seats are reserved for everyone.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How far in advance can I make a reservation?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">There is <strong>no limit</strong> to how far in advance you can make a reservation, as long as the location has availability.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What happens if I need to cancel my reservation?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">If you need to cancel, you can do so directly through your account. 
+                            Simply navigate to the <strong>Your Reservations</strong> page and click <strong>Cancel Reservation</strong>. 
+                            Please try to cancel as early as possible to free up the seat for others.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What if I’m late for my reservation?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">If you’re running late, we recommend notifying the location to ensure your seat isn’t released. 
+                            Locations typically hold reservations for <strong>15–30 minutes</strong>, but policies may vary.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How do I know if my reservation is confirmed?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Go to <strong>Your Reservations</strong>, 
+                            and if you can see your reservation there, you can be sure that your reservation is confirmed! 
+                            If you're still not certain, you can always contact the location owner.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can I modify an existing reservation?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Currently, you cannot modify an existing reservation. 
+                            If changes are needed, please cancel the current reservation and make a new one with the updated details.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Is there a limit on the group size for reservations?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Group size limits may vary by location. 
+                            For <strong>large groups</strong>, there is a chance you may need to sit at <strong>separate tables</strong> depending on the venue’s seating arrangement.</p>
                     </div>
                 </div>
             </div>
@@ -191,7 +298,7 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">The purpose is to <strong>motivate you</strong> to stay consistent and focused on your studies.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -200,7 +307,7 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Go to <strong>Your Account > Weekly Targets</strong> to view or make changes.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -209,7 +316,9 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">You can set two types of targets:<br><strong>
+                            - Time Studied This Week<br>
+                            - Number of Study Sessions</strong></p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -218,7 +327,17 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">No, there are no tangible rewards. The goal is to help you stay motivated and track your progress.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What happens if I don’t meet my weekly targets?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Nothing happens — your targets are purely for motivation and personal growth. 
+                            You can adjust them to be more achievable next week.</p>
                     </div>
                 </div>
             </div>
@@ -231,7 +350,8 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">After the reservation, go to <strong>Your Bookings</strong> and rate the student by giving <strong>1 to 5 stars</strong>. 
+                            You also have the option to send a <strong>personal message</strong> to the student.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -240,7 +360,8 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">After the reservation, go to <strong>Your Reservations</strong> and rate the location by giving <strong>1 to 5 stars</strong>. 
+                            You can also send a <strong>personal message</strong> to the location owner.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -249,7 +370,7 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">No, only the <strong>owners of the locations</strong> where you’ve made reservations can view your average rating.</p>
                     </div>
                 </div>
                 <div class="faq-item" style="margin-bottom: 20px;">
@@ -258,7 +379,46 @@
                         <span>▼</span>
                     </button>
                     <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
-                        <p style="text-align: left;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                        <p style="text-align: left;">Yes, your location’s average rating is visible to others when they’re browsing the <strong>All Locations</strong> page or deciding to make a reservation.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Can I edit a review I’ve left?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">Yes, you can edit both reviews and messages. 
+                            Simply go to the respective <strong>Your Bookings</strong> or <strong>Your Reservations</strong> section, 
+                            locate the review or message, and make the necessary changes.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>What should I do if I receive an unfair review?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">If you believe a review is unfair or violates our community guidelines, you can <strong>report it</strong> by sending us an email. 
+                            Our team will investigate and take appropriate action if necessary.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Are reviews anonymous?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">No, reviews are tied to your account. Both students and location owners can see who left the review.</p>
+                    </div>
+                </div>
+                <div class="faq-item" style="margin-bottom: 20px;">
+                    <button class="faq-question" style="width: 100%; text-align: left; font-size: 18px; padding: 15px; background-color: #fff; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        <span>How is the average rating calculated?</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="faq-answer" style="display: none; padding: 15px; background-color: #f1f1f1;">
+                        <p style="text-align: left;">The average rating is based on all <strong>1 to 5-star reviews</strong> received, rounded to the nearest decimal point.</p>
                     </div>
                 </div>
             </div>
@@ -278,6 +438,9 @@
             <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
             </form>
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
+                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
+            </form>
         </div>
 
         <!-- Reservations Column -->
@@ -288,9 +451,6 @@
             </form>
             <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
-            </form>
-            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
-                <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
             </form>
         </div>
 
