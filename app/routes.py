@@ -700,8 +700,10 @@ def current_reservations():
         else:
             flash("Missing reservation ID or rating value.", "error")
 
-        return redirect(url_for('main.your-reservations'))
+        # Corrected url_for call
+        return redirect(url_for('main.current_reservations'))
 
+    # Fetch reservations
     reservations = Reservation.query \
         .join(Location, Reservation.location_id == Location.id) \
         .filter(Reservation.user_id == current_user.id).all()
