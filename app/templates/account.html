@@ -177,17 +177,21 @@
 
         <!-- Student -->
         <div id="student" class="tab-content" style="display: none; padding: 20px; margin-top: 0px; text-align: center;">
-            {% if reservations%}
+            {% if reservations %}
                 <h1 style="margin-bottom: 0px;">Your Average Rating</h1>
-                <div>
-                    {% for star in range(5) %}
-                        {% if star < user.user_rating %}
-                            <span class="star filled">&#9733;</span>
-                        {% else %}
-                            <span class="star empty">&#9733;</span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                {% if user.user_rating %}
+                    <div>
+                        {% for star in range(5) %}
+                            {% if star < user.user_rating %}
+                                <span class="star filled">&#9733;</span>
+                            {% else %}
+                                <span class="star empty">&#9733;</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h2 style="margin-bottom: 0px;">You have no rating yet.</h2>
+                {% endif %}
 
                 <!-- Your Previous Reservations -->
                 <h1 style="margin-top: 50px;">Your Previous Reservations</h1>
