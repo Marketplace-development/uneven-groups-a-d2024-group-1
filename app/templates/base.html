@@ -22,13 +22,13 @@
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        <div class="flash-container" style="margin-bottom: 15px;">
-            {% for category, message in messages %}
-            <div class="alert alert-{{ category }}" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #fff; background: {% if category == 'success' %}#28a745{% elif category == 'error' %}#dc3545{% else %}#17a2b8{% endif %};">
-                {{ message }}
-            </div>
-            {% endfor %}
+    <div class="flash-container" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 90%; max-width: 600px;">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; color: #fff; background: {% if category == 'success' %}#28a745{% elif category == 'error' %}#dc3545{% else %}#17a2b8{% endif %};">
+            {{ message }}
         </div>
+        {% endfor %}
+    </div>
     {% endif %}
     {% endwith %}
 
