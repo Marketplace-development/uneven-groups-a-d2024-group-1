@@ -81,12 +81,12 @@ def signup():
 
     return render_template('signup.html')
 
-@main.route('/home', methods=['GET', 'POST'])
+@main.route('/main-page', methods=['GET', 'POST'])
 @login_required
 def main_page():
     # Highlighted locations
     highlighted_locations = get_highlighted_locations()
-    return render_template('main_page.html', user=current_user, highlighted_locations=highlighted_locations)
+    return render_template('main-page.html', user=current_user, highlighted_locations=highlighted_locations)
 
 def get_highlighted_locations():
     # Calculate the start and end of the previous week
@@ -109,7 +109,7 @@ def get_highlighted_locations():
 
 @main.route('/account', methods=['GET', 'POST'])
 @login_required
-def your_account():
+def account():
     # Get previous reservations made by the current user
     reservations = Reservation.query.filter(
         Reservation.user_id == current_user.id,
@@ -216,7 +216,7 @@ def your_account():
 
         return redirect(url_for('main.account'))
 
-    return render_template('your_account.html', user=current_user, week_range=week_range,
+    return render_template('account.html', user=current_user, week_range=week_range,
                            completed_sessions=completed_sessions, target_sessions=target_sessions,
                            completed_study_time=completed_study_time, target_study_time=target_study_time,
                            completed_hours=completed_hours, completed_minutes=completed_minutes,
@@ -330,7 +330,7 @@ def all_locations():
     location_types = db.session.query(Location.location_type).distinct().all()
 
     return render_template(
-        'all_locations.html',
+        'all-locations.html',
         location_data=location_data,
         cities=cities,
         location_types=location_types
@@ -339,7 +339,7 @@ def all_locations():
 
 @main.route('/upload-location', methods=['GET', 'POST'])
 @login_required
-def locations():
+def upload_location():
     if request.method == 'POST':
         location_name = request.form.get("location_name")
         location_type = request.form.get("location_type")
@@ -394,16 +394,16 @@ def locations():
         db.session.commit()
 
         flash("Your location has been successfully added.", "success")
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.main_page'))
 
     # Pass existing_location to the template
     existing_location = Location.query.filter_by(user_id=current_user.id).first()
     locations = Location.query.all()
-    return render_template('locations.html', locations=locations, existing_location=existing_location)
+    return render_template('upload-location.html', locations=locations, existing_location=existing_location)
 
 @main.route('/make-reservation', methods=['GET', 'POST'])
 @login_required
-def reservations():
+def make_reservation():
     if not current_user.is_authenticated:
         print("User is not authenticated!")
         return redirect(url_for('main.login'))  # Optional: Just in case
@@ -419,14 +419,14 @@ def reservations():
             reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
         except ValueError:
             flash('Invalid reservation time format. Please try again.', 'danger')
-            return redirect(url_for('main.make-reservation'))
+            return redirect(url_for('main.make_reservation'))
 
         # Filter locations based on availability
         available_locations = filter_available_locations(reservation_datetime, study_time, number_of_guests)
 
         # Pass the filtered locations to the location selection page
         return render_template(
-            'select_location.html',
+            'select-location.html',
             location_data=available_locations,
             reservation_time=reservation_time,
             study_time=study_time,
@@ -434,7 +434,7 @@ def reservations():
         )
 
     # Render the reservation form
-    return render_template('reservations.html')
+    return render_template('make-reservation.html')
 
 @main.route('/select-location', methods=['GET', 'POST'])
 @login_required
@@ -457,33 +457,33 @@ def select_location():
     # Controleer of de vereiste gegevens aanwezig zijn
     if not reservation_time or not study_time or not number_of_guests:
         flash("All fields are required to proceed.", "error")
-        return redirect(url_for('main.make-reservation'))  # Stuur gebruiker terug naar het reserveringsformulier
+        return redirect(url_for('main.make_reservation'))  # Stuur gebruiker terug naar het reserveringsformulier
 
     # Converteer en valideer de gegevens
     try:
         reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
     except ValueError:
         flash("Invalid reservation time format.", "error")
-        return redirect(url_for('main.make-reservation'))
+        return redirect(url_for('main.make_reservation'))
 
     try:
         study_time = int(study_time)
         number_of_guests = int(number_of_guests)
     except ValueError:
         flash("Study time and number of guests must be valid numbers.", "error")
-        return redirect(url_for('main.make-reservation'))
+        return redirect(url_for('main.make_reservation'))
 
     # Controleer of de reserveringsdatum in de toekomst ligt
     if reservation_datetime < datetime.now():
         flash("You can only make reservations for future dates and times.", "error")
-        return redirect(url_for('main.make-reservation'))
+        return redirect(url_for('main.make_reservation'))
 
     # Roep de functie aan om beschikbare locaties te filteren
     available_locations = filter_available_locations(reservation_datetime, study_time, number_of_guests)
 
     # Render de pagina met beschikbare locaties
     return render_template(
-        'select_location.html',
+        'select-location.html',
         location_data=available_locations,
         reservation_time=reservation_time,
         study_time=study_time,
@@ -500,7 +500,7 @@ def confirm_reservation():
 
     if not location_id:
         flash('You must select a location to complete your reservation.', 'danger')
-        return redirect(url_for('main.select-location'))
+        return redirect(url_for('main.select_location'))
 
     reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
     
@@ -511,7 +511,7 @@ def confirm_reservation():
 
     if reservation_datetime < current_time:
         flash('You can only make reservations for the future.' , 'danger')
-        return redirect(url_for('main.select-location'))
+        return redirect(url_for('main.select_location'))
 
     reservation_end_time = reservation_datetime + timedelta(minutes=int(study_time))
 
@@ -532,7 +532,7 @@ def confirm_reservation():
 
     if number_of_guests > available_seats:
         flash(f'Only {available_seats} seats are available at {location.location_name}.', 'danger')
-        return redirect(url_for('main.select-location', reservation_time=reservation_time, study_time=study_time, number_of_guests=number_of_guests))
+        return redirect(url_for('main.select_location', reservation_time=reservation_time, study_time=study_time, number_of_guests=number_of_guests))
 
     # Create a new reservation
     new_reservation = Reservation(
@@ -549,7 +549,7 @@ def confirm_reservation():
     db.session.commit()
 
     flash('Your reservation has been successfully created!', 'success')
-    return redirect(url_for('main.home'))
+    return redirect(url_for('main.main_page'))
 
 
 def filter_available_locations(reservation_datetime, study_time, number_of_guests):
@@ -639,7 +639,7 @@ def cancel_reservation():
     
     if not reservation_id:
         flash('No reservation specified for cancellation.', 'error')
-        return redirect(url_for('main.make-reservation'))
+        return redirect(url_for('main.make_reservation'))
 
     # Retrieve the reservation
     reservation = Reservation.query.get_or_404(reservation_id)
@@ -647,14 +647,14 @@ def cancel_reservation():
     # Check if the current user owns the reservation
     if reservation.user_id != current_user.id:
         flash('You are not authorized to cancel this reservation.', 'error')
-        return redirect(url_for('main.make-reservation'))
+        return redirect(url_for('main.make_reservation'))
 
     # Update the status to "canceled"
     reservation.status = "canceled"
     db.session.commit()
 
     flash('Reservation successfully canceled.', 'success')
-    return redirect(url_for('main.your-reservations'))
+    return redirect(url_for('main.your_reservations'))
 
 
 @main.route('/logout')
@@ -664,7 +664,7 @@ def logout():
 
 @main.route('/your-reservations', methods=['GET', 'POST'])
 @login_required
-def current_reservations():
+def your_reservations():
     if request.method == 'POST':
         # Process location rating submission
         reservation_id = request.form.get('reservation_id')
@@ -701,7 +701,7 @@ def current_reservations():
             flash("Missing reservation ID or rating value.", "error")
 
         # Corrected url_for call
-        return redirect(url_for('main.current_reservations'))
+        return redirect(url_for('main.your_reservations'))
 
     # Fetch reservations
     reservations = Reservation.query \
@@ -720,7 +720,7 @@ def current_reservations():
     expire_old_reservations(current_user.id)
 
     return render_template(
-        'current_reservations.html', 
+        'your-reservations.html', 
         reservations=active_reservations,
         expired_reservations=expired_reservations,
         user_rating=current_user.user_rating
@@ -745,7 +745,7 @@ def expire_old_reservations(user_id):
 
 @main.route('/your-bookings', methods=['GET', 'POST'])
 @login_required
-def location_bookings():
+def your_bookings():
     if request.method == 'POST':
         # Process location rating submission
         reservation_id = request.form.get('reservation_id')
@@ -784,14 +784,14 @@ def location_bookings():
         else:
             flash("Missing reservation ID or rating value.", "error")
 
-        return redirect(url_for('main.your-bookings'))
+        return redirect(url_for('main.your_bookings'))
 
     # Fetch the active location of the current logged-in user
     location = Location.query.filter_by(user_id=current_user.id, status='active').first()
 
     if not location:
         flash('You do not own any active locations.', 'danger')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('main.main_page'))
 
     # Get active reservations for this location
     reservations = Reservation.query.filter_by(location_id=location.id, status='active').all()
@@ -801,7 +801,7 @@ def location_bookings():
 
     # Render the template, passing the location and reservations
     return render_template(
-        'location_bookings.html',
+        'your-bookings.html',
         location=location, 
         reservations=reservations,
         expired_reservations=expired_reservations

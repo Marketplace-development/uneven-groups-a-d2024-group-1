@@ -21,16 +21,16 @@
             <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Locations ▼</button>
             <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
                 <a href="{{ url_for('main.all_locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">All Locations</a>
-                <a href="{{ url_for('main.locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
-                <a href="{{ url_for('main.location_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
+                <a href="{{ url_for('main.upload_location') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
+                <a href="{{ url_for('main.your_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
             </div>
         </div>
         <!-- Reservation Dropdown -->
         <div style="position: relative; margin-left: 30px;">
             <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservations ▼</button>
             <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
-                <a href="{{ url_for('main.reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
-                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservations</a>
+                <a href="{{ url_for('main.make_reservation') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
+                <a href="{{ url_for('main.your_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservations</a>
             </div>
         </div>
         <!-- About Us Button -->
@@ -43,7 +43,7 @@
     <!-- Right Section: Authentication Buttons -->
     <div style="display: flex; align-items: center; gap: 10px;">
         <!-- Your Account Button -->
-        <form action="{{ url_for('main.your_account') }}" method="get" style="margin-left: 150px;">
+        <form action="{{ url_for('main.account') }}" method="get" style="margin-left: 150px;">
             <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
                 <!-- User Image (replace with your image path) -->
                 <img src="{{ url_for('static', filename='images/user.jpg') }}" alt="User Avatar" width="25" height="25" style="margin-right: 10px; border-radius: 0; color: #1946ca;">
@@ -69,10 +69,10 @@
         
         <!-- Centered Buttons with flex-direction: row -->
         <div style="display: flex; flex-direction: row; justify-content: flex-start; gap: 20px; margin-left: 20px;">
-            <form action="{{ url_for('main.reservations') }}" method="get">
+            <form action="{{ url_for('main.make_reservation') }}" method="get">
                 <button type="submit" class="btn btn-transparant" style="width: 170px">Make Your Reservation</button>
             </form>
-            <form action="{{ url_for('main.locations') }}" method="get">
+            <form action="{{ url_for('main.upload_location') }}" method="get">
                 <button type="submit" class="btn btn-black" style="width: 170px;">Upload Your Location</button>
             </form>
         </div>
@@ -170,10 +170,10 @@
     <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 0px;">Get Started With Chairing!</h2>
     <div class="Option" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 100px;">
         <!-- Make Reservation -->
-        <form action="{{ url_for('main.reservations') }}" method="get" class="inline-form">
+        <form action="{{ url_for('main.make_reservation') }}" method="get" class="inline-form">
             <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
                 <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Make a Reservation -</p>
-                <a href="{{ url_for('main.reservations') }}" style="display: inline-block;">
+                <a href="{{ url_for('main.make_reservation') }}" style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/reservation_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
                 <p style="font-style: italic;">Book a seat at a location<br>and time of your choice</p>
@@ -182,10 +182,10 @@
         </form>
 
         <!-- Your Reservations -->
-        <form action="{{ url_for('main.current_reservations') }}" method="get" class="inline-form">
+        <form action="{{ url_for('main.your_reservations') }}" method="get" class="inline-form">
             <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
                 <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Your Reservations -</p>
-                <a href="{{ url_for('main.current_reservations') }}"style="display: inline-block;">
+                <a href="{{ url_for('main.your_reservations') }}"style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/check_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
                 <p style="font-style: italic; ">Consult, cancel or<br>rate your reservations</p>
@@ -193,11 +193,11 @@
             </div>
         </form>
 
-        <!-- Your Location -->
-        <form action="{{ url_for('main.locations') }}" method="get" class="inline-form">
+        <!-- Upload Your Location -->
+        <form action="{{ url_for('main.upload_location') }}" method="get" class="inline-form">
             <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
                 <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202); ">- Upload Your Location -</p>
-                <a href="{{ url_for('main.locations') }}"style="display: inline-block;">
+                <a href="{{ url_for('main.upload_location') }}"style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/location_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
                 <p style="font-style: italic;">Upload your own location for students to visit</p>
@@ -206,10 +206,10 @@
         </form>
 
         <!-- Your Bookings -->
-        <form action="{{ url_for('main.location_bookings') }}" method="get" class="inline-form">
+        <form action="{{ url_for('main.your_bookings') }}" method="get" class="inline-form">
             <div class="option" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); width: 250px;">
                 <p style="font-weight: bold; margin-top: 10px; color: rgb(25, 70, 202);">- Your Location Bookings -</p>
-                <a href="{{ url_for('main.location_bookings') }}" style="display: inline-block;">
+                <a href="{{ url_for('main.your_bookings') }}" style="display: inline-block;">
                     <img src="{{ url_for('static', filename='images/pin_wit.JPG') }}" alt="logo" style="height: 200px; top: -3px;">
                 </a>
                 <p style="font-style: italic; ">See who booked your<br>location and give ratings</p>
@@ -566,10 +566,10 @@
             <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
             </form>
-            <form action="{{ url_for('main.locations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.upload_location') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
             </form>
-            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.your_bookings') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
             </form>
         </div>
@@ -577,10 +577,10 @@
         <!-- Reservations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Reservations</p>
-            <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.make_reservation') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
             </form>
-            <form action="{{ url_for('main.current_reservations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.your_reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
             </form>
         </div>
@@ -588,7 +588,7 @@
         <!-- Community Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Community</p>
-            <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.account') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
             </form>
             <form action="{{ url_for('main.about') }}" method="get" style="margin: 0;">

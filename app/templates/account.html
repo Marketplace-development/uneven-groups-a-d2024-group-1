@@ -21,16 +21,16 @@
             <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Locations ▼</button>
             <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
                 <a href="{{ url_for('main.all_locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">All Locations</a>
-                <a href="{{ url_for('main.locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
-                <a href="{{ url_for('main.location_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
+                <a href="{{ url_for('main.upload_location') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
+                <a href="{{ url_for('main.your_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
             </div>
         </div>
         <!-- Reservation Dropdown -->
         <div style="position: relative; margin-left: 30px;">
             <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservations ▼</button>
             <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
-                <a href="{{ url_for('main.reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
-                <a href="{{ url_for('main.current_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservations</a>
+                <a href="{{ url_for('main.make_reservation') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
+                <a href="{{ url_for('main.your_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservations</a>
             </div>
         </div>
         <!-- About Us Button -->
@@ -43,7 +43,7 @@
     <!-- Right Section: Authentication Buttons -->
     <div style="display: flex; align-items: center; gap: 10px;">
         <!-- Your Account Button -->
-        <form action="{{ url_for('main.your_account') }}" method="get" style="margin-left: 150px;">
+        <form action="{{ url_for('main.account') }}" method="get" style="margin-left: 150px;">
             <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
                 <!-- User Image (replace with your image path) -->
                 <img src="{{ url_for('static', filename='images/user.jpg') }}" alt="User Avatar" width="25" height="25" style="margin-right: 10px; border-radius: 0; color: #1946ca;">
@@ -93,7 +93,7 @@
                     </form>
                 {% else %}
                     {{ user.username }}
-                    <a href="{{ url_for('main.your_account', edit='username') }}" style="color: blue; text-decoration: underline; margin-left: 20px;">edit</a>
+                    <a href="{{ url_for('main.account', edit='username') }}" style="color: blue; text-decoration: underline; margin-left: 20px;">edit</a>
                 {% endif %}
             </p>            
 
@@ -107,7 +107,7 @@
                     </form>
                 {% else %}
                     {{ user.phonenumber }}
-                    <a href="{{ url_for('main.your_account', edit='phonenumber') }}" style="color: blue; text-decoration: underline;  margin-left: 20px;">edit</a>
+                    <a href="{{ url_for('main.account', edit='phonenumber') }}" style="color: blue; text-decoration: underline;  margin-left: 20px;">edit</a>
                 {% endif %}
             </p>
         </div>
@@ -128,11 +128,11 @@
                     <h4>Study Time Target:</h4>
                     {% if user.minutes_target %}
                         <p style="margin-top: 27px;">{{ completed_hours }}h{{ "%02d"|format(completed_minutes) }} of {{ target_hours }}h{{ "%02d"|format(target_minutes) }} done</p>
-                        <form action="{{ url_for('main.your_account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
+                        <form action="{{ url_for('main.account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
                             <button type="submit" name="delete_minutes_target" value="true" class="delete-text">Delete Target</button>
                         </form>                    
                     {% else %}
-                        <form action="{{ url_for('main.your_account') }}" method="POST" class="time-target-form" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                        <form action="{{ url_for('main.account') }}" method="POST" class="time-target-form" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
                             <div class="time-select-group" style="margin-bottom: 10px; display: flex; justify-content: center;">
                                 <select name="hours" id="hours-select" style="margin-right: 10px;">
                                     {% for hour in range(0, 100) %}
@@ -155,11 +155,11 @@
                     <h4>Study Sessions Target:</h4>
                     {% if user.sessions_target %}
                         <p style="margin-top: 27px;">{{ completed_sessions }} of {{ target_sessions }} sessions done</p>
-                        <form action="{{ url_for('main.your_account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
+                        <form action="{{ url_for('main.account') }}" method="POST" style="display: flex; justify-content: center; align-items: center; margin-top: -40px;">
                             <button type="submit" name="delete_sessions_target" value="true" class="delete-text">Delete Target</button>
                         </form>                    
                     {% else %}
-                        <form action="{{ url_for('main.your_account') }}" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                        <form action="{{ url_for('main.account') }}" method="POST" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
                             <div class="time-select-group" style="margin-bottom: 10px; display: flex; justify-content: center;">
                                 <select name="sessions_target" id="sessions-select" style="width: 220px;">
                                     {% for session in range(0, 29) %}
@@ -228,7 +228,7 @@
             {% else %}
                 <!-- Message for users without reservations -->
                 <h1>You don't have any passed reservations yet</h1>
-                <p>You can make a reservation <a href="{{ url_for('main.reservations') }}" style="color: blue; text-decoration: underline; cursor: pointer;">here</a>.</p>
+                <p>You can make a reservation <a href="{{ url_for('main.make_reservation') }}" style="color: blue; text-decoration: underline; cursor: pointer;">here</a>.</p>
             {% endif %}
         </div>
 
@@ -327,7 +327,7 @@
             {% else %}
                 <!-- Message for users without a location -->
                 <h1>You have not uploaded a location yet</h1>
-                <p>You can upload your location <a href="{{ url_for('main.locations') }}" style="color: blue; text-decoration: underline; cursor: pointer;">here</a>.</p>
+                <p>You can upload your location <a href="{{ url_for('main.upload_location') }}" style="color: blue; text-decoration: underline; cursor: pointer;">here</a>.</p>
             {% endif %}
         </div>
     </div>
@@ -342,10 +342,10 @@
             <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
             </form>
-            <form action="{{ url_for('main.locations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.upload_location') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
             </form>
-            <form action="{{ url_for('main.location_bookings') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.your_bookings') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
             </form>
         </div>
@@ -353,10 +353,10 @@
         <!-- Reservations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Reservations</p>
-            <form action="{{ url_for('main.reservations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.make_reservation') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
             </form>
-            <form action="{{ url_for('main.current_reservations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.your_reservations') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
             </form>
         </div>
@@ -364,7 +364,7 @@
         <!-- Community Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Community</p>
-            <form action="{{ url_for('main.your_account') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.account') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
             </form>
             <form action="{{ url_for('main.about') }}" method="get" style="margin: 0;">
