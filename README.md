@@ -52,10 +52,10 @@ For the homepage, main page, login, and signup pages, we drew inspiration from a
 - **Figma File**: [Chairing Design](https://www.figma.com/design/lpcroGTkpFvW8u9mU9Tbih/Chairing?node-id=0-1&t=jZgN5xBRTQklAzLF-1)  
 - **Template Reference**: [React Markit Template](https://react-markit.vercel.app/home)  
 
----
-
 ### File-Specific Details  
 Below, you can find explanations about various parts of our code, along with the functions we used. These functions are located in the `routes.py` file.  
+
+---
 
 #### `home.html`  
 The reviews displayed on this page are for layout purposes only and are not part of the actual review system.  
@@ -79,7 +79,7 @@ The reviews displayed on this page are for layout purposes only and are not part
 - **Logout Option**:  
   After logging in, you can log out from any page by clicking the **Logout** button in the upper right corner.
 
-**Functions used**: `login()`, `signup()` and `logout()`
+**Functions used**: `login()`, `signup()` & `logout()`
 
 ---
 
@@ -87,7 +87,7 @@ The reviews displayed on this page are for layout purposes only and are not part
 **This Week's Highlighted Locations**:  
 The highlighted locations are selected based on the highest ratings received during the previous week. This list updates every Monday at 00:00. The stars displayed in the containers represent the all-time average rating of each location (not just for the previous week).  
 
-**Functions used**: `main_page()` and `get_highlighted_locations()`
+**Functions used**: `main_page()` & `get_highlighted_locations()`
 
 ---
 
@@ -129,7 +129,7 @@ Here, you can update your username or phone number. When you make changes, the p
 - Below this, you can see a list of users who have previously booked your location, along with any messages they may have left.  
 - If you don’t have a location registered, this section will remain empty.  
 
-**Functions used**: `account()`, `update_user_info()`, `delete_target(user, target_type)` and `delete_location()`
+**Functions used**: `account()`, `update_user_info()`, `delete_target(user, target_type)` & `delete_location()`
 
 ---
 
@@ -155,7 +155,7 @@ Reservations cannot be made directly from this page. It is intended for students
 
 ---
 
-### `make-reservation.html` and `select-location.html`  
+### `make-reservation.html` & `select-location.html`  
 #### `make-reservation.html`  
 Students can make a reservation by specifying:  
 1. **Date and time** they want to study.  
@@ -167,7 +167,7 @@ Students can make a reservation by specifying:
 #### `select-location.html`  
 This page displays a list of locations that meet the selected criteria, including feasible opening hours and available seats. Students can easily choose their desired study location from the list.  
 
-**Functions used**: `make_reservation()`, `select_location()`, `confirm_reservation()` and `filter_available_locations(reservation_datetime, study_time, number_of_guests)`
+**Functions used**: `make_reservation()`, `select_location()`, `confirm_reservation()` & `filter_available_locations(reservation_datetime, study_time, number_of_guests)`
 
 ---
 
@@ -186,7 +186,7 @@ This page displays a list of locations that meet the selected criteria, includin
   - **Add a personal message** for the host (optional).  
   - Edit these ratings or messages at any time afterward.  
 
-**Functions used**: `your_reservations()`, `cancel_reservation()` `update_location_rating(location_id)` and `expire_old_reservations(reservation_datetime, study_time, number_of_guests)`
+**Functions used**: `your_reservations()`, `cancel_reservation()` `update_location_rating(location_id)` & `expire_old_reservations(reservation_datetime, study_time, number_of_guests)`
 
 ---
 
@@ -206,7 +206,7 @@ If you do not currently have a location with a status of **active**, you can upl
 
 If you already have a location with a status of **active**, a message will display stating that you cannot upload another location.  
 
-**Functions used**: `upload_location()` and `format_time(hour, minute)`
+**Functions used**: `upload_location()` & `format_time(hour, minute)`
 
 ---
 
@@ -225,11 +225,11 @@ If you already have a location with a status of **active**, a message will displ
   - Add a **personal message** to the student (optional).  
 - These reviews can be updated at any time.  
 
-**Functions used**: `your_bookings()` and `update_user_rating(user_id)`
+**Functions used**: `your_bookings()` & `update_user_rating(user_id)`
 
 ---
 
-### `about.html` and `about-us.html`
+### `about.html` & `about-us.html`
 These pages provide information about the platform and include two counters:
 1. The total number of reservations with an **expired** status.
 2. The total number of locations in the database.
@@ -238,4 +238,4 @@ The difference between `about.html` and `about-us.html` is in the available navi
 - `about-us.html` restricts users to only the **Home**, **Login**, and **Sign Up** pages, ensuring that non-logged-in users cannot access certain areas.
 - `about.html` allows navigation to all other pages
 
-**Functions used**: `about()` and `about_us()`
+**Functions used**: `about()` & `about_us()`
