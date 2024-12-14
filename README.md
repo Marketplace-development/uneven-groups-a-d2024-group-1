@@ -39,7 +39,8 @@ You’re all set to enjoy your study session! Whether you're helping others or r
 
 Start using **Chairing** today to find your favorite study spot, help others, and stay productive! Happy studying! 💼🎉
 
-
+---
+---
 
 ## How Our Code Works
 
