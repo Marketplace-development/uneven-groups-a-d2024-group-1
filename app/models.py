@@ -8,7 +8,7 @@ class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False, unique=True)
+    username = db.Column(db.String(20), nullable=False, unique=True)
     phonenumber = db.Column(db.String(15), nullable=False, unique=True)
     user_rating = db.Column(db.Integer, nullable=True)
     minutes_target = db.Column(db.Integer, nullable=True)

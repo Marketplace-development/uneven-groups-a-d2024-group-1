@@ -37,7 +37,6 @@
         <form action="{{ url_for('main.about') }}" method="get" style="margin-left: 30px; margin-right: 150px;">
              <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
         </form>
-
     </div>
 
     <!-- Right Section: Authentication Buttons -->
@@ -47,13 +46,13 @@
             <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
                 <!-- User Image (replace with your image path) -->
                 <img src="{{ url_for('static', filename='images/user.jpg') }}" alt="User Avatar" width="25" height="25" style="margin-right: 10px; border-radius: 0; color: #1946ca;">
-                Your Account
+                {{ user.username }}
             </button>
         </form>
 
         <span style="color: #ccc;">|</span>
         <!-- Logout Button -->
-        <form action="{{ url_for('main.home') }}" method="get" style="margin: 0;">
+        <form action="{{ url_for('main.logout') }}" method="get" style="margin: 0;">
             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Logout</button>
         </form>
     </div>

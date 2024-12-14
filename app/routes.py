@@ -8,15 +8,14 @@ from sqlalchemy import and_, func
 from sqlalchemy.sql import text, func
 
 
-
 # Create a Blueprint for the main app
 main = Blueprint('main', __name__)
+
 
 @main.route('/')
 def home():
     return render_template('home.html')
 
-from flask import redirect, url_for
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
@@ -81,12 +80,20 @@ def signup():
 
     return render_template('signup.html')
 
+
+@main.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.home'))  # Redirect to login after logout
+
+
 @main.route('/main-page', methods=['GET', 'POST'])
 @login_required
 def main_page():
     # Highlighted locations
     highlighted_locations = get_highlighted_locations()
     return render_template('main-page.html', user=current_user, highlighted_locations=highlighted_locations)
+
 
 def get_highlighted_locations():
     # Calculate the start and end of the previous week
@@ -224,6 +231,7 @@ def account():
                            congratulations_message=congratulations_message, 
                            reservations=reservations, location=location, bookings=bookings)
 
+
 @main.route('/update_user_info', methods=['POST'])
 @login_required
 def update_user_info():
@@ -247,6 +255,7 @@ def update_user_info():
     # Redirect back to the account page
     return redirect(url_for('main.account'))
 
+
 def delete_target(user, target_type):
     """ Deletes the specified target for a user. """
     try:
@@ -263,6 +272,7 @@ def delete_target(user, target_type):
     except Exception as e:
         db.session.rollback()
         return f"An error occurred while deleting the target: {str(e)}"
+    
 
 @main.route('/delete_location', methods=['POST'])
 @login_required
@@ -288,6 +298,7 @@ def delete_location():
 
     flash(f"Location '{location.location_name}' has been deleted.", "success")
     return redirect(url_for('main.account'))
+
     
 @main.route('/all-locations', methods=['GET'])
 @login_required
@@ -331,6 +342,7 @@ def all_locations():
 
     return render_template(
         'all-locations.html',
+        user=current_user,
         location_data=location_data,
         cities=cities,
         location_types=location_types
@@ -399,7 +411,8 @@ def upload_location():
     # Pass existing_location to the template
     existing_location = Location.query.filter_by(user_id=current_user.id).first()
     locations = Location.query.all()
-    return render_template('upload-location.html', locations=locations, existing_location=existing_location)
+    return render_template('upload-location.html', user=current_user, locations=locations, existing_location=existing_location)
+
 
 @main.route('/make-reservation', methods=['GET', 'POST'])
 @login_required
@@ -434,7 +447,8 @@ def make_reservation():
         )
 
     # Render the reservation form
-    return render_template('make-reservation.html')
+    return render_template('make-reservation.html', user=current_user)
+
 
 @main.route('/select-location', methods=['GET', 'POST'])
 @login_required
@@ -484,11 +498,13 @@ def select_location():
     # Render de pagina met beschikbare locaties
     return render_template(
         'select-location.html',
+        user=current_user,
         location_data=available_locations,
         reservation_time=reservation_time,
         study_time=study_time,
         number_of_guests=number_of_guests,
     )
+
 
 @main.route('/confirm_reservation', methods=['POST'])
 @login_required
@@ -631,36 +647,6 @@ def filter_available_locations(reservation_datetime, study_time, number_of_guest
         })
     return available_locations
 
-@main.route('/cancel_reservation', methods=['POST'])
-@login_required
-def cancel_reservation():
-    # Get the reservation ID from the submitted form data
-    reservation_id = request.form.get('reservation_id')
-    
-    if not reservation_id:
-        flash('No reservation specified for cancellation.', 'error')
-        return redirect(url_for('main.make_reservation'))
-
-    # Retrieve the reservation
-    reservation = Reservation.query.get_or_404(reservation_id)
-
-    # Check if the current user owns the reservation
-    if reservation.user_id != current_user.id:
-        flash('You are not authorized to cancel this reservation.', 'error')
-        return redirect(url_for('main.make_reservation'))
-
-    # Update the status to "canceled"
-    reservation.status = "canceled"
-    db.session.commit()
-
-    flash('Reservation successfully canceled.', 'success')
-    return redirect(url_for('main.your_reservations'))
-
-
-@main.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('main.login'))  # Redirect to login after logout
 
 @main.route('/your-reservations', methods=['GET', 'POST'])
 @login_required
@@ -721,10 +707,38 @@ def your_reservations():
 
     return render_template(
         'your-reservations.html', 
+        user=current_user,
         reservations=active_reservations,
         expired_reservations=expired_reservations,
         user_rating=current_user.user_rating
     )
+
+
+@main.route('/cancel_reservation', methods=['POST'])
+@login_required
+def cancel_reservation():
+    # Get the reservation ID from the submitted form data
+    reservation_id = request.form.get('reservation_id')
+    
+    if not reservation_id:
+        flash('No reservation specified for cancellation.', 'error')
+        return redirect(url_for('main.make_reservation'))
+
+    # Retrieve the reservation
+    reservation = Reservation.query.get_or_404(reservation_id)
+
+    # Check if the current user owns the reservation
+    if reservation.user_id != current_user.id:
+        flash('You are not authorized to cancel this reservation.', 'error')
+        return redirect(url_for('main.make_reservation'))
+
+    # Update the status to "canceled"
+    reservation.status = "canceled"
+    db.session.commit()
+
+    flash('Reservation successfully canceled.', 'success')
+    return redirect(url_for('main.your_reservations'))
+
 
 def expire_old_reservations(user_id):
     # Get current time
@@ -742,6 +756,26 @@ def expire_old_reservations(user_id):
         reservation.status = "expired"
 
     db.session.commit()
+
+
+def update_location_rating(location_id):
+    """ Calculate and update the average rating for a location. """
+    # Calculate the average location rating
+    avg_rating = (
+        db.session.query(func.avg(Reservation.location_rating))
+        .filter(Reservation.location_id == location_id, Reservation.location_rating.isnot(None))
+        .scalar()
+    )
+    avg_rating = round(avg_rating) if avg_rating else None  # Round to nearest integer or None
+
+    # Update the location's average rating in the database
+    location = Location.query.get(location_id)
+    if location and avg_rating is not None:
+        location.location_rating = avg_rating
+        db.session.commit()
+
+    return avg_rating
+
 
 @main.route('/your-bookings', methods=['GET', 'POST'])
 @login_required
@@ -802,10 +836,12 @@ def your_bookings():
     # Render the template, passing the location and reservations
     return render_template(
         'your-bookings.html',
+        user=current_user, 
         location=location, 
         reservations=reservations,
         expired_reservations=expired_reservations
         )
+
 
 def update_user_rating(user_id):
     """ Calculate and update the average rating for a user. """
@@ -825,23 +861,6 @@ def update_user_rating(user_id):
 
     return avg_rating
 
-def update_location_rating(location_id):
-    """ Calculate and update the average rating for a location. """
-    # Calculate the average location rating
-    avg_rating = (
-        db.session.query(func.avg(Reservation.location_rating))
-        .filter(Reservation.location_id == location_id, Reservation.location_rating.isnot(None))
-        .scalar()
-    )
-    avg_rating = round(avg_rating) if avg_rating else None  # Round to nearest integer or None
-
-    # Update the location's average rating in the database
-    location = Location.query.get(location_id)
-    if location and avg_rating is not None:
-        location.location_rating = avg_rating
-        db.session.commit()
-
-    return avg_rating
 
 @main.route('/about')
 def about():
@@ -852,4 +871,15 @@ def about():
     location_count = Location.query.count()  # This assumes you have a Location model
 
     # Pass the counts to the template
-    return render_template('about.html', expired_reservations_count=expired_reservations_count, location_count=location_count)
+    return render_template('about.html', user=current_user, expired_reservations_count=expired_reservations_count, location_count=location_count)
+
+@main.route('/about-us')
+def about_us():
+    # Query the database to count expired reservations
+    expired_reservations_count = Reservation.query.filter_by(status="expired").count()
+
+    # Query the database to count locations
+    location_count = Location.query.count()  # This assumes you have a Location model
+
+    # Pass the counts to the template
+    return render_template('about-us.html', expired_reservations_count=expired_reservations_count, location_count=location_count)

@@ -11,51 +11,32 @@
 <div style="display: flex; justify-content: center; align-items: center; background-color: white; padding: 10px 10px; border-bottom: 1px solid #eaeaea; position: fixed; top: 0; width: 100%; z-index: 1000; text-align: center;">
     <!-- Left Section: Logo and Buttons -->
     <div style="display: flex; align-items: center; justify-content: center;">
-        <a href="{{ url_for('main.main_page') }}" style="display: inline-block;">
+        <a href="{{ url_for('main.home') }}" style="display: inline-block;">
             <img src="{{ url_for('static', filename='images/logo_wit2.JPG') }}" alt="logo" style="height: 50px; margin-right: 20px; top: -3px;">
-        </a>
+        </a>        
         <!-- Home Button -->
-        <form action="{{ url_for('main.main_page') }}" method="get" style="margin-left: 30px;">
+        <form action="{{ url_for('main.home') }}" method="get" style="margin-left: 30px;">
             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Home</button>
         </form>
-        <!-- Locations Dropdown -->
-        <div style="position: relative; margin-left: 30px;">
-            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Locations ▼</button>
-            <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
-                <a href="{{ url_for('main.all_locations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">All Locations</a>
-                <a href="{{ url_for('main.upload_location') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Upload Location</a>
-                <a href="{{ url_for('main.your_bookings') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Bookings</a>
-            </div>
-        </div>
-        <!-- Reservation Dropdown -->
-        <div style="position: relative; margin-left: 30px;">
-            <button style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Reservations ▼</button>
-            <div class="dropdown-menu" style="width: 200px; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 10px; display: none; padding: 5px;">
-                <a href="{{ url_for('main.make_reservation') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Make Reservation</a>
-                <a href="{{ url_for('main.your_reservations') }}" style="text-decoration: none; color: #333; display: block; padding: 5px; text-align: left;">Your Reservations</a>
-            </div>
-        </div>
         <!-- About Us Button -->
-        <form action="{{ url_for('main.about') }}" method="get" style="margin-left: 30px; margin-right: 150px;">
-             <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
-        </form>
+        <form action="{{ url_for('main.about_us') }}" method="get" style="margin-left: 30px; margin-right: 150px;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">About Us</button>
+       </form>
     </div>
 
     <!-- Right Section: Authentication Buttons -->
     <div style="display: flex; align-items: center; gap: 10px;">
-        <!-- Your Account Button -->
-        <form action="{{ url_for('main.account') }}" method="get" style="margin-left: 150px;">
+        <form action="{{ url_for('main.login') }}" method="get" style="margin-left: 250px;">
             <button type="submit" style="display: flex; align-items: center; background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">
-                <!-- User Image (replace with your image path) -->
-                <img src="{{ url_for('static', filename='images/user.jpg') }}" alt="User Avatar" width="25" height="25" style="margin-right: 10px; border-radius: 0; color: #1946ca;">
-                {{ user.username }}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="rgb(25, 70, 202)" viewBox="0 0 24 24" width="25" height="25" style="margin-right: 5px;">
+                    <path d="M12 2a5 5 0 0 1 5 5v3h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v3h6V7a3 3 0 0 0-3-3zm-7 8a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1H5z"/>
+                </svg>
+                Log in
             </button>
         </form>
-
         <span style="color: #ccc;">|</span>
-        <!-- Logout Button -->
-        <form action="{{ url_for('main.logout') }}" method="get" style="margin: 0;">
-            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Logout</button>
+        <form action="{{ url_for('main.signup') }}" method="get" style="margin: 0;">
+            <button type="submit" style="background: none; border: none; font-size: 1.3em; color: #333; cursor: pointer;">Sign Up</button>
         </form>
     </div>
 </div>
@@ -184,13 +165,13 @@
         <!-- Locations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Locations</p>
-            <form action="{{ url_for('main.all_locations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Locations</button>
             </form>
-            <form action="{{ url_for('main.upload_location') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Upload Location</button>
             </form>
-            <form action="{{ url_for('main.your_bookings') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Bookings</button>
             </form>
         </div>
@@ -198,10 +179,10 @@
         <!-- Reservations Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Reservations</p>
-            <form action="{{ url_for('main.make_reservation') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Make Reservation</button>
             </form>
-            <form action="{{ url_for('main.your_reservations') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Reservations</button>
             </form>
         </div>
@@ -209,10 +190,10 @@
         <!-- Community Column -->
         <div style="text-align: left;">
             <p style="font-size: 1.5em; font-weight: bold; text-align: left; color:white;">Community</p>
-            <form action="{{ url_for('main.account') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.login') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">Your Account</button>
             </form>
-            <form action="{{ url_for('main.about') }}" method="get" style="margin: 0;">
+            <form action="{{ url_for('main.about_us') }}" method="get" style="margin: 0;">
                 <button type="submit" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer; margin-bottom: 10px;">About Us</button>
             </form>
         </div>
