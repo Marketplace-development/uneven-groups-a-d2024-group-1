@@ -205,10 +205,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for reservation in reservations|sort(attribute='date', reverse=true) %}
+                        {% for reservation in reservations|sort(attribute='reservation_time', reverse=true) %}
                         <tr>
                             <td>{{ reservation.location.location_name }}</td>
-                            <td>{{ reservation.date.strftime('%d %B %Y') }}</td>
+                            <td>{{ reservation.reservation_time.strftime('%d %B %Y') }}</td>
                             <td>{{ reservation.location.user.username }}</td>
                             <td>
                                 {% if reservation.student_rating %}
@@ -301,10 +301,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for booking in bookings|sort(attribute='date', reverse=true) %}
+                                {% for booking in bookings|sort(attribute='reservation_time', reverse=true) %}
                                 <tr>
                                     <td>{{ booking.user.username }}</td>  <!-- Student who booked -->
-                                    <td>{{ booking.date.strftime('%d %B %Y') }}</td>
+                                    <td>{{ booking.reservation_time.strftime('%d %B %Y') }}</td>
                                     <td>
                                         {% if booking.location_rating %}
                                             {% for star in range(1, 6) %}

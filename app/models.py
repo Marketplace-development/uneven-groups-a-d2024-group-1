@@ -68,8 +68,6 @@ class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('locations.id'), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    time = db.Column(db.Time, nullable=False)
     reservation_time = db.Column(db.DateTime, nullable=False)
     number_of_guests = db.Column(db.Integer, nullable=False)
     study_time = db.Column(db.Integer, nullable=False)
