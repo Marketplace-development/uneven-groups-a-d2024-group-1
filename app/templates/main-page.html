@@ -87,78 +87,95 @@
 <!-- Spotlight Locations -->
 <div style="justify-content: center; margin-top: 130px; text-align: center; background-color: #f9f9f9; padding: 30px 0;">
     <h2 style="font-family: Arial, sans-serif; font-size: 2.5em; margin-bottom: 50px; margin-top: 100px;">This Week's Highlighted Locations</h2>
-    <div class="Review" style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 40px; margin-bottom: 50px;">
-        {% for location in highlighted_locations %}
-        <div class="spotlight" style="background-color: #F5F5F5; padding: 10px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px; text-align: center;">
-            <div class="spotlight-location" id="highlighted-location" style="width: 250px;">
-                <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ location.location_name }}</h4>
-                
-                <!-- Rating -->
-                {% if location.location_rating %}
-                <div class="rating-container" style="text-align: center; margin: 10px auto;">
-                    {% for star in range(1, 6) %}
-                        {% if star <= location.location_rating %}
-                            <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
-                        {% else %}
-                            <span style="color: white;">&#9733;</span>  <!-- Empty star -->
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                {% endif %}
-                
-                {% if location.location_picture %}
-                <div class="image-container">
-                    <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Location Image">
-                </div>
-                {% endif %}
+    {% if highlighted_locations %}
+        <div class="Review" style="display: flex; flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 40px; margin-bottom: 50px;">
+            {% for location in highlighted_locations %}
+            <div class="spotlight" style="background-color: #F5F5F5; padding: 10px; border-radius: 8px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); max-width: 300px; text-align: center;">
+                <div class="spotlight-location" id="highlighted-location" style="width: 250px;">
+                    <h4 style="font-size: 1.7em; color: #333; text-align: center; margin-bottom: 10px; margin-top: 10px;">{{ location.location_name }}</h4>
+                    
+                    <!-- Rating -->
+                    {% if location.location_rating %}
+                    <div class="rating-container" style="text-align: center; margin: 10px auto;">
+                        {% for star in range(1, 6) %}
+                            {% if star <= location.location_rating %}
+                                <span style="color: gold;">&#9733;</span>  <!-- Filled star -->
+                            {% else %}
+                                <span style="color: white;">&#9733;</span>  <!-- Empty star -->
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if location.location_picture %}
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='images/' ~ location.location_picture ~ '.jpg') }}" alt="Location Image">
+                    </div>
+                    {% endif %}
 
-                <!-- Address -->
-                <p><strong>Address:</strong> {{ location.street }} {{ location.street_number }},
-                    {{ location.postal_code }} {{ location.city }}, {{ location.country }}</p>
-                
-                <!-- Opening Hours Section -->
-                <p><strong>Opening Hours:</strong></p>
-                <ul style="list-style-type: none; padding: 0; margin-top: 0px;">
-                    {% if location.monday_open and location.monday_close %}
-                        <li><strong>Monday:</strong> {{ location.monday_open }}h - {{ location.monday_close }}h</li>
-                    {% else %}
-                        <li><strong>Monday:</strong> Closed</li>
-                    {% endif %}
-                    {% if location.tuesday_open and location.tuesday_close %}
-                        <li><strong>Tuesday:</strong> {{ location.tuesday_open }}h - {{ location.tuesday_close }}h</li>
-                    {% else %}
-                        <li><strong>Tuesday:</strong> Closed</li>
-                    {% endif %}
-                    {% if location.wednesday_open and location.wednesday_close %}
-                        <li><strong>Wednesday:</strong> {{ location.wednesday_open }}h - {{ location.wednesday_close }}h</li>
-                    {% else %}
-                        <li><strong>Wednesday:</strong> Closed</li>
-                    {% endif %}
-                    {% if location.thursday_open and location.thursday_close %}
-                        <li><strong>Thursday:</strong> {{ location.thursday_open }}h - {{ location.thursday_close }}h</li>
-                    {% else %}
-                        <li><strong>Thursday:</strong> Closed</li>
-                    {% endif %}
-                    {% if location.friday_open and location.friday_close %}
-                        <li><strong>Friday:</strong> {{ location.friday_open }}h - {{ location.friday_close }}h</li>
-                    {% else %}
-                        <li><strong>Friday:</strong> Closed</li>
-                    {% endif %}
-                    {% if location.saturday_open and location.saturday_close %}
-                        <li><strong>Saturday:</strong> {{ location.saturday_open }}h - {{ location.saturday_close }}h</li>
-                    {% else %}
-                        <li><strong>Saturday:</strong> Closed</li>
-                    {% endif %}
-                    {% if location.sunday_open and location.sunday_close %}
-                        <li><strong>Sunday:</strong> {{ location.sunday_open }}h - {{ location.sunday_close }}h</li>
-                    {% else %}
-                        <li><strong>Sunday:</strong> Closed</li>
-                    {% endif %}
-                </ul>
+                    <!-- Address -->
+                    <p><strong>Address:</strong> {{ location.street }} {{ location.street_number }},
+                        {{ location.postal_code }} {{ location.city }}, {{ location.country }}</p>
+                    
+                    <!-- Opening Hours Section -->
+                    <p><strong>Opening Hours:</strong></p>
+                    <ul style="list-style-type: none; padding: 0; margin-top: 0px;">
+                        <!-- Monday -->
+                        {% if location.opening_hours_dict[1] %}
+                            <li><strong>Monday:</strong> {{ location.opening_hours_dict[1].opening_time }}h - {{ location.opening_hours_dict[1].closing_time }}h</li>
+                        {% else %}
+                            <li><strong>Monday:</strong> Closed</li>
+                        {% endif %}
+                        
+                        <!-- Tuesday -->
+                        {% if location.opening_hours_dict[2] %}
+                            <li><strong>Tuesday:</strong> {{ location.opening_hours_dict[2].opening_time }}h - {{ location.opening_hours_dict[2].closing_time }}h</li>
+                        {% else %}
+                            <li><strong>Tuesday:</strong> Closed</li>
+                        {% endif %}
+
+                        <!-- Wednesday -->
+                        {% if location.opening_hours_dict[3] %}
+                            <li><strong>Wednesday:</strong> {{ location.opening_hours_dict[3].opening_time }}h - {{ location.opening_hours_dict[3].closing_time }}h</li>
+                        {% else %}
+                            <li><strong>Wednesday:</strong> Closed</li>
+                        {% endif %}
+
+                        <!-- Thursday -->
+                        {% if location.opening_hours_dict[4] %}
+                            <li><strong>Thursday:</strong> {{ location.opening_hours_dict[4].opening_time }}h - {{ location.opening_hours_dict[4].closing_time }}h</li>
+                        {% else %}
+                            <li><strong>Thursday:</strong> Closed</li>
+                        {% endif %}
+
+                        <!-- Friday -->
+                        {% if location.opening_hours_dict[5] %}
+                            <li><strong>Friday:</strong> {{ location.opening_hours_dict[5].opening_time }}h - {{ location.opening_hours_dict[5].closing_time }}h</li>
+                        {% else %}
+                            <li><strong>Friday:</strong> Closed</li>
+                        {% endif %}
+
+                        <!-- Saturday -->
+                        {% if location.opening_hours_dict[6] %}
+                            <li><strong>Saturday:</strong> {{ location.opening_hours_dict[6].opening_time }}h - {{ location.opening_hours_dict[6].closing_time }}h</li>
+                        {% else %}
+                            <li><strong>Saturday:</strong> Closed</li>
+                        {% endif %}
+
+                        <!-- Sunday -->
+                        {% if location.opening_hours_dict[7] %}
+                            <li><strong>Sunday:</strong> {{ location.opening_hours_dict[7].opening_time }}h - {{ location.opening_hours_dict[7].closing_time }}h</li>
+                        {% else %}
+                            <li><strong>Sunday:</strong> Closed</li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    {% else %}
+        <p style="font-size: 1.5em; color: #333; text-align: center; margin-top: 50px;">No highlighted locations for this week. Check back later!</p>
+    {% endif %}
     <form action="{{ url_for('main.all_locations') }}" method="get" class="inline-form">
         <button type="submit" class="btn btn-black" style="width: 200px; margin-bottom: 100px">View All Locations</button>
     </form>

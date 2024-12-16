@@ -59,7 +59,7 @@
 </div>
 
 <div style="margin: 20px;">
-    {% if existing_location and existing_location.status == "active" %}
+    {% if existing_location %}
         <!-- Message for users who already uploaded a location -->
         <div class="locations-container" style="margin-top: 100px; margin-bottom: 30px; text-align: center; min-height: 450px;">
             <!-- Logo -->
@@ -174,26 +174,31 @@
 
                 <!-- Opening hours for each day -->
                 <h3 style="text-align: center; font-size: 1.5em;">Opening Hours</h3>
-                <p style="text-align: center; font-size: 1.2em;">Select the opening and closing times for each day,<br>or the days your location is closed.</p>
+                <p style="text-align: center; font-size: 1.2em;">
+                    Select the opening and closing times for each day,<br>
+                    or mark the days your location is closed.
+                </p>
                 <p style="text-align: center; color: black; font-size: 1em; font-weight: bold;">
-                    <span style="margin-right: 60px;">Opening Times:</span>
+                    <span style="margin-right: 130px;">Opening Times:</span>
                     <span>Closing Times:</span>
                 </p>
 
-                    <div class="hours-grid">
-                        <!-- Monday Row -->
-                        <div class="day-label">Monday:</div>
-                        
+                <div class="hours-grid">
+                    {% for day, day_name in [(1, "Monday"), (2, "Tuesday"), (3, "Wednesday"), (4, "Thursday"), (5, "Friday"), (6, "Saturday"), (7, "Sunday")] %}
+                    <div class="day-row">
+                        <!-- Day Label -->
+                        <div class="day-label">{{ day_name }}:</div>
+
                         <!-- Opening Time -->
-                        <div class="time-select" style="margin-right: 20px;">
-                            <select id="monday_open" name="monday_open" {% if monday_closed %} disabled {% endif %}>
+                        <div class="time-select">
+                            <select id="day_{{ day }}_open" name="day_{{ day }}_open" style="margin-left: 15px;" required>
                                 <option value="" disabled selected>hh</option>
                                 {% for hour in range(0, 24) %}
                                 <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
                                 {% endfor %}
                             </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="monday_open_min" name="monday_open_min" {% if monday_closed %} disabled {% endif %}>
+                            <span>:</span>
+                            <select id="day_{{ day }}_open_min" name="day_{{ day }}_open_min" style="margin-right: 25px;" required>
                                 <option value="" disabled selected>mm</option>
                                 <option value="00">00</option>
                                 <option value="15">15</option>
@@ -201,17 +206,17 @@
                                 <option value="45">45</option>
                             </select>
                         </div>
-                        
+
                         <!-- Closing Time -->
-                        <div class="time-select" style="margin-left: 20px;">
-                            <select id="monday_close" name="monday_close" {% if monday_closed %} disabled {% endif %}>
+                        <div class="time-select">
+                            <select id="day_{{ day }}_close" name="day_{{ day }}_close" style="margin-left: 25px;" required>
                                 <option value="" disabled selected>hh</option>
                                 {% for hour in range(0, 24) %}
                                 <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
                                 {% endfor %}
                             </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="monday_close_min" name="monday_close_min" {% if monday_closed %} disabled {% endif %}>
+                            <span>:</span>
+                            <select id="day_{{ day }}_close_min" name="day_{{ day }}_close_min" style="margin-right: 15px;" required>
                                 <option value="" disabled selected>mm</option>
                                 <option value="00">00</option>
                                 <option value="15">15</option>
@@ -219,283 +224,15 @@
                                 <option value="45">45</option>
                             </select>
                         </div>
-                    
+
                         <!-- Closed Checkbox -->
-                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <label for="monday_closed" style="font-size: 1em;">Closed:</label>
-                            <input type="checkbox" id="monday_closed" name="monday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                        </div>
-            
-                        <!-- Tuesday Row -->
-                        <div class="day-label">Tuesday:</div>
-                        
-                        <!-- Opening Time -->
-                        <div class="time-select" style="margin-right: 20px;">
-                            <select id="tuesday_open" name="tuesday_open" {% if tuesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="tuesday_open_min" name="tuesday_open_min" {% if tuesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Closing Time -->
-                        <div class="time-select" style="margin-left: 20px;">
-                            <select id="tuesday_close" name="tuesday_close" {% if tuesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="tuesday_close_min" name="tuesday_close_min" {% if tuesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                    
-                        <!-- Closed Checkbox -->
-                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <label for="tuesday_closed" style="font-size: 1em;">Closed:</label>
-                            <input type="checkbox" id="tuesday_closed" name="tuesday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                        </div>
-            
-                        <!-- Wednesday Row -->
-                        <div class="day-label">Wednesday:</div>
-                        
-                        <!-- Opening Time -->
-                        <div class="time-select" style="margin-right: 20px;">
-                            <select id="wednesday_open" name="wednesday_open" {% if wednesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="wednesday_open_min" name="wednesday_open_min" {% if wednesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Closing Time -->
-                        <div class="time-select" style="margin-left: 20px;">
-                            <select id="wednesday_close" name="wednesday_close" {% if wednesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="wednesday_close_min" name="wednesday_close_min" {% if wednesday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                    
-                        <!-- Closed Checkbox -->
-                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <label for="wednesday_closed" style="font-size: 1em;">Closed:</label>
-                            <input type="checkbox" id="wednesday_closed" name="wednesday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                        </div>
-            
-                        <!-- Thursday Row -->
-                        <div class="day-label">Thursday:</div>
-                        
-                        <!-- Opening Time -->
-                        <div class="time-select" style="margin-right: 20px;">
-                            <select id="thursday_open" name="thursday_open" {% if thursday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="thursday_open_min" name="thursday_open_min" {% if thursday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Closing Time -->
-                        <div class="time-select" style="margin-left: 20px;">
-                            <select id="thursday_close" name="thursday_close" {% if thursday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="thursday_close_min" name="thursday_close_min" {% if thursday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                    
-                        <!-- Closed Checkbox -->
-                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <label for="thursday_closed" style="font-size: 1em;">Closed:</label>
-                            <input type="checkbox" id="thursday_closed" name="thursday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                        </div>
-            
-                        <!-- Friday Row -->
-                        <div class="day-label">Friday:</div>
-                        
-                        <!-- Opening Time -->
-                        <div class="time-select" style="margin-right: 20px;">
-                            <select id="friday_open" name="friday_open" {% if friday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="friday_open_min" name="friday_open_min" {% if friday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Closing Time -->
-                        <div class="time-select" style="margin-left: 20px;">
-                            <select id="friday_close" name="friday_close" {% if friday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="friday_close_min" name="friday_close_min" {% if friday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                    
-                        <!-- Closed Checkbox -->
-                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <label for="friday_closed" style="font-size: 1em;">Closed:</label>
-                            <input type="checkbox" id="friday_closed" name="friday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                        </div>
-            
-                        <!-- Saturday Row -->
-                        <div class="day-label">Saturday:</div>
-                        
-                        <!-- Opening Time -->
-                        <div class="time-select" style="margin-right: 20px;">
-                            <select id="saturday_open" name="saturday_open" {% if saturday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="saturday_open_min" name="saturday_open_min" {% if saturday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Closing Time -->
-                        <div class="time-select" style="margin-left: 20px;">
-                            <select id="saturday_close" name="saturday_close" {% if saturday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="saturday_close_min" name="saturday_close_min" {% if saturday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                    
-                        <!-- Closed Checkbox -->
-                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <label for="saturday_closed" style="font-size: 1em;">Closed:</label>
-                            <input type="checkbox" id="saturday_closed" name="saturday_closed" style="margin-left: 10px; margin-bottom: 8px;">
-                        </div>
-            
-                        <!-- Sunday Row -->
-                        <div class="day-label">Sunday:</div>
-                        
-                        <!-- Opening Time -->
-                        <div class="time-select" style="margin-right: 20px;">
-                            <select id="sunday_open" name="sunday_open" {% if sunday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="sunday_open_min" name="sunday_open_min" {% if sunday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                        
-                        <!-- Closing Time -->
-                        <div class="time-select" style="margin-left: 20px;">
-                            <select id="sunday_close" name="sunday_close" {% if sunday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>hh</option>
-                                {% for hour in range(0, 24) %}
-                                <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
-                                {% endfor %}
-                            </select>
-                            <span style="font-weight: bold; font-size: 1.5em">:</span>
-                            <select id="sunday_close_min" name="sunday_close_min" {% if sunday_closed %} disabled {% endif %}>
-                                <option value="" disabled selected>mm</option>
-                                <option value="00">00</option>
-                                <option value="15">15</option>
-                                <option value="30">30</option>
-                                <option value="45">45</option>
-                            </select>
-                        </div>
-                    
-                        <!-- Closed Checkbox -->
-                        <div style="margin-left: 10px; margin-bottom: 10px; display: flex; align-items: center;">
-                            <label for="sunday_closed" style="font-size: 1em;">Closed:</label>
-                            <input type="checkbox" id="sunday_closed" name="sunday_closed" style="margin-left: 10px; margin-bottom: 8px;">
+                        <div class="closed-checkbox">
+                            <label for="day_{{ day }}_closed">Closed:</label>
+                            <input type="checkbox" id="day_{{ day }}_closed" name="day_{{ day }}_closed" onchange="toggleRequiredFields({{ day }})">
                         </div>
                     </div>
+                    {% endfor %}
+                </div>
 
                 <br>
 
@@ -594,6 +331,59 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Add event listeners to all "closed" checkboxes
+    document.addEventListener('DOMContentLoaded', function () {
+        const closedCheckboxes = document.querySelectorAll('.closed-checkbox');
+        
+        closedCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const day = this.id.split('_')[1]; // Extract day number from checkbox ID
+                const openInputs = document.querySelectorAll(`#day_${day}_open, #day_${day}_open_min, #day_${day}_close, #day_${day}_close_min`);
+                
+                // Disable or enable inputs based on checkbox state
+                if (this.checked) {
+                    openInputs.forEach(input => input.disabled = true);
+                } else {
+                    openInputs.forEach(input => input.disabled = false);
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    // Function to enable/disable required attribute based on the checkbox
+    function toggleRequiredFields(day) {
+        const openHour = document.getElementById(`day_${day}_open`);
+        const openMin = document.getElementById(`day_${day}_open_min`);
+        const closeHour = document.getElementById(`day_${day}_close`);
+        const closeMin = document.getElementById(`day_${day}_close_min`);
+        const closedCheckbox = document.getElementById(`day_${day}_closed`);
+
+        if (closedCheckbox.checked) {
+            // If closed is checked, remove the 'required' attribute
+            openHour.removeAttribute('required');
+            openMin.removeAttribute('required');
+            closeHour.removeAttribute('required');
+            closeMin.removeAttribute('required');
+        } else {
+            // If closed is unchecked, make the time inputs required
+            openHour.setAttribute('required', 'required');
+            openMin.setAttribute('required', 'required');
+            closeHour.setAttribute('required', 'required');
+            closeMin.setAttribute('required', 'required');
+        }
+    }
+
+    // Initialize on page load to apply required attributes based on checkboxes
+    window.onload = function() {
+        for (let day = 1; day <= 7; day++) {
+            toggleRequiredFields(day);
+        }
+    };
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

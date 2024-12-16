@@ -812,29 +812,63 @@ h3, p {
 
 .hours-grid {
     display: grid;
-    grid-template-columns: 1fr 2fr 2fr 1fr;
+    flex-direction: column;
     gap: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    align-items: center;
+    margin-bottom: 20px;
 }
 
-.hours-grid select {
-    height: 30px;
-    padding: 5px;
-    font-size: 1em;
-    line-height: 1.2;
+.day-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
 }
 
 .day-label {
+    font-size: 1.1em;
     font-weight: bold;
-    margin-bottom: 10px;
+    text-align: right;
+    margin-bottom: 13px;
+    width: 100px;
 }
+
 .time-select {
     display: flex;
+    align-items: center;
     gap: 5px;
 }
 
+.time-select select {
+    width: 75px;
+    padding: 5px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.time-select span {
+    font-weight: bold;
+    font-size: 1.7em;
+    margin-bottom: 15px;
+}
+
+/* Closed checkbox */
+.closed-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-bottom: 13px;
+}
+
+.closed-checkbox label {
+    font-size: 1em;
+}
+
+.closed-checkbox input {
+    transform: scale(1.2); /* Make the checkbox slightly larger */
+}
 
 .btn-edit {
     margin-top: 10px;
@@ -1052,26 +1086,6 @@ label {
     font-size: 2.7em;
     color: gold;
     text-shadow: 0 0 3px rgba(128, 128, 128, 0.4), 0 0 6px rgba(128, 128, 128, 0.4);
-}
-
-.time-select-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.time-select-group label {
-    font-size: 14px;
-    margin-right: 5px;
-}
-
-#hours-select, #minutes-select {
-    width: 49%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
 }
 
 #sessions-target select {

@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from .models import User, Location, Reservation
+from .models import User, Location, Reservation, Opening_Hours
 from datetime import datetime, timedelta
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
-from sqlalchemy import and_, func
+from sqlalchemy import and_, func, text
 from sqlalchemy.sql import text, func
 
 
@@ -92,10 +92,34 @@ def logout():
 def main_page():
     # Highlighted locations
     highlighted_locations = get_highlighted_locations()
+
+    # Prepare opening hours for each location
+    for location in highlighted_locations:
+        # Create a dictionary for the opening hours for each day
+        opening_hours_dict = {}
+
+        # Filter the opening hours for each day of the week (1=Monday, 7=Sunday)
+        for day in range(1, 8):  # Days of the week are 1 (Monday) to 7 (Sunday)
+            opening_hour = next((oh for oh in location.opening_hours if oh.day_of_week == day), None)
+
+            # If opening hour exists, format the time as hh:mm
+            if opening_hour:
+                formatted_opening_time = opening_hour.opening_time.strftime('%H:%M') if opening_hour.opening_time else None
+                formatted_closing_time = opening_hour.closing_time.strftime('%H:%M') if opening_hour.closing_time else None
+                opening_hours_dict[day] = {
+                    'opening_time': formatted_opening_time,
+                    'closing_time': formatted_closing_time
+                }
+
+        # Add the opening hours to the location object as a dictionary
+        location.opening_hours_dict = opening_hours_dict
+
     return render_template('main-page.html', user=current_user, highlighted_locations=highlighted_locations)
 
 
 def get_highlighted_locations():
+    """ Retrieves the top 3 locations with the highest average rating from reservations made
+    during the previous week (Monday to Sunday)"""
     # Calculate the start and end of the previous week
     now = datetime.now()
     start_of_week = now - timedelta(days=now.weekday() + 7)  # Start of last week (Monday)
@@ -109,6 +133,10 @@ def get_highlighted_locations():
         Reservation.reservation_time.between(start_of_week, end_of_week)  # Filter by reservation time during last week
     ).group_by(Reservation.location_id).order_by(func.avg(Reservation.location_rating).desc()).limit(3).all()
 
+    # If there are no locations, return an empty list
+    if not highest_rated_locations:
+        return []
+    
     # Get the details of the locations with the highest average ratings
     locations = [Location.query.get(location.location_id) for location in highest_rated_locations]
     return locations
@@ -313,8 +341,7 @@ def all_locations():
 
     # Apply filters
     if opening_day:
-        day_column = getattr(Location, opening_day)
-        query = query.filter(day_column.isnot(None))  # Check if the location is open that day
+        query = query.join(Opening_Hours).filter(Opening_Hours.day_of_week == int(opening_day))
 
     if city_filter:
         city, country = city_filter.split('|')
@@ -335,23 +362,42 @@ def all_locations():
 
     location_data = query.all()
 
+    # Format opening hours as 'hh:mm' for each location
+    for location in location_data:
+        opening_hours_dict = {}
+
+        # Iterate through each day of the week (1=Monday, 7=Sunday)
+        for day in range(1, 8):
+            opening_hour = next((oh for oh in location.opening_hours if oh.day_of_week == day), None)
+
+            if opening_hour:
+                # Format opening and closing times to 'hh:mm'
+                formatted_opening_time = opening_hour.opening_time.strftime('%H:%M') if opening_hour.opening_time else None
+                formatted_closing_time = opening_hour.closing_time.strftime('%H:%M') if opening_hour.closing_time else None
+                opening_hours_dict[day] = {
+                    'opening_time': formatted_opening_time,
+                    'closing_time': formatted_closing_time
+                }
+            else:
+                # If no opening hour, mark as Closed
+                opening_hours_dict[day] = {'opening_time': None, 'closing_time': None}
+
+        # Add the formatted opening hours to the location object
+        location.opening_hours_dict = opening_hours_dict
+
     # Get available cities and location types for the filter options
     cities = db.session.query(Location.city, Location.country).distinct().all()
     location_types = db.session.query(Location.location_type).distinct().all()
 
-    return render_template(
-        'all-locations.html',
-        user=current_user,
-        location_data=location_data,
-        cities=cities,
-        location_types=location_types
-    )
+    return render_template('all-locations.html', user=current_user, location_data=location_data, 
+                           cities=cities, location_types=location_types)
 
 
 @main.route('/upload-location', methods=['GET', 'POST'])
 @login_required
 def upload_location():
     if request.method == 'POST':
+        # Colect location details
         location_name = request.form.get("location_name")
         location_type = request.form.get("location_type")
         country = request.form.get("country")
@@ -360,55 +406,60 @@ def upload_location():
         street = request.form.get("street")
         street_number = request.form.get("street_number")
         chairs = int(request.form.get("chairs"))
-
-        def format_time(hour, minute):
-            """Formats hour and minute into 'HH:mm'. Returns None for invalid/missing values."""
-            if not hour or not minute:  # Check if either value is missing
-                return None
-            try:
-                # Convert hour and minute to integers
-                hour = int(hour)
-                minute = int(minute)
-                # Validate ranges (hour: 0-23, minute: 0-59)
-                if 0 <= hour < 24 and 0 <= minute < 60:
-                    return f"{hour:02}:{minute:02}"  # Return formatted time
-            except ValueError:
-                pass  # If conversion fails, return None
-            return None
-        
-        # Use helper function to format times
-        monday_open = format_time(request.form.get('monday_open'), request.form.get('monday_open_min'))
-        monday_close = format_time(request.form.get('monday_close'), request.form.get('monday_close_min'))
-        tuesday_open = format_time(request.form.get('tuesday_open'), request.form.get('tuesday_open_min'))
-        tuesday_close = format_time(request.form.get('tuesday_close'), request.form.get('tuesday_close_min'))
-        wednesday_open = format_time(request.form.get('wednesday_open'), request.form.get('wednesday_open_min'))
-        wednesday_close = format_time(request.form.get('wednesday_close'), request.form.get('wednesday_close_min'))
-        thursday_open = format_time(request.form.get('thursday_open'), request.form.get('thursday_open_min'))
-        thursday_close = format_time(request.form.get('thursday_close'), request.form.get('thursday_close_min'))
-        friday_open = format_time(request.form.get('friday_open'), request.form.get('friday_open_min'))
-        friday_close = format_time(request.form.get('friday_close'), request.form.get('friday_close_min'))
-        saturday_open = format_time(request.form.get('saturday_open'), request.form.get('saturday_open_min'))
-        saturday_close = format_time(request.form.get('saturday_close'), request.form.get('saturday_close_min'))
-        sunday_open = format_time(request.form.get('sunday_open'), request.form.get('sunday_open_min'))
-        sunday_close = format_time(request.form.get('sunday_close'), request.form.get('sunday_close_min'))
-
         location_picture = request.form.get("location_picture")
 
-        new_location = Location(user_id=current_user.id, location_name=location_name, location_type=location_type,
-                                country=country, postal_code=postal_code, city=city, street=street, street_number=street_number,
-                                chairs=chairs, monday_open=monday_open, monday_close=monday_close, tuesday_open=tuesday_open, tuesday_close=tuesday_close,
-                                wednesday_open=wednesday_open, wednesday_close=wednesday_close, thursday_open=thursday_open, thursday_close=thursday_close,
-                                friday_open=friday_open, friday_close=friday_close, saturday_open=saturday_open, saturday_close=saturday_close,
-                                sunday_open=sunday_open, sunday_close=sunday_close, location_picture=location_picture)
+        # Ensure the sequence is correctly set
+        db.session.execute(text("SELECT setval('opening_hours_id_seq', (SELECT MAX(id) FROM opening_hours), true);"))
+        db.session.commit()
 
+        # Add location to the database
+        new_location = Location(user_id=current_user.id, location_name=location_name, location_type=location_type,
+                                country=country, postal_code=postal_code, city=city, street=street,
+                                street_number=street_number, chairs=chairs, location_picture=location_picture)
+        
         db.session.add(new_location)
         db.session.commit()
 
+        # Helper to format time to hh:mm:ss
+        def format_time(hour, minute):
+            """Returns a time string in hh:mm:ss format."""
+            if hour and minute:
+                try:
+                    return f"{int(hour):02}:{int(minute):02}:00"
+                except ValueError:
+                    return None
+            return None
+
+        # Collect opening hours
+        for day in range(1, 8): # Loop through days 1 (Monday) to 7 (Sunday)
+            open_hour = request.form.get(f"day_{day}_open")
+            open_min = request.form.get(f"day_{day}_open_min")
+            close_hour = request.form.get(f"day_{day}_close")
+            close_min = request.form.get(f"day_{day}_close_min")
+            closed = request.form.get(f"day_{day}_closed") # Checkbox value (None if unchecked)
+
+            # Skip adding if the day is marked as closed
+            if closed:
+                continue
+
+            # Format opening and closing times
+            opening_time = format_time(open_hour, open_min)
+            closing_time = format_time(close_hour, close_min)
+
+            if opening_time and closing_time:
+                # Check if the entry for this day already exists for the location
+                existing_entry = db.session.query(Opening_Hours).filter_by(location_id=new_location.id, day_of_week=day).first()
+                if not existing_entry:
+                    opening_hour = Opening_Hours(location_id=new_location.id, day_of_week=day,
+                                                 opening_time=opening_time, closing_time=closing_time)
+                    db.session.add(opening_hour)
+                    db.session.commit()
+    
         flash("Your location has been successfully added.", "success")
         return redirect(url_for('main.main_page'))
 
     # Pass existing_location to the template
-    existing_location = Location.query.filter_by(user_id=current_user.id).first()
+    existing_location = Location.query.filter_by(user_id=current_user.id, status='active').first()
     locations = Location.query.all()
     return render_template('upload-location.html', user=current_user, locations=locations, existing_location=existing_location)
 
@@ -452,27 +503,26 @@ def make_reservation():
 @main.route('/select-location', methods=['GET', 'POST'])
 @login_required
 def select_location():
-    # Initialiseer variabelen
+    # Initialize variables
     reservation_time = None
     study_time = None
     number_of_guests = None
 
-    # Haal gegevens op van POST- of GET-verzoeken
+    # Get data from POST or GET requests
     if request.method == 'POST':
         reservation_time = request.form.get('reservation_time')
         study_time = request.form.get('study_time')
         number_of_guests = request.form.get('number_of_guests')
-    else:  # Voor GET-verzoeken
+    else:  # For GET-requests
         reservation_time = request.args.get('reservation_time')
         study_time = request.args.get('study_time')
         number_of_guests = request.args.get('number_of_guests')
 
-    # Controleer of de vereiste gegevens aanwezig zijn
+    # Validate inputs
     if not reservation_time or not study_time or not number_of_guests:
         flash("All fields are required to proceed.", "error")
-        return redirect(url_for('main.make_reservation'))  # Stuur gebruiker terug naar het reserveringsformulier
+        return redirect(url_for('main.make_reservation'))
 
-    # Converteer en valideer de gegevens
     try:
         reservation_datetime = datetime.strptime(reservation_time, "%Y-%m-%dT%H:%M")
     except ValueError:
@@ -486,23 +536,27 @@ def select_location():
         flash("Study time and number of guests must be valid numbers.", "error")
         return redirect(url_for('main.make_reservation'))
 
-    # Controleer of de reserveringsdatum in de toekomst ligt
+    # Ensure the reservation date is in the future
     if reservation_datetime < datetime.now():
         flash("You can only make reservations for future dates and times.", "error")
         return redirect(url_for('main.make_reservation'))
 
-    # Roep de functie aan om beschikbare locaties te filteren
+    # Get available locations based on the reservation datetime and other parameters
     available_locations = filter_available_locations(reservation_datetime, study_time, number_of_guests)
 
-    # Render de pagina met beschikbare locaties
-    return render_template(
-        'select-location.html',
-        user=current_user,
-        location_data=available_locations,
-        reservation_time=reservation_time,
-        study_time=study_time,
-        number_of_guests=number_of_guests,
-    )
+    # Convert opening_hours to a dictionary (day_of_week -> opening_time, closing_time)
+    for location in available_locations:
+        opening_hours_dict = {}
+        for opening_hour in location['location'].opening_hours:
+            opening_hours_dict[opening_hour.day_of_week] = {
+                'opening_time': opening_hour.opening_time.strftime('%H:%M'),
+                'closing_time': opening_hour.closing_time.strftime('%H:%M')
+            }
+        location['opening_hours_dict'] = opening_hours_dict
+
+    # Pass locations and other details to the template
+    return render_template('select-location.html', user=current_user, location_data=available_locations,
+                           reservation_time=reservation_time, study_time=study_time, number_of_guests=number_of_guests,)
 
 
 @main.route('/confirm_reservation', methods=['POST'])
@@ -604,21 +658,15 @@ def filter_available_locations(reservation_datetime, study_time, number_of_guest
             continue
 
         # Check if the location is open during the reservation period
-        day_name = reservation_datetime.strftime('%A').lower()  # Get the day of the week in lowercase
-        open_time_str = getattr(location, f"{day_name}_open")
-        close_time_str = getattr(location, f"{day_name}_close")
+        day_of_week = reservation_datetime.weekday() + 1 # 1: Monday, ... , 7: Sunday
+        opening_hour = next((oh for oh in location.opening_hours if oh.day_of_week == day_of_week), None)
 
         # If the location is closed on that day, skip it
-        if not open_time_str or not close_time_str:
+        if not opening_hour:
             continue
 
-        try:
-            # Convert strings to datetime.time objects
-            open_time = datetime.strptime(open_time_str, "%H:%M").time()
-            close_time = datetime.strptime(close_time_str, "%H:%M").time()
-        except ValueError:
-            # If the time format is invalid, skip this location
-            continue
+        open_time = opening_hour.opening_time
+        close_time = opening_hour.closing_time
 
         # Convert opening and closing times to full datetime objects
         open_time_datetime = datetime.combine(reservation_datetime.date(), open_time)

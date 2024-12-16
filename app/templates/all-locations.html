@@ -89,13 +89,13 @@
                     <label for="opening_day">Filter by Opening Day:</label>
                     <select name="opening_day" id="opening_day" onchange="this.form.submit()">
                         <option value="" {% if not request.args.get('opening_day') %}selected{% endif %}>No Filter</option>
-                        <option value="monday_open" {% if request.args.get('opening_day') == 'monday_open' %}selected{% endif %}>Monday Open</option>
-                        <option value="tuesday_open" {% if request.args.get('opening_day') == 'tuesday_open' %}selected{% endif %}>Tuesday Open</option>
-                        <option value="wednesday_open" {% if request.args.get('opening_day') == 'wednesday_open' %}selected{% endif %}>Wednesday Open</option>
-                        <option value="thursday_open" {% if request.args.get('opening_day') == 'thursday_open' %}selected{% endif %}>Thursday Open</option>
-                        <option value="friday_open" {% if request.args.get('opening_day') == 'friday_open' %}selected{% endif %}>Friday Open</option>
-                        <option value="saturday_open" {% if request.args.get('opening_day') == 'saturday_open' %}selected{% endif %}>Saturday Open</option>
-                        <option value="sunday_open" {% if request.args.get('opening_day') == 'sunday_open' %}selected{% endif %}>Sunday Open</option>
+                        <option value="1" {% if request.args.get('opening_day') == '1' %}selected{% endif %}>Monday Open</option>
+                        <option value="2" {% if request.args.get('opening_day') == '2' %}selected{% endif %}>Tuesday Open</option>
+                        <option value="3" {% if request.args.get('opening_day') == '3' %}selected{% endif %}>Wednesday Open</option>
+                        <option value="4" {% if request.args.get('opening_day') == '4' %}selected{% endif %}>Thursday Open</option>
+                        <option value="5" {% if request.args.get('opening_day') == '5' %}selected{% endif %}>Friday Open</option>
+                        <option value="6" {% if request.args.get('opening_day') == '6' %}selected{% endif %}>Saturday Open</option>
+                        <option value="7" {% if request.args.get('opening_day') == '7' %}selected{% endif %}>Sunday Open</option>
                     </select>
                 </div>
                 
@@ -168,38 +168,44 @@
 
                     <p><strong>Opening Hours:</strong></p>
                     <ul style="list-style-type: none; padding: 0; margin-top: 0px;">
-                        {% if item.monday_open and item.monday_close %}
-                            <li><strong>Monday:</strong> {{ item.monday_open }}h - {{ item.monday_close }}h</li>
+                        {% if item.opening_hours_dict[1].opening_time %}
+                            <li><strong>Monday:</strong> {{ item.opening_hours_dict[1].opening_time }} - {{ item.opening_hours_dict[1].closing_time }}</li>
                         {% else %}
                             <li><strong>Monday:</strong> Closed</li>
                         {% endif %}
-                        {% if item.tuesday_open and item.tuesday_close %}
-                            <li><strong>Tuesday:</strong> {{ item.tuesday_open }}h - {{ item.tuesday_close }}h</li>
+                        
+                        {% if item.opening_hours_dict[2].opening_time %}
+                            <li><strong>Tuesday:</strong> {{ item.opening_hours_dict[2].opening_time }} - {{ item.opening_hours_dict[2].closing_time }}</li>
                         {% else %}
                             <li><strong>Tuesday:</strong> Closed</li>
                         {% endif %}
-                        {% if item.wednesday_open and item.wednesday_close %}
-                            <li><strong>Wednesday:</strong> {{ item.wednesday_open }}h - {{ item.wednesday_close }}h</li>
+                        
+                        {% if item.opening_hours_dict[3].opening_time %}
+                            <li><strong>Wednesday:</strong> {{ item.opening_hours_dict[3].opening_time }} - {{ item.opening_hours_dict[3].closing_time }}</li>
                         {% else %}
                             <li><strong>Wednesday:</strong> Closed</li>
                         {% endif %}
-                        {% if item.thursday_open and item.thursday_close %}
-                            <li><strong>Thursday:</strong> {{ item.thursday_open }}h - {{ item.thursday_close }}h</li>
+                        
+                        {% if item.opening_hours_dict[4].opening_time %}
+                            <li><strong>Thursday:</strong> {{ item.opening_hours_dict[4].opening_time }} - {{ item.opening_hours_dict[4].closing_time }}</li>
                         {% else %}
                             <li><strong>Thursday:</strong> Closed</li>
                         {% endif %}
-                        {% if item.friday_open and item.friday_close %}
-                            <li><strong>Friday:</strong> {{ item.friday_open }}h - {{ item.friday_close }}h</li>
+                        
+                        {% if item.opening_hours_dict[5].opening_time %}
+                            <li><strong>Friday:</strong> {{ item.opening_hours_dict[5].opening_time }} - {{ item.opening_hours_dict[5].closing_time }}</li>
                         {% else %}
                             <li><strong>Friday:</strong> Closed</li>
                         {% endif %}
-                        {% if item.saturday_open and item.saturday_close %}
-                            <li><strong>Saturday:</strong> {{ item.saturday_open }}h - {{ item.saturday_close }}h</li>
+                        
+                        {% if item.opening_hours_dict[6].opening_time %}
+                            <li><strong>Saturday:</strong> {{ item.opening_hours_dict[6].opening_time }} - {{ item.opening_hours_dict[6].closing_time }}</li>
                         {% else %}
                             <li><strong>Saturday:</strong> Closed</li>
                         {% endif %}
-                        {% if item.sunday_open and item.sunday_close %}
-                            <li><strong>Sunday:</strong> {{ item.sunday_open }}h - {{ item.sunday_close }}h</li>
+                        
+                        {% if item.opening_hours_dict[7].opening_time %}
+                            <li><strong>Sunday:</strong> {{ item.opening_hours_dict[7].opening_time }} - {{ item.opening_hours_dict[7].closing_time }}</li>
                         {% else %}
                             <li><strong>Sunday:</strong> Closed</li>
                         {% endif %}
