@@ -43,12 +43,14 @@ Start using **Chairing** today to find your favorite study spot, help others, an
 ---
 
 ## How Our Code Works
+In our demo video, we explain the basic functionalities of our site.
 
 ### Layout  
 We began by designing a template in Figma, which served as a working document throughout development. As our website evolved, we continuously updated the Figma file to reflect the changes. The final Figma version includes the structure for most of our website's pages.  
 
 For the homepage, main page, login, and signup pages, we drew inspiration from an online template. This approach gave our website a more polished and professional appearance.  
 
+- **Demo Video**: [Basic Functionalities Chairing](https://vicvereecke2.wistia.com/medias/omxv00fxo0)  
 - **Figma File**: [Chairing Design](https://www.figma.com/design/lpcroGTkpFvW8u9mU9Tbih/Chairing?node-id=0-1&t=jZgN5xBRTQklAzLF-1)  
 - **Template Reference**: [React Markit Template](https://react-markit.vercel.app/home)  
 
