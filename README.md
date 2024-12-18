@@ -50,7 +50,7 @@ We began by designing a template in Figma, which served as a working document th
 
 For the homepage, main page, login, and signup pages, we drew inspiration from an online template. This approach gave our website a more polished and professional appearance.  
 
-- **Demo Video**: [Basic Functionalities Chairing](https://vicvereecke2.wistia.com/medias/omxv00fxo0)  
+- **Demo Video**: [Basic Functionalities Chairing](https://vicvereecke2.wistia.com/medias/2jtjurmhv1)  
 - **Figma File**: [Chairing Design](https://www.figma.com/design/lpcroGTkpFvW8u9mU9Tbih/Chairing?node-id=0-1&t=jZgN5xBRTQklAzLF-1)  
 - **Template Reference**: [React Markit Template](https://react-markit.vercel.app/home)  
 
