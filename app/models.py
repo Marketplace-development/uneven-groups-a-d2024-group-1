@@ -83,4 +83,4 @@ class Opening_Hours(db.Model):
     opening_time = db.Column(db.Time, nullable=False)
     closing_time = db.Column(db.Time, nullable=False)
 
-    location = db.relationship('Location')
+    location = db.relationship('Location', overlaps='opening_hours,locations')
