@@ -1,0 +1,47 @@
+## Marketplace Ideation
+
+Platform name: Chairing
+
+Short description: Chairing connects students and location owners. Students can find and reserve study spots individually or with friends. Location owners (cafés, bars, libraries, … ) can list their spaces, making them easy to discover and book.
+
+
+# Taxonomy: Business Model
+
+User Type: Person 
+Listing Kind: Service
+Listing Type: Offline Serviced 
+Frequency: Recurring
+Quantity: Many
+Price Discovery: /
+Price Calculation: /
+Conversation System: Listing Coversation and Transaction Conversation
+Review by: By Customer and Provider
+Review of: Of Listing and Customer
+Trust and Safety: ID verification
+Revenue Stream: /
+Revenue Source: /
+
+
+# User stories
+
+As a [platform visitor], I want to [register], so that [I become a user]. Prio: High
+As a [user], I want to [login], so that [I can make a reservation or upload my location]. Prio: High
+As a [user], I want to [go to my account], so that [I can change my username or phonenumber]. Prio: Low
+As a [user], I want to [logout], so that [I can end my session]. Prio: High
+As a [user], I want to [upload my location], so that [I become a location owner]. Prio: Medium
+As a [user], I want to [make a reservation], so that [I become a student]. Prio: Medium
+As a [user], I want to [go to the all-locatios page], so that [I can view, filter and sort all locations]. Prio: Low
+As a [user], I want to [go to the all-locatios page], so that [I can see information about every location]. Prio: Low
+As a [user], I want to [visit the about-us page], so that [I learn more about Chairing]. Prio: Low
+As a [location owner], I want to [view who booked my location], so that [I can give a rating to the student who booked my location]. Prio: Medium
+As a [loaction owner], I want to [view who booked my location], so that [I can send a message to the student who booked my location]. Prio: Medium
+As a [location owner], I want to [go to my account], so that [I can see my average location rating, individual location ratings and messages]. Prio: Medium
+As a [location owner], I want to [go to my account], so that [I can delete my location]. Prio: Medium
+As a [student], I want to [go to my reservations], so that [I can view my upcomming and past reservations]. Prio: Medium
+As a [student], I want to [go to my reservations], so that [I can cancel my reservation]. Prio: Medium
+As a [student], I want to [go to my reservations], so that [I can give a rating to the location]. Prio: Medium
+As a [student], I want to [go to my reservations], so that [I can send a message to the location owner]. Prio: Medium
+As a [student], I want to [go to my account], so that [I can see my averge rating, individual ratings and messages]. Prio: Medium
+As a [student], I want to [go to my account], so that [I can set my study targets]. Prio: Medium
+As a [student], I want to [go to my account], so that [I can edit or delete my study targets]. Prio: Medium
+As a [student], I want to [go to the main page], so that [I can see the highlighted locations]. Prio: Low
